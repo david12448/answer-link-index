@@ -50,6 +50,9 @@ def iter_targets(data: dict):
                 yield {"book_id": book["book_id"], "resource_id": material["resource_id"], "kind": "resource_page", "url": material["resource_page"]}
             if material.get("direct_url"):
                 yield {"book_id": book["book_id"], "resource_id": material["resource_id"], "kind": "direct_url", "url": material["direct_url"]}
+        for course in book.get("courses", []):
+            if course.get("course_url"):
+                yield {"book_id": book["book_id"], "resource_id": course["course_id"], "kind": "course_url", "url": course["course_url"]}
 
 def main():
     data = json.loads(CATALOG.read_text(encoding="utf-8"))
