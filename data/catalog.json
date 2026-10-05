@@ -1,8 +1,8 @@
 {
   "meta": {
     "generated_at": "2026-10-06",
-    "schema_version": 1,
-    "note": "PR #1 샘플 데이터. 후속 PR에서 출판사별 공식 수집기로 대체/확장합니다."
+    "schema_version": 2,
+    "note": "PR #1 샘플 데이터. EBS는 실제 2027 수능완성 영어 교재 ID와 공식 페이지 구조를 반영했습니다."
   },
   "books": [
     {
@@ -37,31 +37,74 @@
       ]
     },
     {
-      "book_id": "ebs-manjeomwang-korean-elementary-1-1-2026",
+      "book_id": "ebs-suneung-wanseong-english-2027",
       "publisher": "EBS",
-      "brand": "만점왕",
-      "title": "만점왕 국어 1-1",
+      "publisher_book_id": "LB00000005984",
+      "brand": "수능완성",
+      "title": "EBS 2027학년도 수능완성 영어영역 영어",
       "aliases": [
-        "EBS 만점왕 국어 1-1",
-        "만점왕 1학년 국어"
+        "2027 수능완성 영어",
+        "수능완성 영어 2027",
+        "EBS 수능완성 영어"
       ],
-      "school_level": "elementary",
-      "grade": 1,
-      "semester": 1,
-      "subject": "국어",
+      "school_level": "high",
+      "grade": 3,
+      "semester": null,
+      "subject": "영어",
       "book_type": "문제집",
       "curriculum": null,
-      "edition_year": 2026,
+      "edition_year": 2027,
       "isbn": null,
-      "official_page": "https://primary.ebs.co.kr/book/main/list",
+      "official_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005984",
       "materials": [
         {
-          "resource_id": "ebs-manjeomwang-korean-1-1-answer",
+          "resource_id": "ebs-suneung-wanseong-english-2027-answer",
           "type": "answer",
-          "title": "정답지 / 자료",
-          "resource_page": "https://primary.ebs.co.kr/book/main/mainList",
+          "title": "정답 및 해설",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/bkAnsList.ebs?catGbn=1&connectionBookYn=&bookNm=&currentPage=1",
           "direct_url": null,
           "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-wanseong-english-2027-errata",
+          "type": "errata",
+          "title": "정오표",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/bkErrChrgMngList.ebs",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-wanseong-english-2027-mp3",
+          "type": "mp3",
+          "title": "영어 MP3",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveMp3DownList.ebs",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-wanseong-english-2027-additional",
+          "type": "additional",
+          "title": "부가자료",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/txbkAdtlDatList.ebs",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        }
+      ],
+      "courses": [
+        {
+          "course_id": "ebs-course-s20260000184",
+          "title": "[2027 수능완성] 이자인의 영어 - 전 문항",
+          "teacher": "이자인",
+          "course_url": null,
+          "source_course_id": "S20260000184",
           "status": "needs_review",
           "last_checked": "2026-10-06"
         }
