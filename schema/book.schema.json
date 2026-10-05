@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schema/book.schema.json",
+  "title": "Answer Link Index Catalog",
+  "type": "object",
+  "required": [
+    "meta",
+    "books"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": [
+        "schema_version"
+      ],
+      "properties": {
+        "generated_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schema_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "books": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/book"
+      }
+    }
+  },
+  "$defs": {
+    "book": {
+      "type": "object",
+      "required": [
+        "book_id",
+        "publisher",
+        "title",
+        "school_level",
+        "subject",
+        "book_type",
+        "materials"
+      ],
+      "properties": {
+        "book_id": {
+          "type": "string",
+          "minLength": 3
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "brand": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "school_level": {
+          "enum": [
+            "elementary",
+            "middle",
+            "high"
+          ]
+        },
+        "grade": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 6
+        },
+        "semester": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "enum": [
+            1,
+            2,
+            null
+          ]
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "book_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "curriculum": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "edition_year": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1900
+        },
+        "isbn": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "official_page": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "materials": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/material"
+          }
+        }
+      }
+    },
+    "material": {
+      "type": "object",
+      "required": [
+        "resource_id",
+        "type",
+        "title",
+        "access",
+        "status",
+        "last_checked"
+      ],
+      "properties": {
+        "resource_id": {
+          "type": "string",
+          "minLength": 3
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resource_page": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "direct_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "access": {
+          "enum": [
+            "public",
+            "login_required",
+            "teacher_only",
+            "unknown"
+          ]
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "redirect",
+            "login_required",
+            "needs_review",
+            "broken",
+            "unknown"
+          ]
+        },
+        "last_checked": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}
