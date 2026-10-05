@@ -81,7 +81,17 @@ function renderBook(book) {
   statusEl.textContent = labels[status] || status;
   statusEl.classList.add(status);
 
-  fragment.querySelector(".book-title").textContent = book.title;
+  const titleEl = fragment.querySelector(".book-title");
+  if (book.official_page) {
+    const titleLink = document.createElement("a");
+    titleLink.href = book.official_page;
+    titleLink.target = "_blank";
+    titleLink.rel = "noopener noreferrer";
+    titleLink.textContent = book.title;
+    titleEl.append(titleLink);
+  } else {
+    titleEl.textContent = book.title;
+  }
   fragment.querySelector(".book-meta").textContent =
     [book.publisher, book.brand, book.subject, book.semester ? book.semester + "학기" : null]
       .filter(Boolean).join(" · ");
@@ -91,18 +101,17 @@ function renderBook(book) {
 
   const materials = fragment.querySelector(".materials");
   for (const material of book.materials || []) {
-    const best = material.direct_url || material.resource_page || book.official_page;
-    const primary = createMaterialLink(material.title || "자료 보기", best, true);
-    if (primary) materials.append(primary);
+    const loginRequired = material.access === "login_required";
+    const best = loginRequired
+      ? (material.resource_page || book.official_page)
+      : (material.direct_url || material.resource_page || book.official_page);
 
-    if (material.direct_url && material.resource_page) {
-      const source = createMaterialLink("공식 자료 페이지", material.resource_page);
-      if (source) materials.append(source);
-    }
-  }
-  if (book.official_page) {
-    const official = createMaterialLink("교재 공식 페이지", book.official_page);
-    if (official) materials.append(official);
+    const buttonLabel = loginRequired
+      ? "출판사에서 로그인 후 다운로드"
+      : (material.direct_url ? (material.title || "정답/해설 다운로드") : (material.title || "공식 자료 보기"));
+
+    const primary = createMaterialLink(buttonLabel, best, true);
+    if (primary) materials.append(primary);
   }
   return fragment;
 }
