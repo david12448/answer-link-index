@@ -141,6 +141,18 @@
           "items": {
             "$ref": "#/$defs/material"
           }
+        },
+        "publisher_book_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "courses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/course"
+          }
         }
       }
     },
@@ -194,6 +206,59 @@
             "ok",
             "redirect",
             "login_required",
+            "needs_review",
+            "broken",
+            "unknown"
+          ]
+        },
+        "last_checked": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "course": {
+      "type": "object",
+      "required": [
+        "course_id",
+        "title",
+        "status",
+        "last_checked"
+      ],
+      "properties": {
+        "course_id": {
+          "type": "string",
+          "minLength": 3
+        },
+        "source_course_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "teacher": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "course_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "redirect",
             "needs_review",
             "broken",
             "unknown"
