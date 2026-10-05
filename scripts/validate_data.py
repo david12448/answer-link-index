@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 from collections import Counter
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "data" / "catalog.json"
@@ -55,7 +55,21 @@ def main():
         print("[DUPLICATE resource_id]", *duplicated_resources, sep="\n- ")
         raise SystemExit(1)
 
-    print(f"OK: {len(book_ids)} books / {len(resource_ids)} resources")
+    course_ids = [
+        course["course_id"]
+        for book in data["books"]
+        for course in book.get("courses", [])
+    ]
+    duplicated_courses = duplicate_values(course_ids)
+    if duplicated_courses:
+        print("[DUPLICATE course_id]", *duplicated_courses, sep="\n- ")
+        raise SystemExit(1)
+
+    print(
+        f"OK: {len(book_ids)} books / "
+        f"{len(resource_ids)} resources / "
+        f"{len(course_ids)} courses"
+    )
 
 
 if __name__ == "__main__":
