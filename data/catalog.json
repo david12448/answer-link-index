@@ -1,0 +1,145 @@
+{
+  "meta": {
+    "generated_at": "2026-10-06",
+    "schema_version": 2,
+    "note": "PR #1 샘플 데이터. EBS는 실제 2027 수능완성 영어 교재 ID와 공식 페이지 구조를 반영했습니다."
+  },
+  "books": [
+    {
+      "book_id": "donga-hightop-middle-science-2-2022",
+      "publisher": "동아출판",
+      "brand": "하이탑",
+      "title": "HIGH TOP(하이탑) 중학교 과학 2",
+      "aliases": [
+        "하이탑 중2 과학",
+        "HIGH TOP 중학교 과학 2"
+      ],
+      "school_level": "middle",
+      "grade": 2,
+      "semester": null,
+      "subject": "과학",
+      "book_type": "문제집",
+      "curriculum": "2022 개정",
+      "edition_year": null,
+      "isbn": null,
+      "official_page": "https://www.bookdonga.com/",
+      "materials": [
+        {
+          "resource_id": "donga-hightop-middle-science-2-answer",
+          "type": "answer",
+          "title": "정답 및 해설",
+          "resource_page": "https://www.bookdonga.com/middle/extradata_list_ajax.donga",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "book_id": "ebs-suneung-wanseong-english-2027",
+      "publisher": "EBS",
+      "publisher_book_id": "LB00000005984",
+      "brand": "수능완성",
+      "title": "EBS 2027학년도 수능완성 영어영역 영어",
+      "aliases": [
+        "2027 수능완성 영어",
+        "수능완성 영어 2027",
+        "EBS 수능완성 영어"
+      ],
+      "school_level": "high",
+      "grade": 3,
+      "semester": null,
+      "subject": "영어",
+      "book_type": "문제집",
+      "curriculum": null,
+      "edition_year": 2027,
+      "isbn": null,
+      "official_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005984",
+      "materials": [
+        {
+          "resource_id": "ebs-suneung-wanseong-english-2027-answer",
+          "type": "answer",
+          "title": "정답 및 해설",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/bkAnsList.ebs?catGbn=1&connectionBookYn=&bookNm=&currentPage=1",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-wanseong-english-2027-errata",
+          "type": "errata",
+          "title": "정오표",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/bkErrChrgMngList.ebs",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-wanseong-english-2027-mp3",
+          "type": "mp3",
+          "title": "영어 MP3",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveMp3DownList.ebs",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-wanseong-english-2027-additional",
+          "type": "additional",
+          "title": "부가자료",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/txbkAdtlDatList.ebs",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        }
+      ],
+      "courses": [
+        {
+          "course_id": "ebs-course-s20260000184",
+          "title": "[2027 수능완성] 이자인의 영어 - 전 문항",
+          "teacher": "이자인",
+          "course_url": null,
+          "source_course_id": "S20260000184",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "book_id": "100bal-jjang-concept-operation-middle-math-2-1-2026",
+      "publisher": "100발100중",
+      "brand": "짱 개념연산",
+      "title": "(2022개정) 짱 개념연산 중2-1",
+      "aliases": [
+        "짱 개념연산 중2-1",
+        "100발100중 중2 수학"
+      ],
+      "school_level": "middle",
+      "grade": 2,
+      "semester": 1,
+      "subject": "수학",
+      "book_type": "문제집",
+      "curriculum": "2022 개정",
+      "edition_year": 2026,
+      "isbn": null,
+      "official_page": "https://www.100bal.com/",
+      "materials": [
+        {
+          "resource_id": "100bal-jjang-concept-operation-middle-math-2-1-answer",
+          "type": "answer",
+          "title": "정답 및 풀이",
+          "resource_page": "https://100bal.com/study_data/correct_list.asp",
+          "direct_url": null,
+          "access": "login_required",
+          "status": "login_required",
+          "last_checked": "2026-10-06"
+        }
+      ]
+    }
+  ]
+}

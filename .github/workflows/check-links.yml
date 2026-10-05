@@ -1,0 +1,40 @@
+name: Check official links
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 0 * * 1,4"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check official book and resource URLs
+        run: python scripts/check_links.py
+      - name: Detect report changes
+        id: diff
+        run: |
+          if git diff --quiet -- data/link-status.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Create pull request when link status changed
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/link-status
+          delete-branch: true
+          commit-message: "chore: refresh official link status"
+          title: "chore: 공식 교재/답지 링크 상태 갱신"
+          body: |
+            주 2회 자동 링크 검사 결과입니다.
+            data/link-status.json의 changes에서 리다이렉트, 404, 접근 제한 등 변화를 확인해주세요.

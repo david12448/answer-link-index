@@ -1,0 +1,58 @@
+{
+  "publishers": [
+    {
+      "id": "chunjae",
+      "name": "천재교육",
+      "tier": "major",
+      "collector_status": "planned"
+    },
+    {
+      "id": "jihaks",
+      "name": "지학사",
+      "tier": "major",
+      "collector_status": "planned"
+    },
+    {
+      "id": "donga",
+      "name": "동아출판",
+      "tier": "major",
+      "collector_status": "planned"
+    },
+    {
+      "id": "miraen",
+      "name": "미래엔",
+      "tier": "major",
+      "collector_status": "planned"
+    },
+    {
+      "id": "ebs",
+      "name": "EBS",
+      "tier": "major",
+      "collector_status": "planned"
+    },
+    {
+      "id": "mother-tong",
+      "name": "마더텅",
+      "tier": "medium",
+      "collector_status": "planned"
+    },
+    {
+      "id": "book-sk",
+      "name": "수경출판사",
+      "tier": "medium",
+      "collector_status": "planned"
+    },
+    {
+      "id": "100bal",
+      "name": "100발100중",
+      "tier": "exam",
+      "collector_status": "planned"
+    },
+    {
+      "id": "hit100",
+      "name": "적중100",
+      "tier": "exam",
+      "collector_status": "planned"
+    }
+  ]
+}
