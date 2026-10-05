@@ -19,10 +19,11 @@ const normalize = value => String(value ?? "")
 
 function searchableText(book) {
   const materialText = (book.materials || []).flatMap(m => [m.title, m.type]).join(" ");
+  const courseText = (book.courses || []).flatMap(c => [c.title, c.teacher, c.source_course_id]).join(" ");
   return [
     book.title, book.publisher, book.brand, book.subject, book.grade, book.semester,
     book.curriculum, book.edition_year, book.isbn, book.book_type,
-    ...(book.aliases || []), materialText
+    ...(book.aliases || []), materialText, courseText
   ].join(" ");
 }
 
@@ -112,6 +113,17 @@ function renderBook(book) {
 
     const primary = createMaterialLink(buttonLabel, best, true);
     if (primary) materials.append(primary);
+  }
+
+  for (const course of book.courses || []) {
+    if (!course.course_url) continue;
+    const teacher = course.teacher ? ` · ${course.teacher}` : "";
+    const courseLink = createMaterialLink(`인강${teacher}`, course.course_url, false);
+    if (courseLink) {
+      courseLink.classList.add("course-link");
+      courseLink.title = course.title || "관련 인강";
+      materials.append(courseLink);
+    }
   }
   return fragment;
 }
