@@ -41,7 +41,10 @@ h1 { margin: 0; font-size: clamp(32px, 6vw, 52px); }
 .status-badge.ok { background: #eaf8ef; }
 .status-badge.login_required { background: #fff4dd; }
 .status-badge.needs_review, .status-badge.broken { background: #feecec; }
-.book-title { margin: 0; font-size: 20px; }
+.book-title { margin: 14px 0 0; font-size: 20px; }
+.book-title a { color: inherit; text-decoration: none; }
+.book-title a:hover { text-decoration: underline; }
+.official-hint { margin: 8px 0 0; color: #8a93a5; font-size: 12px; }
 .book-meta, .book-submeta { margin: 7px 0 0; color: #667085; font-size: 14px; }
 .materials { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .material-link {
