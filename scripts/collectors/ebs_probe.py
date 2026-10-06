@@ -27,15 +27,16 @@ DETAIL_ENDPOINTS = {
 
 BOOK_ID_RE = re.compile(r"LB\d{8,14}", re.IGNORECASE)
 INPUT_NAME_RE = re.compile(r"<input\b[^>]*\bname=[\"']([^\"']+)[\"']", re.IGNORECASE)
+INPUT_TAG_RE = re.compile(r"<input\b([^>]*)>", re.IGNORECASE)
 SELECT_NAME_RE = re.compile(r"<select\b[^>]*\bname=[\"']([^\"']+)[\"']", re.IGNORECASE)
 FORM_ACTION_RE = re.compile(r"<form\b[^>]*\baction=[\"']([^\"']*)[\"']", re.IGNORECASE)
 HREF_RE = re.compile(r"<a\b[^>]*\bhref=[\"']([^\"']+)[\"']", re.IGNORECASE)
-ANCHOR_RE = re.compile(r"<a\\b([^>]*)>(.*?)</a>", re.IGNORECASE | re.DOTALL)
-ATTR_RE = re.compile(r"([\\w:-]+)\\s*=\\s*[\\\"']([^\\\"']*)[\\\"']", re.IGNORECASE)
-FILE_TOKEN_RE = re.compile(r"[^\\s\\\"\'<>]+\\.(?:pdf|hwp|hwpx|zip|mp3|wav)(?:\\?[^\\s\\\"\'<>]*)?", re.IGNORECASE)
-QUOTED_URL_RE = re.compile(r"[\\\"']((?:https?://|/)[^\\\"']+)[\\\"']", re.IGNORECASE)
+ANCHOR_RE = re.compile(r"<a\b([^>]*)>(.*?)</a>", re.IGNORECASE | re.DOTALL)
+ATTR_RE = re.compile(r"([\w:-]+)\s*=\s*[\"']([^\"']*)[\"']", re.IGNORECASE)
+FILE_TOKEN_RE = re.compile(r"[^\s\"'<>]+\.(?:pdf|hwp|hwpx|zip|mp3|wav)(?:\?[^\s\"'<>]*)?", re.IGNORECASE)
+QUOTED_URL_RE = re.compile(r"[\"']((?:https?://|/)[^\"']+)[\"']", re.IGNORECASE)
 TAG_RE = re.compile(r"<[^>]+>")
-BOOK_FL_CALL_RE = re.compile(r"fncDownFile\\s*\\(\\s*[\\\"']?([^\\\"')\\s]+)[\\\"']?\\s*\\)", re.IGNORECASE)
+BOOK_FL_CALL_RE = re.compile(r"fncDownFile\s*\(\s*[\"']?([^\"')\s]+)[\"']?\s*\)", re.IGNORECASE)
 TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
 
 
