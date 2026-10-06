@@ -6,7 +6,7 @@ import re
 from datetime import datetime, timezone
 from html import unescape
 from pathlib import Path
-from urllib.parse import urlencode, urljoin
+from urllib.parse import quote, urlencode, urljoin
 from urllib.request import Request, urlopen
 
 BASE = "https://www.ebsi.co.kr"
@@ -35,6 +35,7 @@ ATTR_RE = re.compile(r"([\\w:-]+)\\s*=\\s*[\\\"']([^\\\"']*)[\\\"']", re.IGNOREC
 FILE_TOKEN_RE = re.compile(r"[^\\s\\\"\'<>]+\\.(?:pdf|hwp|hwpx|zip|mp3|wav)(?:\\?[^\\s\\\"\'<>]*)?", re.IGNORECASE)
 QUOTED_URL_RE = re.compile(r"[\\\"']((?:https?://|/)[^\\\"']+)[\\\"']", re.IGNORECASE)
 TAG_RE = re.compile(r"<[^>]+>")
+BOOK_FL_CALL_RE = re.compile(r"fncDownFile\\s*\\(\\s*[\\\"']?([^\\\"')\\s]+)[\\\"']?\\s*\\)", re.IGNORECASE)
 TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
 
 
@@ -112,6 +113,10 @@ def extract_attachment_candidates(html: str, final_url: str) -> list[dict]:
 
 def summarize_html(html: str, final_url: str) -> dict:
     book_ids = sorted(set(value.upper() for value in BOOK_ID_RE.findall(html)))
+    book_file_ids = sorted({
+        value for value in BOOK_FL_CALL_RE.findall(html)
+        if value and value.lower() != "bookflid"
+    })
     hrefs = [unescape(value) for value in HREF_RE.findall(html)]
     book_urls = []
     for href in hrefs:
@@ -124,6 +129,7 @@ def summarize_html(html: str, final_url: str) -> dict:
     return {
         "title": title,
         "book_ids": book_ids,
+        "book_file_ids": book_file_ids[:50],
         "book_urls": sorted(set(book_urls))[:100],
         "form_actions": sorted(set(unescape(x) for x in FORM_ACTION_RE.findall(html))),
         "input_names": sorted(set(INPUT_NAME_RE.findall(html))),
@@ -136,6 +142,62 @@ def summarize_html(html: str, final_url: str) -> dict:
             "contains_download_word": "download" in html.lower() or "다운로드" in html,
         },
     }
+
+
+def resolve_book_file(book_fl_id: str, referer: str) -> dict:
+    ajax_url = build_url(
+        "/ebs/lms/lmsk/bkAnsMngFLdown.ajax",
+        {"bookFlId": book_fl_id},
+    )
+    req = Request(
+        ajax_url,
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "application/json,text/javascript,*/*;q=0.1",
+            "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.5",
+            "X-Requested-With": "XMLHttpRequest",
+            "Referer": referer,
+        },
+        method="GET",
+    )
+    try:
+        with urlopen(req, timeout=30) as response:
+            raw = response.read()
+            content_type = response.headers.get("Content-Type")
+            text, charset = decode_body(raw, content_type)
+            payload = json.loads(text)
+            fl_nm = payload.get("flNm")
+            if fl_nm and fl_nm.startswith("//"):
+                direct_url = "https:" + fl_nm
+            elif fl_nm:
+                direct_url = urljoin(BASE, fl_nm)
+            else:
+                direct_url = None
+            return {
+                "book_fl_id": book_fl_id,
+                "ajax_url": ajax_url,
+                "http_status": getattr(response, "status", 200),
+                "content_type": content_type,
+                "charset": charset,
+                "success": str(payload.get("success")) == "1",
+                "direct_url": direct_url,
+                "server_filename": payload.get("svNm"),
+                "raw_file_url": fl_nm,
+                "error": None,
+            }
+    except Exception as exc:
+        return {
+            "book_fl_id": book_fl_id,
+            "ajax_url": ajax_url,
+            "http_status": None,
+            "content_type": None,
+            "charset": None,
+            "success": False,
+            "direct_url": None,
+            "server_filename": None,
+            "raw_file_url": None,
+            "error": f"{type(exc).__name__}: {exc}",
+        }
 
 
 def fetch(url: str) -> dict:
@@ -164,6 +226,13 @@ def fetch(url: str) -> dict:
                 "error": None,
             }
             result.update(summarize_html(html, response.geturl()))
+            if "detailBkAnsInfo.ebs" in response.geturl():
+                result["resolved_files"] = [
+                    resolve_book_file(book_fl_id, response.geturl())
+                    for book_fl_id in result.get("book_file_ids", [])[:20]
+                ]
+            else:
+                result["resolved_files"] = []
             return result
     except Exception as exc:
         return {
@@ -177,11 +246,13 @@ def fetch(url: str) -> dict:
             "error": f"{type(exc).__name__}: {exc}",
             "title": None,
             "book_ids": [],
+            "book_file_ids": [],
             "book_urls": [],
             "form_actions": [],
             "input_names": [],
             "select_names": [],
             "attachment_candidates": [],
+            "resolved_files": [],
             "markers": {},
         }
 
