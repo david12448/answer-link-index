@@ -106,10 +106,11 @@
           "type": "answer",
           "title": "정답 및 해설",
           "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/detailBkAnsInfo.ebs?year_n=&bookId=LB00000005909&no=5&devonTargetRow=1&catGbn=&connectionBookYn=&bookNm=&currentPage=",
-          "direct_url": null,
+          "direct_url": "https://lwdw.ebsi.co.kr/UpDown/ebsi_lms/bookans/EBS_2027_%EC%88%98%EB%8A%A5%ED%8A%B9%EA%B0%95_%EA%B5%AD%EC%96%B4%EC%98%81%EC%97%AD_%EB%8F%85%EC%84%9C_%EC%A0%95%EB%8B%B5%EA%B3%BC%ED%95%B4%EC%84%A4%5B20260202133141710%5D.pdf",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "source_file_id": "11247"
         },
         {
           "resource_id": "ebs-suneung-teukgang-korean-reading-2027-errata",
