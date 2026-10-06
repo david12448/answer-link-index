@@ -2,7 +2,7 @@
   "meta": {
     "generated_at": "2026-10-07",
     "schema_version": 3,
-    "note": "PR #3 EBS 기본 확장 데이터. 현재 등록된 EBS 8권은 브라우저 collector로 정답/해설 PDF direct_url을 확인했으며, 내부 교재 상세 페이지에서 direct_url을 우선 사용합니다."
+    "note": "PR #3 EBS 기본 확장 데이터. EBS 정답은 공식 PDF direct_url을 우선하고, 정오표는 실제 파일이 확인되면 직접 다운로드, 없으면 교재명이 자동 입력되는 EBS 정오표 검색 페이지를 fallback으로 사용합니다."
   },
   "books": [
     {
@@ -116,11 +116,11 @@
           "resource_id": "ebs-suneung-teukgang-korean-reading-2027-errata",
           "type": "errata",
           "title": "정오표",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005909",
-          "direct_url": null,
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/DetailBkErrInfo.ebs?bookId=LB00000005909",
+          "direct_url": "https://www.ebsi.co.kr/ebs/lms/lmsx/bkErrChrgMngFLdown.ebs?bookId=LB00000005909",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "status": "ok",
+          "last_checked": "2026-10-07"
         }
       ],
       "summary": "2027학년도 수능특강 국어영역 독서 교재입니다. 정답 및 해설은 EBS 교재 정답지 상세 페이지를 기본 연결로 사용하고, 직접 PDF 주소가 안정적으로 확인되면 바로 다운로드 링크로 우선 연결합니다."
@@ -163,11 +163,11 @@
           "resource_id": "ebs-suneung-teukgang-korean-literature-2027-errata",
           "type": "errata",
           "title": "정오표",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005908",
-          "direct_url": null,
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/DetailBkErrInfo.ebs?bookId=LB00000005908",
+          "direct_url": "https://www.ebsi.co.kr/ebs/lms/lmsx/bkErrChrgMngFLdown.ebs?bookId=LB00000005908",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "status": "ok",
+          "last_checked": "2026-10-07"
         }
       ]
     },
@@ -209,10 +209,10 @@
           "resource_id": "ebs-suneung-teukgang-korean-language-media-2027-errata",
           "type": "errata",
           "title": "정오표",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/bkErrChrgMngList.ebs",
-          "direct_url": null,
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/DetailBkErrInfo.ebs?bookId=LB00000005911",
+          "direct_url": "https://www.ebsi.co.kr/ebs/lms/lmsx/bkErrChrgMngFLdown.ebs?bookId=LB00000005911",
           "access": "public",
-          "status": "needs_review",
+          "status": "ok",
           "last_checked": "2026-10-07"
         }
       ],
@@ -256,11 +256,11 @@
           "resource_id": "ebs-suneung-teukgang-math-probability-statistics-2027-errata",
           "type": "errata",
           "title": "정오표",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005914",
-          "direct_url": null,
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/DetailBkErrInfo.ebs?bookId=LB00000005914",
+          "direct_url": "https://www.ebsi.co.kr/ebs/lms/lmsx/bkErrChrgMngFLdown.ebs?bookId=LB00000005914",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "status": "ok",
+          "last_checked": "2026-10-07"
         }
       ]
     },
@@ -302,11 +302,11 @@
           "resource_id": "ebs-suneung-wanseong-english-2027-errata",
           "type": "errata",
           "title": "정오표",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/bkErrChrgMngList.ebs",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/bkErrChrgMngList.ebs?ctgryCd=&connectionBookYn=&bookNm=EBS%202027%ED%95%99%EB%85%84%EB%8F%84%20%EC%88%98%EB%8A%A5%EC%99%84%EC%84%B1%20%EC%98%81%EC%96%B4%EC%98%81%EC%97%AD%20%EC%98%81%EC%96%B4&currentPage=1",
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "last_checked": "2026-10-07"
         },
         {
           "resource_id": "ebs-suneung-wanseong-english-2027-mp3",
@@ -378,11 +378,11 @@
           "resource_id": "ebs-suneung-teukgang-english-2027-errata",
           "type": "errata",
           "title": "정오표",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005917",
-          "direct_url": null,
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/DetailBkErrInfo.ebs?bookId=LB00000005917",
+          "direct_url": "https://www.ebsi.co.kr/ebs/lms/lmsx/bkErrChrgMngFLdown.ebs?bookId=LB00000005917",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "status": "ok",
+          "last_checked": "2026-10-07"
         },
         {
           "resource_id": "ebs-suneung-teukgang-english-2027-mp3",
@@ -433,11 +433,11 @@
           "resource_id": "ebs-suneung-teukgang-english-reading-practice-2027-errata",
           "type": "errata",
           "title": "정오표",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005919",
-          "direct_url": null,
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/DetailBkErrInfo.ebs?bookId=LB00000005919",
+          "direct_url": "https://www.ebsi.co.kr/ebs/lms/lmsx/bkErrChrgMngFLdown.ebs?bookId=LB00000005919",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "status": "ok",
+          "last_checked": "2026-10-07"
         },
         {
           "resource_id": "ebs-suneung-teukgang-english-reading-practice-2027-mp3",
@@ -488,11 +488,11 @@
           "resource_id": "ebs-suneung-teukgang-english-listening-2027-errata",
           "type": "errata",
           "title": "정오표",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005918",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/bkErrChrgMngList.ebs?ctgryCd=&connectionBookYn=&bookNm=EBS%202027%ED%95%99%EB%85%84%EB%8F%84%20%EC%88%98%EB%8A%A5%ED%8A%B9%EA%B0%95%20%EC%98%81%EC%96%B4%EC%98%81%EC%97%AD%20%EC%98%81%EC%96%B4%EB%93%A3%EA%B8%B0&currentPage=1",
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "last_checked": "2026-10-07"
         },
         {
           "resource_id": "ebs-suneung-teukgang-english-listening-2027-mp3",
