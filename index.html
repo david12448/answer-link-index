@@ -62,7 +62,7 @@
 
     <template id="bookTemplate">
       <article class="book-card">
-        <a class="cover-link" target="_blank" rel="noopener noreferrer">
+        <a class="cover-link">
           <span class="cover-placeholder" aria-hidden="true">교재 표지</span>
           <img class="cover-image" alt="" loading="lazy">
         </a>
@@ -74,8 +74,10 @@
           <h2 class="book-title"></h2>
           <p class="book-meta"></p>
           <p class="book-submeta"></p>
+          <p class="book-intro" hidden></p>
           <div class="materials"></div>
-          <p class="official-hint">교재명을 누르면 출판사 공식 교재 안내 페이지로 이동합니다.</p>
+          <div class="book-secondary-links" hidden></div>
+          <p class="official-hint">교재명 또는 자료 뱃지를 누르면 이 사이트의 교재 상세 페이지가 열립니다.</p>
         </div>
       </article>
     </template>
