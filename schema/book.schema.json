@@ -167,6 +167,12 @@
             "null"
           ],
           "format": "uri"
+        },
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     },
