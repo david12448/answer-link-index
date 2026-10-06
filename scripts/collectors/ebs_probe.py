@@ -38,6 +38,7 @@ QUOTED_URL_RE = re.compile(r"[\"']((?:https?://|/)[^\"']+)[\"']", re.IGNORECASE)
 TAG_RE = re.compile(r"<[^>]+>")
 BOOK_FL_CALL_RE = re.compile(r"fncDownFile\s*\(\s*[\"']?([^\"')\s]+)[\"']?\s*\)", re.IGNORECASE)
 TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
+SCRIPT_STYLE_RE = re.compile(r"<(script|style)\\b.*?</\\1>", re.IGNORECASE | re.DOTALL)
 
 
 def decode_body(raw: bytes, content_type: str | None) -> tuple[str, str]:
@@ -72,7 +73,24 @@ def extract_input_values(html: str) -> dict[str, list[str]]:
 
 def clean_text(value: str) -> str:
     value = TAG_RE.sub(" ", value)
-    return re.sub(r"\\s+", " ", unescape(value)).strip()
+    return re.sub(r"\s+", " ", unescape(value)).strip()
+
+
+def visible_text_signals(html: str) -> dict:
+    visible = clean_text(SCRIPT_STYLE_RE.sub(" ", html))
+    no_data_phrases = [
+        "검색 결과가 없습니다",
+        "등록된 정오표가 없습니다",
+        "정오표가 없습니다",
+        "조회된 내용이 없습니다",
+        "등록된 내용이 없습니다",
+    ]
+    return {
+        "contains_errata_heading": "교재 정오표" in visible,
+        "contains_correction_terms": any(term in visible for term in ["정정", "수정", "오류"]),
+        "no_data_phrase": next((phrase for phrase in no_data_phrases if phrase in visible), None),
+        "visible_text_excerpt": visible[:1200],
+    }
 
 
 def extract_attachment_candidates(html: str, final_url: str) -> list[dict]:
@@ -159,6 +177,7 @@ def summarize_html(html: str, final_url: str) -> dict:
         },
         "select_names": sorted(set(SELECT_NAME_RE.findall(html))),
         "attachment_candidates": extract_attachment_candidates(html, final_url),
+        "text_signals": visible_text_signals(html),
         "markers": {
             "contains_book_id": bool(book_ids),
             "contains_detail_answer": "detailBkAnsInfo.ebs" in html,
@@ -277,6 +296,7 @@ def fetch(url: str) -> dict:
             "input_values": {},
             "select_names": [],
             "attachment_candidates": [],
+            "text_signals": {},
             "resolved_files": [],
             "markers": {},
         }
