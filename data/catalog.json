@@ -1,8 +1,8 @@
 {
   "meta": {
-    "generated_at": "2026-10-06",
+    "generated_at": "2026-10-07",
     "schema_version": 3,
-    "note": "PR #3 EBS 기본 확장 데이터. 목록에서는 내부 교재 상세 페이지를 우선하고, 상세 페이지 안에서 검증된 direct_url 또는 EBS 공식 resource_page로 연결합니다."
+    "note": "PR #3 EBS 기본 확장 데이터. 현재 등록된 EBS 8권은 브라우저 collector로 정답/해설 PDF direct_url을 확인했으며, 내부 교재 상세 페이지에서 direct_url을 우선 사용합니다."
   },
   "books": [
     {
@@ -152,11 +152,12 @@
           "resource_id": "ebs-suneung-teukgang-korean-literature-2027-answer",
           "type": "answer",
           "title": "정답 및 해설",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005908",
-          "direct_url": null,
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/detailBkAnsInfo.ebs?year_n=&bookId=LB00000005908&no=5&devonTargetRow=1&catGbn=&connectionBookYn=&bookNm=&currentPage=",
+          "direct_url": "https://lwdw.ebsi.co.kr/UpDown/ebsi_lms/bookans/EBS_2027_%EC%88%98%EB%8A%A5%ED%8A%B9%EA%B0%95_%EA%B5%AD%EC%96%B4%EC%98%81%EC%97%AD_%EB%AC%B8%ED%95%99_%EC%A0%95%EB%8B%B5%EA%B3%BC%ED%95%B4%EC%84%A4%5B20260202133033647%5D.pdf",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "11246"
         },
         {
           "resource_id": "ebs-suneung-teukgang-korean-literature-2027-errata",
@@ -198,10 +199,11 @@
           "type": "answer",
           "title": "정답 및 해설",
           "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/detailBkAnsInfo.ebs?year_n=&bookId=LB00000005911&no=5&devonTargetRow=1&catGbn=&connectionBookYn=&bookNm=&currentPage=",
-          "direct_url": null,
+          "direct_url": "https://lwdw.ebsi.co.kr/UpDown/ebsi_lms/bookans/EBS_2027_%EC%88%98%EB%8A%A5%ED%8A%B9%EA%B0%95_%EA%B5%AD%EC%96%B4%EC%98%81%EC%97%AD_%EC%96%B8%EC%96%B4%EC%99%80_%EB%A7%A4%EC%B2%B4_%EC%A0%95%EB%8B%B5%EA%B3%BC%ED%95%B4%EC%84%A4%5B20260202133229701%5D.pdf",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "11249"
         },
         {
           "resource_id": "ebs-suneung-teukgang-korean-language-media-2027-errata",
@@ -243,11 +245,12 @@
           "resource_id": "ebs-suneung-teukgang-math-probability-statistics-2027-answer",
           "type": "answer",
           "title": "정답 및 해설",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005914",
-          "direct_url": null,
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/detailBkAnsInfo.ebs?year_n=&bookId=LB00000005914&no=5&devonTargetRow=1&catGbn=&connectionBookYn=&bookNm=&currentPage=",
+          "direct_url": "https://lwdw.ebsi.co.kr/UpDown/ebsi_lms/bookans/EBS_2027_%EC%88%98%EB%8A%A5%ED%8A%B9%EA%B0%95_%EC%88%98%ED%95%99%EC%98%81%EC%97%AD_%ED%99%95%EB%A5%A0%EA%B3%BC%ED%86%B5%EA%B3%84_%EC%A0%95%EB%8B%B5%EA%B3%BC%ED%95%B4%EC%84%A4%5B20260202133547675%5D.pdf",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "11255"
         },
         {
           "resource_id": "ebs-suneung-teukgang-math-probability-statistics-2027-errata",
@@ -288,11 +291,12 @@
           "resource_id": "ebs-suneung-wanseong-english-2027-answer",
           "type": "answer",
           "title": "정답 및 해설",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/bkAnsList.ebs?catGbn=1&connectionBookYn=&bookNm=&currentPage=1",
-          "direct_url": null,
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/detailBkAnsInfo.ebs?year_n=&bookId=LB00000005984&no=5&devonTargetRow=1&catGbn=&connectionBookYn=&bookNm=&currentPage=",
+          "direct_url": "https://lwdw.ebsi.co.kr/UpDown/ebsi_lms/bookans/EBS_2027%EC%88%98%EB%8A%A5%EC%99%84%EC%84%B1_%EC%98%81%EC%96%B4%EC%98%81%EC%97%AD_%EC%98%81%EC%96%B4_%EC%A0%95%EB%8B%B5%EA%B3%BC%ED%95%B4%EC%84%A4%5B20260529191812587%5D.pdf",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "11357"
         },
         {
           "resource_id": "ebs-suneung-wanseong-english-2027-errata",
@@ -363,11 +367,12 @@
           "resource_id": "ebs-suneung-teukgang-english-2027-answer",
           "type": "answer",
           "title": "정답 및 해설",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005917",
-          "direct_url": null,
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/detailBkAnsInfo.ebs?year_n=&bookId=LB00000005917&no=5&devonTargetRow=1&catGbn=&connectionBookYn=&bookNm=&currentPage=",
+          "direct_url": "https://lwdw.ebsi.co.kr/UpDown/ebsi_lms/bookans/EBS_2027_%EC%88%98%EB%8A%A5%ED%8A%B9%EA%B0%95_%EC%98%81%EC%96%B4%EC%98%81%EC%97%AD_%EC%98%81%EC%96%B4_%EC%A0%95%EB%8B%B5%EA%B3%BC%ED%95%B4%EC%84%A4%5B20260202133308186%5D.pdf",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "11250"
         },
         {
           "resource_id": "ebs-suneung-teukgang-english-2027-errata",
@@ -417,11 +422,12 @@
           "resource_id": "ebs-suneung-teukgang-english-reading-practice-2027-answer",
           "type": "answer",
           "title": "정답 및 해설",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005919",
-          "direct_url": null,
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/detailBkAnsInfo.ebs?year_n=&bookId=LB00000005919&no=5&devonTargetRow=1&catGbn=&connectionBookYn=&bookNm=&currentPage=",
+          "direct_url": "https://lwdw.ebsi.co.kr/UpDown/ebsi_lms/bookans/EBS_2027_%EC%88%98%EB%8A%A5%ED%8A%B9%EA%B0%95_%EC%98%81%EC%96%B4%EC%98%81%EC%97%AD_%EC%98%81%EC%96%B4%EB%8F%85%ED%95%B4%EC%97%B0%EC%8A%B5_%EC%A0%95%EB%8B%B5%EA%B3%BC%ED%95%B4%EC%84%A4%5B20260202142012321%5D.pdf",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "11293"
         },
         {
           "resource_id": "ebs-suneung-teukgang-english-reading-practice-2027-errata",
@@ -471,11 +477,12 @@
           "resource_id": "ebs-suneung-teukgang-english-listening-2027-answer",
           "type": "answer",
           "title": "정답 및 해설",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005918",
-          "direct_url": null,
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/detailBkAnsInfo.ebs?year_n=&bookId=LB00000005918&no=5&devonTargetRow=1&catGbn=&connectionBookYn=&bookNm=&currentPage=",
+          "direct_url": "https://lwdw.ebsi.co.kr/UpDown/ebsi_lms/bookans/EBS_2027_%EC%88%98%EB%8A%A5%ED%8A%B9%EA%B0%95_%EC%98%81%EC%96%B4%EC%98%81%EC%97%AD_%EC%98%81%EC%96%B4%EB%93%A3%EA%B8%B0_%EC%A0%95%EB%8B%B5%EA%B3%BC%ED%95%B4%EC%84%A4%5B20260202142044950%5D.pdf",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "11294"
         },
         {
           "resource_id": "ebs-suneung-teukgang-english-listening-2027-errata",
