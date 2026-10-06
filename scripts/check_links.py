@@ -45,6 +45,8 @@ def iter_targets(data: dict):
     for book in data.get("books", []):
         if book.get("official_page"):
             yield {"book_id": book["book_id"], "resource_id": None, "kind": "official_page", "url": book["official_page"]}
+        if book.get("cover_image_url"):
+            yield {"book_id": book["book_id"], "resource_id": None, "kind": "cover_image_url", "url": book["cover_image_url"]}
         for material in book.get("materials", []):
             if material.get("resource_page"):
                 yield {"book_id": book["book_id"], "resource_id": material["resource_id"], "kind": "resource_page", "url": material["resource_page"]}

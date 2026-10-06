@@ -1,8 +1,8 @@
 {
   "meta": {
     "generated_at": "2026-10-06",
-    "schema_version": 2,
-    "note": "PR #1 샘플 데이터. EBS는 실제 2027 수능완성 영어 교재 ID와 공식 페이지 구조를 반영했습니다."
+    "schema_version": 3,
+    "note": "PR #2 UI prototype data. EBS sample includes the official cover image URL; collector-generated bulk data comes next."
   },
   "books": [
     {
@@ -23,6 +23,8 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://www.bookdonga.com/",
+      "cover_image_url": null,
+      "post_url": null,
       "materials": [
         {
           "resource_id": "donga-hightop-middle-science-2-answer",
@@ -56,6 +58,8 @@
       "edition_year": 2027,
       "isbn": null,
       "official_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005984",
+      "cover_image_url": "https://lwdw.ebsi.co.kr/UpDown/LZ/bookimages/430x590_LB00000005984%5B20260511165433683%5D.png",
+      "post_url": null,
       "materials": [
         {
           "resource_id": "ebs-suneung-wanseong-english-2027-answer",
@@ -127,7 +131,9 @@
       "curriculum": "2022 개정",
       "edition_year": 2026,
       "isbn": null,
-      "official_page": "https://www.100bal.com/",
+      "official_page": "https://www.100bal.com/books/m_math3.asp",
+      "cover_image_url": null,
+      "post_url": null,
       "materials": [
         {
           "resource_id": "100bal-jjang-concept-operation-middle-math-2-1-answer",
@@ -135,8 +141,8 @@
           "title": "정답 및 풀이",
           "resource_page": "https://100bal.com/study_data/correct_list.asp",
           "direct_url": null,
-          "access": "login_required",
-          "status": "login_required",
+          "access": "public",
+          "status": "needs_review",
           "last_checked": "2026-10-06"
         }
       ]
