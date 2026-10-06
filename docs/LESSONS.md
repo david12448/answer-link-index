@@ -128,3 +128,15 @@
 - UI: 교재 상세 페이지의 `정답 및 풀이` 버튼은 direct_url이 있으면 `바로 다운로드` 형태로 우선 연결.
 - 교훈: 출판사별 자료실 구조가 달라도 최종 사용자는 내부 교재 상세에서 한 번의 클릭으로 공식 파일에 접근하게 한다.
 
+## 2026-10-07 — EBS 브라우저 collector가 정적 probe 한계를 해결
+
+### 정적 HTML에서는 bookFlId가 비어 있어도 렌더링 후 DOM에는 값이 들어옴
+- 증상: 단순 HTTP 요청에서는 정답지 상세 HTML의 `bookFlId`를 찾지 못해 PDF direct URL 수집이 막힘.
+- 해결: Playwright로 EBS 상세 페이지를 실제 브라우저처럼 렌더링한 뒤 첨부파일의 `fncDownFile('bookFlId')`를 추출.
+- 결과: 현재 catalog의 EBS 8권 모두 `bookFlId → bkAnsMngFLdown.ajax → flNm` 경로로 공식 PDF를 확인.
+- 교훈: EBS처럼 첨부파일 행이 후속 AJAX로 채워지는 사이트는 브라우저 collector를 출판사 adapter에 포함한다.
+
+### direct URL만 남기지 않고 상세 페이지와 file ID도 함께 보존
+- 해결: `direct_url`에는 PDF, `resource_page`에는 EBS 정답지 상세, `publisher_file_id`에는 bookFlId를 저장.
+- 교훈: CDN 경로가 변경되어도 bookId + 상세페이지 + publisher_file_id를 이용해 재수집할 수 있어 유지보수성이 높다.
+
