@@ -1,0 +1,33 @@
+name: Probe EBS public pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      book_id:
+        description: "Optional EBS bookId (LB...)"
+        required: false
+        default: "LB00000005984"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Probe EBS public material pages
+        run: |
+          python scripts/collectors/ebs_probe.py \
+            --kind all \
+            --book-id "${{ inputs.book_id }}" \
+            --output ebs-probe.json
+      - name: Upload probe report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ebs-probe
+          path: ebs-probe.json
+          if-no-files-found: error
