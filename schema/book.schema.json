@@ -273,6 +273,12 @@
             "string",
             "null"
           ]
+        },
+        "publisher_file_id": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     },
