@@ -55,6 +55,20 @@ def decode_body(raw: bytes, content_type: str | None) -> tuple[str, str]:
     return raw.decode("utf-8", errors="replace"), "utf-8-replace"
 
 
+def extract_input_values(html: str) -> dict[str, list[str]]:
+    values: dict[str, list[str]] = {}
+    for attrs_raw in INPUT_TAG_RE.findall(html):
+        attrs = {name.lower(): unescape(value) for name, value in ATTR_RE.findall(attrs_raw)}
+        name = attrs.get("name") or attrs.get("id")
+        if not name:
+            continue
+        value = attrs.get("value", "")
+        values.setdefault(name, [])
+        if value not in values[name]:
+            values[name].append(value)
+    return values
+
+
 def clean_text(value: str) -> str:
     value = TAG_RE.sub(" ", value)
     return re.sub(r"\\s+", " ", unescape(value)).strip()
@@ -113,10 +127,15 @@ def extract_attachment_candidates(html: str, final_url: str) -> list[dict]:
 
 def summarize_html(html: str, final_url: str) -> dict:
     book_ids = sorted(set(value.upper() for value in BOOK_ID_RE.findall(html)))
-    book_file_ids = sorted({
+    input_values = extract_input_values(html)
+    book_file_ids = {
         value for value in BOOK_FL_CALL_RE.findall(html)
         if value and value.lower() != "bookflid"
-    })
+    }
+    for value in input_values.get("bookFlId", []):
+        if value:
+            book_file_ids.add(value)
+    book_file_ids = sorted(book_file_ids)
     hrefs = [unescape(value) for value in HREF_RE.findall(html)]
     book_urls = []
     for href in hrefs:
@@ -133,6 +152,10 @@ def summarize_html(html: str, final_url: str) -> dict:
         "book_urls": sorted(set(book_urls))[:100],
         "form_actions": sorted(set(unescape(x) for x in FORM_ACTION_RE.findall(html))),
         "input_names": sorted(set(INPUT_NAME_RE.findall(html))),
+        "input_values": {
+            key: value for key, value in input_values.items()
+            if key in {"bookFlId", "bookId", "no", "currentRow", "currentPage", "year_n", "year"}
+        },
         "select_names": sorted(set(SELECT_NAME_RE.findall(html))),
         "attachment_candidates": extract_attachment_candidates(html, final_url),
         "markers": {
@@ -250,6 +273,7 @@ def fetch(url: str) -> dict:
             "book_urls": [],
             "form_actions": [],
             "input_names": [],
+            "input_values": {},
             "select_names": [],
             "attachment_candidates": [],
             "resolved_files": [],
