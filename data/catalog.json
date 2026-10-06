@@ -2,7 +2,7 @@
   "meta": {
     "generated_at": "2026-10-06",
     "schema_version": 3,
-    "note": "PR #3 EBS 기본 확장 데이터. EBS 공식 bookId가 확인된 수능특강/수능완성 샘플을 추가하고 collector 자동화 전까지 공식 교재 상세페이지를 fallback으로 사용합니다."
+    "note": "PR #3 EBS 기본 확장 데이터. 목록에서는 내부 교재 상세 페이지를 우선하고, 상세 페이지 안에서 검증된 direct_url 또는 EBS 공식 resource_page로 연결합니다."
   },
   "books": [
     {
@@ -188,23 +188,24 @@
           "resource_id": "ebs-suneung-teukgang-korean-language-media-2027-answer",
           "type": "answer",
           "title": "정답 및 해설",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005911",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/detailBkAnsInfo.ebs?year_n=&bookId=LB00000005911&no=5&devonTargetRow=1&catGbn=&connectionBookYn=&bookNm=&currentPage=",
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "last_checked": "2026-10-07"
         },
         {
           "resource_id": "ebs-suneung-teukgang-korean-language-media-2027-errata",
           "type": "errata",
           "title": "정오표",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005911",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/bkErrChrgMngList.ebs",
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "last_checked": "2026-10-07"
         }
-      ]
+      ],
+      "summary": "2027학년도 수능특강 국어영역 언어와 매체 교재입니다. 정답 및 해설은 EBS 교재 정답지 상세 페이지로 연결하고, 정오표는 EBS 정오표 자료를 확인할 수 있도록 연결합니다."
     },
     {
       "book_id": "ebs-suneung-teukgang-math-probability-statistics-2027",
