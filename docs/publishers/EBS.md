@@ -131,3 +131,33 @@ EBS 자체 사이트는 시리즈/영역/학년/교재 검색이 혼합되어 �
 - 따라서 collector는 사용자가 검색 버튼을 누르는 과정을 대신하여 교재명/bookId로 결과를 조회하고, 정오표가 있으면 교재별 상세/다운로드 주소를 연결하도록 구현한다.
 - 아직 결과 유무 판별이 확정되지 않은 교재는 검색 페이지를 fallback으로 유지한다.
 
+## 2026-10-07 브라우저 collector 배치 결과
+
+정적 HTML probe만으로는 첨부파일 `bookFlId`가 비어 있는 경우가 있었지만,
+Playwright로 실제 페이지 렌더링 후 DOM을 읽으면 첨부파일의 `fncDownFile('...')` 값을 얻을 수 있었다.
+
+현재 catalog에 등록된 EBS 8권을 일괄 실행한 결과 **8/8 모두 정답·해설 PDF direct_url 수집에 성공**했다.
+
+확인된 흐름:
+
+1. `detailBkAnsInfo.ebs?bookId={BOOK_ID}&no=5...` 접속
+2. 렌더링 후 첨부파일 링크의 `fncDownFile('{bookFlId}')` 추출
+3. `/ebs/lms/lmsk/bkAnsMngFLdown.ajax?bookFlId={bookFlId}` 호출
+4. JSON의 `flNm`을 공식 PDF `direct_url`로 사용
+5. `svNm`은 공식 파일명으로 확인
+6. 상세 페이지는 계속 `resource_page` fallback으로 보존
+
+현재 확인된 file ID:
+
+- 수능특강 국어 독서 `LB00000005909` → `11247`
+- 수능특강 국어 문학 `LB00000005908` → `11246`
+- 수능특강 국어 언어와 매체 `LB00000005911` → `11249`
+- 수능특강 수학 확률과통계 `LB00000005914` → `11255`
+- 수능특강 영어 `LB00000005917` → `11250`
+- 수능특강 영어독해연습 `LB00000005919` → `11293`
+- 수능특강 영어듣기 `LB00000005918` → `11294`
+- 수능완성 영어 `LB00000005984` → `11357`
+
+`scripts/collectors/ebs_batch_collect.py`와 `Collect EBS seed answers` workflow로 현재 catalog의 EBS 교재를 반복 점검할 수 있다.
+자동 수집 결과는 후보 데이터로 사용하고, catalog 수정은 검증 후 PR에서 반영하는 기존 원칙을 유지한다.
+
