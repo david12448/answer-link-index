@@ -1,0 +1,61 @@
+name: Sync EBS errata
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "45 0 * * 1,4"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check current EBS books for new errata
+        run: |
+          python scripts/collectors/ebs_errata_sync.py \
+            --catalog data/catalog.json \
+            --report ebs-errata-sync-report.json
+
+      - name: Upload check report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ebs-errata-sync-report
+          path: ebs-errata-sync-report.json
+          if-no-files-found: error
+
+      - name: Detect catalog changes
+        id: diff
+        shell: bash
+        run: |
+          if git diff --quiet -- data/catalog.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create pull request for newly found errata
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/ebs-errata
+          delete-branch: true
+          commit-message: "data: refresh EBS errata links"
+          title: "data: 새 EBS 교재 정오표 링크 반영"
+          body: |
+            EBS에 새로 등록된 정오표를 자동 점검해 catalog에 반영한 PR입니다.
+
+            적용 우선순위:
+            1. 실제 정오표 파일이 확인되면 공식 EBS 다운로드 주소를 direct_url로 연결
+            2. 파일이 없으면 교재명이 미리 입력된 EBS 정오표 검색 페이지를 fallback으로 유지
+            3. 일시적인 EBS 오류가 발생해도 기존 direct_url은 자동 삭제하지 않음
+
+            변경된 교재의 정오표 버튼을 확인한 뒤 병합해 주세요.
