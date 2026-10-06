@@ -105,11 +105,11 @@
           "resource_id": "ebs-suneung-teukgang-korean-reading-2027-answer",
           "type": "answer",
           "title": "정답 및 해설",
-          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005909",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/detailBkAnsInfo.ebs?year_n=&bookId=LB00000005909&no=5&devonTargetRow=1&catGbn=&connectionBookYn=&bookNm=&currentPage=",
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "last_checked": "2026-10-07"
         },
         {
           "resource_id": "ebs-suneung-teukgang-korean-reading-2027-errata",
@@ -121,7 +121,8 @@
           "status": "needs_review",
           "last_checked": "2026-10-06"
         }
-      ]
+      ],
+      "summary": "2027학년도 수능특강 국어영역 독서 교재입니다. 정답 및 해설은 EBS 교재 정답지 상세 페이지를 기본 연결로 사용하고, 직접 PDF 주소가 안정적으로 확인되면 바로 다운로드 링크로 우선 연결합니다."
     },
     {
       "book_id": "ebs-suneung-teukgang-korean-literature-2027",
