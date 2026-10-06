@@ -388,9 +388,16 @@ function renderBook(book, detailMode = false) {
     }
     secondary.hidden = !secondary.children.length;
 
-    if (book.official_page) {
-      publisherLink.href = book.official_page;
-      publisherLink.textContent = `${book.publisher} 공식 페이지에서 확인·다운로드`;
+    const publisherHelp = book.publisher_help || null;
+    const publisherHelpUrl = publisherHelp?.url || book.official_page;
+    if (publisherHelpUrl) {
+      const publisherNote = publisherBox.querySelector("p");
+      publisherNote.textContent = publisherHelp?.note
+        || "여기서 바로 받지 않고 출판사 사이트에서 확인하려면 공식 교재 페이지를 이용해 주세요.";
+      publisherLink.href = publisherHelpUrl;
+      publisherLink.textContent = publisherHelp?.label
+        || `${book.publisher} 공식 페이지에서 확인·다운로드`;
+      publisherBox.dataset.mode = publisherHelp?.mode || "book_page";
       publisherBox.hidden = false;
     }
   }
