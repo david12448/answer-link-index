@@ -49,6 +49,62 @@ def decode_body(raw: bytes, content_type: str | None) -> tuple[str, str]:
     return raw.decode("utf-8", errors="replace"), "utf-8-replace"
 
 
+def clean_text(value: str) -> str:
+    value = TAG_RE.sub(" ", value)
+    return re.sub(r"\\s+", " ", unescape(value)).strip()
+
+
+def extract_attachment_candidates(html: str, final_url: str) -> list[dict]:
+    candidates = []
+    seen = set()
+
+    def add(kind: str, raw_value: str, text: str = "", context: str = ""):
+        value = unescape(raw_value).strip()
+        if not value:
+            return
+        resolved = urljoin(final_url, value) if value.startswith(("/", "./", "../")) else value
+        key = (kind, resolved, text)
+        if key in seen:
+            return
+        seen.add(key)
+        candidates.append({
+            "kind": kind,
+            "value": resolved,
+            "text": clean_text(text)[:240],
+            "context": clean_text(context)[:500],
+        })
+
+    for attrs_raw, inner in ANCHOR_RE.findall(html):
+        attrs = {name.lower(): unescape(value) for name, value in ATTR_RE.findall(attrs_raw)}
+        href = attrs.get("href", "")
+        onclick = attrs.get("onclick", "")
+        text = clean_text(inner)
+        combined = " ".join([href, onclick, text]).lower()
+        if (
+            FILE_TOKEN_RE.search(combined)
+            or "download" in combined
+            or "filedown" in combined
+            or "첨부파일" in combined
+            or "정답과해설" in combined
+        ):
+            if href and href not in ("#", "javascript:;", "javascript:void(0);"):
+                add("href", href, text, attrs_raw)
+            if onclick:
+                add("onclick", onclick, text, attrs_raw)
+                for quoted in QUOTED_URL_RE.findall(onclick):
+                    add("onclick_url", quoted, text, onclick)
+
+    for token in FILE_TOKEN_RE.findall(html):
+        add("file_token", token)
+
+    for match in re.finditer(r".{0,180}(?:download|fileDown|첨부파일|정답과해설|\\.pdf).{0,260}", html, re.IGNORECASE | re.DOTALL):
+        snippet = clean_text(match.group(0))
+        if snippet:
+            add("html_snippet", snippet)
+
+    return candidates[:100]
+
+
 def summarize_html(html: str, final_url: str) -> dict:
     book_ids = sorted(set(value.upper() for value in BOOK_ID_RE.findall(html)))
     hrefs = [unescape(value) for value in HREF_RE.findall(html)]
@@ -67,6 +123,7 @@ def summarize_html(html: str, final_url: str) -> dict:
         "form_actions": sorted(set(unescape(x) for x in FORM_ACTION_RE.findall(html))),
         "input_names": sorted(set(INPUT_NAME_RE.findall(html))),
         "select_names": sorted(set(SELECT_NAME_RE.findall(html))),
+        "attachment_candidates": extract_attachment_candidates(html, final_url),
         "markers": {
             "contains_book_id": bool(book_ids),
             "contains_detail_answer": "detailBkAnsInfo.ebs" in html,
@@ -119,6 +176,7 @@ def fetch(url: str) -> dict:
             "form_actions": [],
             "input_names": [],
             "select_names": [],
+            "attachment_candidates": [],
             "markers": {},
         }
 
@@ -144,6 +202,11 @@ def main() -> int:
         "--book-id",
         default="",
         help="선택: LB... 교재 ID를 주면 공식 교재/정답/정오표 상세 주소도 점검",
+    )
+    parser.add_argument(
+        "--answer-no",
+        default="",
+        help="선택: 정답지 상세 게시물 no 값. bookId와 함께 주면 정확한 첨부파일 상세 페이지를 점검",
     )
     parser.add_argument(
         "--output",
@@ -172,11 +235,22 @@ def main() -> int:
         if not BOOK_ID_RE.fullmatch(book_id):
             parser.error("--book-id는 LB로 시작하는 EBS 교재 ID 형식이어야 합니다.")
         for name, path in DETAIL_ENDPOINTS.items():
+            params = {"bookId": book_id}
+            if name == "answer" and args.answer_no.strip():
+                params.update({
+                    "year_n": "",
+                    "no": args.answer_no.strip(),
+                    "devonTargetRow": "1",
+                    "catGbn": "",
+                    "connectionBookYn": "",
+                    "bookNm": "",
+                    "currentPage": "",
+                })
             targets.append(
                 {
                     "name": name,
                     "role": "detail",
-                    "url": build_url(path, {"bookId": book_id}),
+                    "url": build_url(path, params),
                 }
             )
 
@@ -190,6 +264,7 @@ def main() -> int:
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "purpose": "read-only discovery of EBS public material page structure",
         "book_id": book_id or None,
+        "answer_no": args.answer_no.strip() or None,
         "results": results,
     }
 
