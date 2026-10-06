@@ -313,6 +313,34 @@ h1 {
   text-underline-offset: 3px;
 }
 
+.publisher-download-box {
+  margin-top: 22px;
+  padding: 14px 16px;
+  border: 1px solid #e1e6ef;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.publisher-download-box p {
+  margin: 0 0 8px;
+  color: #667085;
+  font-size: 13px;
+}
+
+.publisher-download-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  color: #172033;
+  font-size: 13px;
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+
+.direct-download::after {
+  content: " ↓";
+}
+
 .preview-material {
   cursor: pointer;
 }
