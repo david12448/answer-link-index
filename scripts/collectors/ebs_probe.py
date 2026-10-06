@@ -30,6 +30,11 @@ INPUT_NAME_RE = re.compile(r"<input\b[^>]*\bname=[\"']([^\"']+)[\"']", re.IGNORE
 SELECT_NAME_RE = re.compile(r"<select\b[^>]*\bname=[\"']([^\"']+)[\"']", re.IGNORECASE)
 FORM_ACTION_RE = re.compile(r"<form\b[^>]*\baction=[\"']([^\"']*)[\"']", re.IGNORECASE)
 HREF_RE = re.compile(r"<a\b[^>]*\bhref=[\"']([^\"']+)[\"']", re.IGNORECASE)
+ANCHOR_RE = re.compile(r"<a\\b([^>]*)>(.*?)</a>", re.IGNORECASE | re.DOTALL)
+ATTR_RE = re.compile(r"([\\w:-]+)\\s*=\\s*[\\\"']([^\\\"']*)[\\\"']", re.IGNORECASE)
+FILE_TOKEN_RE = re.compile(r"[^\\s\\\"\'<>]+\\.(?:pdf|hwp|hwpx|zip|mp3|wav)(?:\\?[^\\s\\\"\'<>]*)?", re.IGNORECASE)
+QUOTED_URL_RE = re.compile(r"[\\\"']((?:https?://|/)[^\\\"']+)[\\\"']", re.IGNORECASE)
+TAG_RE = re.compile(r"<[^>]+>")
 TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
 
 
