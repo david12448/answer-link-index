@@ -2,9 +2,42 @@
   "meta": {
     "generated_at": "2026-10-06",
     "schema_version": 3,
-    "note": "PR #2 UI prototype data. EBS sample includes the official cover image URL; collector-generated bulk data comes next."
+    "note": "PR #3 EBS 기본 확장 데이터. EBS 공식 bookId가 확인된 수능특강/수능완성 샘플을 추가하고 collector 자동화 전까지 공식 교재 상세페이지를 fallback으로 사용합니다."
   },
   "books": [
+    {
+      "book_id": "100bal-jjang-concept-operation-middle-math-2-1-2026",
+      "publisher": "100발100중",
+      "brand": "짱 개념연산",
+      "title": "(2022개정) 짱 개념연산 중2-1",
+      "aliases": [
+        "짱 개념연산 중2-1",
+        "100발100중 중2 수학"
+      ],
+      "school_level": "middle",
+      "grade": 2,
+      "semester": 1,
+      "subject": "수학",
+      "book_type": "문제집",
+      "curriculum": "2022 개정",
+      "edition_year": 2026,
+      "isbn": null,
+      "official_page": "https://www.100bal.com/books/m_math3.asp",
+      "cover_image_url": null,
+      "post_url": null,
+      "materials": [
+        {
+          "resource_id": "100bal-jjang-concept-operation-middle-math-2-1-answer",
+          "type": "answer",
+          "title": "정답 및 풀이",
+          "resource_page": "https://100bal.com/study_data/correct_list.asp",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        }
+      ]
+    },
     {
       "book_id": "donga-hightop-middle-science-2-2022",
       "publisher": "동아출판",
@@ -31,6 +64,186 @@
           "type": "answer",
           "title": "정답 및 해설",
           "resource_page": "https://www.bookdonga.com/middle/extradata_list_ajax.donga",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "book_id": "ebs-suneung-teukgang-korean-reading-2027",
+      "publisher": "EBS",
+      "publisher_book_id": "LB00000005909",
+      "brand": "수능특강",
+      "title": "EBS 2027학년도 수능특강 국어영역 독서",
+      "aliases": [
+        "2027 수능특강 독서",
+        "EBS 수능특강 독서",
+        "수능특강 국어 독서"
+      ],
+      "school_level": "high",
+      "grade": 3,
+      "semester": null,
+      "subject": "국어",
+      "book_type": "문제집",
+      "curriculum": null,
+      "edition_year": 2027,
+      "isbn": null,
+      "official_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005909",
+      "cover_image_url": null,
+      "post_url": null,
+      "materials": [
+        {
+          "resource_id": "ebs-suneung-teukgang-korean-reading-2027-answer",
+          "type": "answer",
+          "title": "정답 및 해설",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005909",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-teukgang-korean-reading-2027-errata",
+          "type": "errata",
+          "title": "정오표",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005909",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "book_id": "ebs-suneung-teukgang-korean-literature-2027",
+      "publisher": "EBS",
+      "publisher_book_id": "LB00000005908",
+      "brand": "수능특강",
+      "title": "EBS 2027학년도 수능특강 국어영역 문학",
+      "aliases": [
+        "2027 수능특강 문학",
+        "EBS 수능특강 문학",
+        "수능특강 국어 문학"
+      ],
+      "school_level": "high",
+      "grade": 3,
+      "semester": null,
+      "subject": "국어",
+      "book_type": "문제집",
+      "curriculum": null,
+      "edition_year": 2027,
+      "isbn": null,
+      "official_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005908",
+      "cover_image_url": null,
+      "post_url": null,
+      "materials": [
+        {
+          "resource_id": "ebs-suneung-teukgang-korean-literature-2027-answer",
+          "type": "answer",
+          "title": "정답 및 해설",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005908",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-teukgang-korean-literature-2027-errata",
+          "type": "errata",
+          "title": "정오표",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005908",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "book_id": "ebs-suneung-teukgang-korean-language-media-2027",
+      "publisher": "EBS",
+      "publisher_book_id": "LB00000005911",
+      "brand": "수능특강",
+      "title": "EBS 2027학년도 수능특강 국어영역 언어와 매체",
+      "aliases": [
+        "2027 수능특강 언어와 매체",
+        "EBS 수능특강 언매",
+        "수능특강 국어 언매"
+      ],
+      "school_level": "high",
+      "grade": 3,
+      "semester": null,
+      "subject": "국어",
+      "book_type": "문제집",
+      "curriculum": null,
+      "edition_year": 2027,
+      "isbn": null,
+      "official_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005911",
+      "cover_image_url": null,
+      "post_url": null,
+      "materials": [
+        {
+          "resource_id": "ebs-suneung-teukgang-korean-language-media-2027-answer",
+          "type": "answer",
+          "title": "정답 및 해설",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005911",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-teukgang-korean-language-media-2027-errata",
+          "type": "errata",
+          "title": "정오표",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005911",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "book_id": "ebs-suneung-teukgang-math-probability-statistics-2027",
+      "publisher": "EBS",
+      "publisher_book_id": "LB00000005914",
+      "brand": "수능특강",
+      "title": "EBS 2027학년도 수능특강 수학영역 확률과통계",
+      "aliases": [
+        "2027 수능특강 확률과통계",
+        "2027 수능특강 확통",
+        "EBS 수능특강 확통"
+      ],
+      "school_level": "high",
+      "grade": 3,
+      "semester": null,
+      "subject": "수학",
+      "book_type": "문제집",
+      "curriculum": null,
+      "edition_year": 2027,
+      "isbn": null,
+      "official_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005914",
+      "cover_image_url": null,
+      "post_url": null,
+      "materials": [
+        {
+          "resource_id": "ebs-suneung-teukgang-math-probability-statistics-2027-answer",
+          "type": "answer",
+          "title": "정답 및 해설",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005914",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-teukgang-math-probability-statistics-2027-errata",
+          "type": "errata",
+          "title": "정오표",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005914",
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
@@ -115,31 +328,160 @@
       ]
     },
     {
-      "book_id": "100bal-jjang-concept-operation-middle-math-2-1-2026",
-      "publisher": "100발100중",
-      "brand": "짱 개념연산",
-      "title": "(2022개정) 짱 개념연산 중2-1",
+      "book_id": "ebs-suneung-teukgang-english-2027",
+      "publisher": "EBS",
+      "publisher_book_id": "LB00000005917",
+      "brand": "수능특강",
+      "title": "EBS 2027학년도 수능특강 영어영역 영어",
       "aliases": [
-        "짱 개념연산 중2-1",
-        "100발100중 중2 수학"
+        "2027 수능특강 영어",
+        "EBS 수능특강 영어"
       ],
-      "school_level": "middle",
-      "grade": 2,
-      "semester": 1,
-      "subject": "수학",
+      "school_level": "high",
+      "grade": 3,
+      "semester": null,
+      "subject": "영어",
       "book_type": "문제집",
-      "curriculum": "2022 개정",
-      "edition_year": 2026,
+      "curriculum": null,
+      "edition_year": 2027,
       "isbn": null,
-      "official_page": "https://www.100bal.com/books/m_math3.asp",
+      "official_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005917",
       "cover_image_url": null,
       "post_url": null,
       "materials": [
         {
-          "resource_id": "100bal-jjang-concept-operation-middle-math-2-1-answer",
+          "resource_id": "ebs-suneung-teukgang-english-2027-answer",
           "type": "answer",
-          "title": "정답 및 풀이",
-          "resource_page": "https://100bal.com/study_data/correct_list.asp",
+          "title": "정답 및 해설",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005917",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-teukgang-english-2027-errata",
+          "type": "errata",
+          "title": "정오표",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005917",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-teukgang-english-2027-mp3",
+          "type": "mp3",
+          "title": "영어 MP3",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005917",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "book_id": "ebs-suneung-teukgang-english-reading-practice-2027",
+      "publisher": "EBS",
+      "publisher_book_id": "LB00000005919",
+      "brand": "수능특강",
+      "title": "EBS 2027학년도 수능특강 영어영역 영어독해연습",
+      "aliases": [
+        "2027 수능특강 영어독해연습",
+        "EBS 수능특강 영어 독해연습"
+      ],
+      "school_level": "high",
+      "grade": 3,
+      "semester": null,
+      "subject": "영어",
+      "book_type": "문제집",
+      "curriculum": null,
+      "edition_year": 2027,
+      "isbn": null,
+      "official_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005919",
+      "cover_image_url": null,
+      "post_url": null,
+      "materials": [
+        {
+          "resource_id": "ebs-suneung-teukgang-english-reading-practice-2027-answer",
+          "type": "answer",
+          "title": "정답 및 해설",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005919",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-teukgang-english-reading-practice-2027-errata",
+          "type": "errata",
+          "title": "정오표",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005919",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-teukgang-english-reading-practice-2027-mp3",
+          "type": "mp3",
+          "title": "영어 MP3",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005919",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "book_id": "ebs-suneung-teukgang-english-listening-2027",
+      "publisher": "EBS",
+      "publisher_book_id": "LB00000005918",
+      "brand": "수능특강",
+      "title": "EBS 2027학년도 수능특강 영어영역 영어듣기",
+      "aliases": [
+        "2027 수능특강 영어듣기",
+        "EBS 수능특강 영어 듣기"
+      ],
+      "school_level": "high",
+      "grade": 3,
+      "semester": null,
+      "subject": "영어",
+      "book_type": "문제집",
+      "curriculum": null,
+      "edition_year": 2027,
+      "isbn": null,
+      "official_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005918",
+      "cover_image_url": null,
+      "post_url": null,
+      "materials": [
+        {
+          "resource_id": "ebs-suneung-teukgang-english-listening-2027-answer",
+          "type": "answer",
+          "title": "정답 및 해설",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005918",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-teukgang-english-listening-2027-errata",
+          "type": "errata",
+          "title": "정오표",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005918",
+          "direct_url": null,
+          "access": "public",
+          "status": "needs_review",
+          "last_checked": "2026-10-06"
+        },
+        {
+          "resource_id": "ebs-suneung-teukgang-english-listening-2027-mp3",
+          "type": "mp3",
+          "title": "영어 MP3",
+          "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005918",
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
