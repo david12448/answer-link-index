@@ -223,16 +223,47 @@ function materialStatus(book) {
   return statuses[0];
 }
 
+function bookDetailUrl(book) {
+  const url = new URL(window.location.href);
+  url.search = "";
+  url.hash = "";
+  url.searchParams.set("book", book.book_id);
+  if (state.scope.embed) url.searchParams.set("embed", "1");
+  return url.toString();
+}
+
+function navigateToBook(book) {
+  window.location.assign(bookDetailUrl(book));
+}
+
+function applyMaterialClasses(node, type = "", primary = false) {
+  node.className = "material-link";
+  if (primary) node.classList.add("primary");
+  if (type && materialClass[type]) node.classList.add(materialClass[type]);
+}
+
 function createMaterialLink(label, href, type = "", primary = false) {
   if (!href) return null;
   const a = document.createElement("a");
-  a.className = "material-link";
-  if (primary) a.classList.add("primary");
-  if (type && materialClass[type]) a.classList.add(materialClass[type]);
+  applyMaterialClasses(a, type, primary);
   a.href = href;
   a.target = "_blank";
   a.rel = "noopener noreferrer";
   a.textContent = label;
+  return a;
+}
+
+function createPreviewMaterialBadge(label, type, primary, book) {
+  const a = document.createElement("a");
+  applyMaterialClasses(a, type, primary);
+  a.classList.add("preview-material");
+  a.href = "javascript:void(0)";
+  a.textContent = label;
+  a.setAttribute("aria-label", `${label} - 교재 상세 페이지에서 보기`);
+  a.addEventListener("click", event => {
+    event.preventDefault();
+    navigateToBook(book);
+  });
   return a;
 }
 
@@ -241,11 +272,7 @@ function setupCover(fragment, book) {
   const image = fragment.querySelector(".cover-image");
   const placeholder = fragment.querySelector(".cover-placeholder");
 
-  if (book.official_page) {
-    coverLink.href = book.official_page;
-  } else {
-    coverLink.removeAttribute("href");
-  }
+  coverLink.href = bookDetailUrl(book);
 
   if (!book.cover_image_url) {
     image.hidden = true;
@@ -279,15 +306,13 @@ function renderBook(book, detailMode = false) {
   statusEl.classList.add(status);
 
   const titleEl = fragment.querySelector(".book-title");
-  if (book.official_page) {
+  if (detailMode) {
+    titleEl.textContent = book.title;
+  } else {
     const titleLink = document.createElement("a");
-    titleLink.href = book.official_page;
-    titleLink.target = "_blank";
-    titleLink.rel = "noopener noreferrer";
+    titleLink.href = bookDetailUrl(book);
     titleLink.textContent = book.title;
     titleEl.append(titleLink);
-  } else {
-    titleEl.textContent = book.title;
   }
 
   fragment.querySelector(".book-meta").textContent =
@@ -296,6 +321,14 @@ function renderBook(book, detailMode = false) {
   fragment.querySelector(".book-submeta").textContent =
     [book.curriculum, book.edition_year ? book.edition_year + "년판" : null, book.isbn ? "ISBN " + book.isbn : null]
       .filter(Boolean).join(" · ");
+
+  const intro = fragment.querySelector(".book-intro");
+  const availableMaterials = (book.materials || []).map(material => material.title).filter(Boolean);
+  intro.textContent = book.summary || [
+    `${book.publisher} ${book.brand || ""} ${gradeLabel(book)} ${book.subject} 교재입니다.`.replace(/\s+/g, " ").trim(),
+    availableMaterials.length ? `${availableMaterials.join(", ")} 등 공식 학습자료를 이 페이지에서 확인할 수 있습니다.` : ""
+  ].filter(Boolean).join(" ");
+  intro.hidden = !detailMode;
 
   const materials = fragment.querySelector(".materials");
   for (const material of book.materials || []) {
@@ -309,20 +342,56 @@ function renderBook(book, detailMode = false) {
       : (material.title || "공식 자료 보기");
 
     const primary = material.type === "answer";
-    const link = createMaterialLink(buttonLabel, best, material.type, primary);
+    const link = detailMode
+      ? createMaterialLink(buttonLabel, best, material.type, primary)
+      : createPreviewMaterialBadge(buttonLabel, material.type, primary, book);
     if (link) materials.append(link);
   }
 
   for (const course of book.courses || []) {
-    if (!course.course_url) continue;
     const teacher = course.teacher ? ` · ${course.teacher}` : "";
-    const courseLink = createMaterialLink(`인강${teacher}`, course.course_url, "course", false);
-    if (courseLink) {
+    if (detailMode) {
+      if (!course.course_url) continue;
+      const courseLink = createMaterialLink(`인강${teacher}`, course.course_url, "course", false);
+      if (courseLink) {
+        courseLink.classList.add("course-link");
+        courseLink.title = course.title || "관련 인강";
+        materials.append(courseLink);
+      }
+    } else if (course.course_url) {
+      const courseLink = createPreviewMaterialBadge(`인강${teacher}`, "course", false, book);
       courseLink.classList.add("course-link");
-      courseLink.title = course.title || "관련 인강";
       materials.append(courseLink);
     }
   }
+
+  const secondary = fragment.querySelector(".book-secondary-links");
+  if (detailMode) {
+    if (book.official_page) {
+      const official = document.createElement("a");
+      official.href = book.official_page;
+      official.target = "_blank";
+      official.rel = "noopener noreferrer";
+      official.className = "secondary-link";
+      official.textContent = "출판사 공식 교재 안내";
+      secondary.append(official);
+    }
+    if (book.post_url) {
+      const post = document.createElement("a");
+      post.href = book.post_url;
+      post.target = "_blank";
+      post.rel = "noopener noreferrer";
+      post.className = "secondary-link";
+      post.textContent = "관련 티스토리 글";
+      secondary.append(post);
+    }
+    secondary.hidden = !secondary.children.length;
+  }
+
+  const hint = fragment.querySelector(".official-hint");
+  hint.textContent = detailMode
+    ? "정답·정오표·MP3 버튼은 검증된 직접 파일 주소가 있으면 그 주소를, 없으면 출판사의 해당 자료 페이지를 엽니다."
+    : "교재명 또는 자료 뱃지를 누르면 이 사이트의 교재 상세 페이지가 열립니다.";
 
   return fragment;
 }
@@ -468,6 +537,14 @@ function bindEvents() {
   });
 
   el("bookFilter").addEventListener("change", () => {
+    const selected = el("bookFilter").value;
+    if (selected && !state.scope.book) {
+      const book = state.books.find(item => item.book_id === selected);
+      if (book) {
+        navigateToBook(book);
+        return;
+      }
+    }
     resetVisible();
     applyFilters();
   });
