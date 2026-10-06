@@ -54,8 +54,17 @@ python scripts/validate_data.py
 
 티스토리용 URL 규칙은 [docs/EMBED.md](docs/EMBED.md)를 참고합니다.
 
+## 프로젝트의 기본 전제
+
+- 출판사별 교재 찾기 방식은 collector 내부에서 흡수하고, 사용자는 공통 UI로 찾습니다.
+- 공통 탐색 순서는 **출판사 → 과목 → 학년 → 교재**이며 교재명 검색을 함께 제공합니다.
+- GitHub Pages 전체 검색과 **티스토리 문제집별 개별 포스팅**을 동시에 1급 사용 시나리오로 유지합니다.
+- 모든 교재는 `?book={book_id}&embed=1`로 한 권만 표시할 수 있어야 합니다.
+- 세부 기준은 [docs/COLLECTOR_CONTRACT.md](docs/COLLECTOR_CONTRACT.md)와 [docs/EMBED.md](docs/EMBED.md)를 따릅니다.
+
 ## 현재 단계
 
 PR #1에서 데이터 스키마와 기본 검색 기반을 구축했습니다.
-PR #2에서는 EBS를 표준 사례로 삼아 compact 목록, 표지형, 특정 교재 상세형, 티스토리 embed/scope UI를 먼저 확정합니다.
-그 다음 단계에서 EBS 교재 목록과 정답·정오표·MP3·부가자료·인강을 `publisher_book_id` 중심으로 실제 자동 수집합니다.
+PR #2에서 compact 목록, 표지형, 특정 교재 상세형, 티스토리 embed/scope UI를 구축했습니다.
+PR #3에서는 EBS 공개 페이지 probe와 함께 공식 bookId가 확인된 2027 수능특강 교재를 여러 과목으로 확장하고 있습니다.
+다음 단계에서 정답·정오표·MP3·부가자료·인강의 실제 개별 URL을 `publisher_book_id` 중심으로 자동 병합합니다.
