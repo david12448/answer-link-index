@@ -242,7 +242,7 @@ function applyMaterialClasses(node, type = "", primary = false) {
   if (type && materialClass[type]) node.classList.add(materialClass[type]);
 }
 
-function createMaterialLink(label, href, type = "", primary = false) {
+function createMaterialLink(label, href, type = "", primary = false, direct = false) {
   if (!href) return null;
   const a = document.createElement("a");
   applyMaterialClasses(a, type, primary);
@@ -250,6 +250,11 @@ function createMaterialLink(label, href, type = "", primary = false) {
   a.target = "_blank";
   a.rel = "noopener noreferrer";
   a.textContent = label;
+  if (direct) {
+    a.classList.add("direct-download");
+    a.setAttribute("download", "");
+    a.title = "출판사 공식 직접 파일 주소";
+  }
   return a;
 }
 
@@ -333,18 +338,21 @@ function renderBook(book, detailMode = false) {
   const materials = fragment.querySelector(".materials");
   for (const material of book.materials || []) {
     const loginRequired = material.access === "login_required";
+    const isDirect = Boolean(material.direct_url);
     const best = loginRequired
       ? (material.resource_page || book.official_page)
       : (material.direct_url || material.resource_page || book.official_page);
 
-    const buttonLabel = loginRequired
+    const baseLabel = material.title || "공식 자료 보기";
+    const detailLabel = loginRequired
       ? "출판사에서 로그인 후 다운로드"
-      : (material.title || "공식 자료 보기");
+      : (isDirect ? `${baseLabel} 바로 다운로드` : baseLabel);
+    const listLabel = loginRequired ? "로그인 필요" : baseLabel;
 
     const primary = material.type === "answer";
     const link = detailMode
-      ? createMaterialLink(buttonLabel, best, material.type, primary)
-      : createPreviewMaterialBadge(buttonLabel, material.type, primary, book);
+      ? createMaterialLink(detailLabel, best, material.type, primary, isDirect)
+      : createPreviewMaterialBadge(listLabel, material.type, primary, book);
     if (link) materials.append(link);
   }
 
@@ -366,16 +374,9 @@ function renderBook(book, detailMode = false) {
   }
 
   const secondary = fragment.querySelector(".book-secondary-links");
+  const publisherBox = fragment.querySelector(".publisher-download-box");
+  const publisherLink = fragment.querySelector(".publisher-download-link");
   if (detailMode) {
-    if (book.official_page) {
-      const official = document.createElement("a");
-      official.href = book.official_page;
-      official.target = "_blank";
-      official.rel = "noopener noreferrer";
-      official.className = "secondary-link";
-      official.textContent = "출판사 공식 교재 안내";
-      secondary.append(official);
-    }
     if (book.post_url) {
       const post = document.createElement("a");
       post.href = book.post_url;
@@ -386,11 +387,17 @@ function renderBook(book, detailMode = false) {
       secondary.append(post);
     }
     secondary.hidden = !secondary.children.length;
+
+    if (book.official_page) {
+      publisherLink.href = book.official_page;
+      publisherLink.textContent = `${book.publisher} 공식 페이지에서 확인·다운로드`;
+      publisherBox.hidden = false;
+    }
   }
 
   const hint = fragment.querySelector(".official-hint");
   hint.textContent = detailMode
-    ? "정답·정오표·MP3 버튼은 검증된 직접 파일 주소가 있으면 그 주소를, 없으면 출판사의 해당 자료 페이지를 엽니다."
+    ? "직접 파일 주소가 확인된 자료는 바로 다운로드로 연결하고, 아직 확인 중인 자료는 출판사의 해당 자료 페이지로 연결합니다."
     : "교재명 또는 자료 뱃지를 누르면 이 사이트의 교재 상세 페이지가 열립니다.";
 
   return fragment;
