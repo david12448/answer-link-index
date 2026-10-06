@@ -1,6 +1,11 @@
 name: Probe EBS public pages
 
 on:
+  pull_request:
+    paths:
+      - "scripts/collectors/ebs_probe.py"
+      - ".github/workflows/probe-ebs.yml"
+      - "docs/publishers/EBS.md"
   workflow_dispatch:
     inputs:
       book_id:
@@ -21,9 +26,13 @@ jobs:
           python-version: "3.12"
       - name: Probe EBS public material pages
         run: |
+          BOOK_ID="${{ inputs.book_id }}"
+          if [ -z "$BOOK_ID" ]; then
+            BOOK_ID="LB00000005984"
+          fi
           python scripts/collectors/ebs_probe.py \
             --kind all \
-            --book-id "${{ inputs.book_id }}" \
+            --book-id "$BOOK_ID" \
             --output ebs-probe.json
       - name: Upload probe report
         uses: actions/upload-artifact@v4
