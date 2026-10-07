@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+from datetime import date
 from pathlib import Path
 from urllib.parse import urljoin
 
@@ -11,6 +12,22 @@ from playwright.sync_api import sync_playwright
 FILE_RE = re.compile(r"\.(?:pdf|hwp|hwpx|zip|xlsx?|mp3)(?:$|[?#])", re.IGNORECASE)
 GO_DETAIL_RE = re.compile(r"goDetail\s*\(\s*['\"]([^'\"]+)['\"]", re.IGNORECASE)
 DOWNLOAD_HINT_RE = re.compile(r"download|file|down|첨부|정답|해설|자료", re.IGNORECASE)
+
+
+def rotating_batch(items: list[dict], limit: int) -> list[dict]:
+    if not limit or len(items) <= limit:
+        return items
+
+    today = date.today()
+    monday_epoch = date(2020, 1, 6)
+    week_index = (today.toordinal() - monday_epoch.toordinal()) // 7
+    # PR probe는 같은 날 여러 번 재실행될 수 있으므로 학교급별 정렬 후 주간 슬롯을 이동한다.
+    slot_index = week_index * 2 + (1 if today.weekday() >= 3 else 0)
+    start = (slot_index * limit) % len(items)
+    return [
+        items[(start + index) % len(items)]
+        for index in range(min(limit, len(items)))
+    ]
 
 
 def normalize_title(value: str) -> str:
@@ -366,11 +383,11 @@ def main() -> int:
     if args.limit_per_site:
         limited = []
         for site in ("ebs_primary", "ebs_middle"):
-            limited.extend(
-                [book for book in books if book.get("publisher_site") == site][
-                    :args.limit_per_site
-                ]
-            )
+            site_books = [
+                book for book in books
+                if book.get("publisher_site") == site
+            ]
+            limited.extend(rotating_batch(site_books, args.limit_per_site))
         books = limited
 
     results = []
