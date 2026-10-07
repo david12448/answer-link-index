@@ -17,6 +17,23 @@ def errata_material(book: dict) -> dict | None:
     )
 
 
+def rotating_batch(items: list[dict], limit: int) -> list[dict]:
+    if not limit or len(items) <= limit:
+        return items
+
+    # 주 2회 실행을 기준으로 매 실행마다 다음 묶음으로 이동한다.
+    today = date.today()
+    monday_epoch = date(2020, 1, 6)
+    week_index = (today.toordinal() - monday_epoch.toordinal()) // 7
+    slot_index = week_index * 2 + (1 if today.weekday() >= 3 else 0)
+    start = (slot_index * limit) % len(items)
+
+    return [
+        items[(start + index) % len(items)]
+        for index in range(min(limit, len(items)))
+    ]
+
+
 def verify_download(context, url: str, referer: str) -> dict:
     try:
         response = context.request.get(
@@ -90,11 +107,11 @@ def main() -> int:
     if args.limit_per_site:
         selected = []
         for site in ("ebs_primary", "ebs_middle"):
-            selected.extend(
-                [book for book in books if book.get("publisher_site") == site][
-                    : args.limit_per_site
-                ]
-            )
+            site_books = [
+                book for book in books
+                if book.get("publisher_site") == site
+            ]
+            selected.extend(rotating_batch(site_books, args.limit_per_site))
         books = selected
 
     checks = []
