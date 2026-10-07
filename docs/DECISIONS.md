@@ -133,4 +133,11 @@
 - 실제 `image/*` HTTP 응답과 최소 파일 크기를 확인한다.
 - 후보가 여러 개인 경우 자동으로 하나를 선택하지 않는다.
 - 표지가 없는 교재만 순환 점검하고, 확인된 표지가 생기면 자동 PR로 반영한다.
+## ADR-024 — 무거운 브라우저 probe는 catalog-only PR마다 재실행하지 않는다
+- `Validate catalog`는 모든 PR에서 항상 실행한다.
+- EBS Playwright probe는 collector/workflow 코드가 변경될 때 smoke test로 실행한다.
+- 교재 자료 변화 감시는 정답/정오표/MP3/표지별 scheduled sync workflow가 담당한다.
+- 단순 `data/catalog.json` 수정만으로 여러 Playwright workflow를 동시에 재실행하지 않는다.
+- 목적: 교재 수가 수백 권으로 늘어도 PR 하나마다 브라우저 설치·외부 사이트 요청이 폭증하지 않도록 한다.
+- 실제 자료 자동 반영은 여전히 검증된 공식 링크만 대상으로 하고, 변경이 있을 때만 별도 PR을 만든다.
 
