@@ -71,7 +71,9 @@ def main() -> int:
                     and book_id in (result.get("final_url") or "")
                     and book_id in (result.get("detail_call") or "")
                 )
-                file_count = int(result.get("mp3_file_count") or 0)
+                dom_file_count = int(result.get("mp3_file_count") or 0)
+                ajax_file_count = int(result.get("ajax_mp3_file_count") or 0)
+                file_count = max(dom_file_count, ajax_file_count)
 
                 desired = before.copy()
                 if kind == "mp3" and exact_detail and file_count > 0:
@@ -110,6 +112,8 @@ def main() -> int:
                     "kind": kind,
                     "exact_detail": exact_detail,
                     "file_count": file_count,
+                    "dom_file_count": dom_file_count,
+                    "ajax_file_count": ajax_file_count,
                     "availability": desired.get("availability"),
                     "changed": changed,
                     "error": None,
