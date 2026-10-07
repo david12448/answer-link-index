@@ -71,6 +71,8 @@ def choose_matching_row(rows: list[dict], title: str) -> dict | None:
 def try_search_board(page, title: str) -> dict:
     info = {"attempted": False, "input": None, "submitted": False}
     candidates = page.locator('input[type="text"], input[type="search"]')
+    ranked = []
+
     for i in range(candidates.count()):
         node = candidates.nth(i)
         try:
@@ -79,24 +81,44 @@ def try_search_board(page, title: str) -> dict:
                   name: el.getAttribute('name'),
                   id: el.id || null,
                   placeholder: el.getAttribute('placeholder'),
-                  value: el.value || ''
+                  value: el.value || '',
+                  form_text: (el.closest('form')?.innerText || '').replace(/\\s+/g, ' ').trim().slice(0, 500)
                 })"""
             )
         except Exception:
             continue
-        haystack = " ".join(str(v or "") for v in attrs.values())
-        if "교재" not in haystack and "search" not in haystack.lower() and "book" not in haystack.lower():
-            continue
+
+        name = str(attrs.get("name") or "").lower()
+        node_id = str(attrs.get("id") or "").lower()
+        placeholder = str(attrs.get("placeholder") or "")
+        form_text = str(attrs.get("form_text") or "")
+
+        score = 0
+        if "교재" in placeholder:
+            score += 100
+        if "교재" in form_text and "검색" in form_text:
+            score += 60
+        if "book" in name or "book" in node_id or "textbook" in name or "textbook" in node_id:
+            score += 50
+        if name == "q" or node_id in {"search", "search1", "search2"}:
+            score -= 80
+
+        if score > 0:
+            ranked.append((score, i, attrs))
+
+    for _, index, attrs in sorted(ranked, reverse=True):
+        node = candidates.nth(index)
         try:
             node.fill(title, timeout=3000)
             info["attempted"] = True
             info["input"] = attrs
             node.press("Enter", timeout=3000)
             info["submitted"] = True
-            page.wait_for_timeout(2200)
+            page.wait_for_timeout(2500)
             return info
         except Exception:
             continue
+
     return info
 
 
