@@ -251,4 +251,12 @@
 - 수능완성 영어는 교재 상세 MP3 화면은 열리지만 현재 probe에서 파일 목록이 확인되지 않아 `unknown`으로 숨김.
 - 부가자료도 교재 일치/첨부를 확실히 검증하기 전까지 `unknown`으로 숨김.
 - 교훈: '자료 메뉴가 존재함'과 '해당 교재 자료가 실제로 존재함'을 분리한다.
+## 2026-10-07 — 수능완성 영어 MP3 false negative 수정
+
+### 교재별 MP3 상세 페이지에 들어갔다고 해서 DOM의 input[mp3url]만 검사하면 안 됨
+- 사용자 확인과 EBS 공식 교재 검색에서 2027 수능완성 영어에 MP3가 제공됨을 재확인.
+- 기존 probe는 `retrieveMp3Down.ebs` 상세 페이지 진입에는 성공했지만, 파일 목록이 `retrieveMp3Down.ajax` 후속 응답으로 채워지는 경우 DOM selector에서 0개로 잘못 판정.
+- 해결: AJAX 응답 본문과 post_data를 함께 검사하고, `#ajaxArea`가 채워질 때까지 기다린 뒤 DOM도 다시 읽도록 보강.
+- 데이터: 수능완성 영어 MP3 availability를 `available`로 복구.
+- 교훈: '파일 0개'는 곧바로 '자료 없음'이 아니라 수집기 false negative일 수 있으므로, 공식 교재 메타데이터와 후속 AJAX를 함께 확인한다.
 
