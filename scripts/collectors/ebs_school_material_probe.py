@@ -248,7 +248,11 @@ def collect_one(page, book: dict) -> dict:
         parent = item.get("parent_text") or ""
         text = item.get("text") or ""
         for url in item.get("urls") or []:
-            if "view=Y" in url and not any(token in parent + text for token in ["정답", "해설", title]):
+            # 답지 자동 후보는 실제 EBS 첨부 다운로드 주소만 인정한다.
+            # 페이지의 #header, 뷰어 설치 파일 등은 direct 후보가 아니다.
+            if "/board/common/download" not in url:
+                continue
+            if "view=Y" in url:
                 continue
             direct_candidates.append({
                 "text": text,
