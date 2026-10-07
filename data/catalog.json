@@ -2,7 +2,7 @@
   "meta": {
     "generated_at": "2026-10-07",
     "schema_version": 3,
-    "note": "EBS 초등·중등 공식 목록에서 제목·학년·과목이 명확한 교재를 단계적으로 확장합니다. 신규 교재는 정답 direct URL 검증 전까지 공식 교재 페이지 fallback과 needs_review 상태를 유지하며 정오표는 확인 전 숨깁니다."
+    "note": "EBS 초등·중등 답지는 교재명·게시물 상세·공식 첨부·HTTP 파일 응답을 모두 검증한 경우만 direct_url로 승격합니다. 최신 probe에서 5권을 추가 검증했습니다."
   },
   "books": [
     {
@@ -898,11 +898,12 @@
           "resource_id": "ebs-primary-tb1000013055-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013055",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013055#answer/view/115/60000465562/0/1/TB1000013055/0///",
+          "direct_url": "https://primary.ebs.co.kr/board/common/download?division=&id=30000005632",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000005632"
         },
         {
           "resource_id": "ebs-primary-tb1000013055-errata",
@@ -950,11 +951,12 @@
           "resource_id": "ebs-primary-tb1000013152-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013152",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013152#answer/view/115/60000474919/0/1/TB1000013152/0///",
+          "direct_url": "https://primary.ebs.co.kr/board/common/download?division=&id=30000007258",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000007258"
         },
         {
           "resource_id": "ebs-primary-tb1000013152-errata",
@@ -1210,11 +1212,12 @@
           "resource_id": "ebs-primary-tb1000013096-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013096",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013096#answer/view/115/60000466168/0/1/TB1000013096/0///",
+          "direct_url": "https://primary.ebs.co.kr/board/common/download?division=&id=30000005698",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000005698"
         },
         {
           "resource_id": "ebs-primary-tb1000013096-errata",
@@ -1731,11 +1734,12 @@
           "resource_id": "ebs-middle-tb1000011050-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000011050",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000011050#answer/view/103/60000455358/0/1/TB1000011050/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000004075",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000004075"
         },
         {
           "resource_id": "ebs-middle-tb1000011050-errata",
@@ -1783,11 +1787,12 @@
           "resource_id": "ebs-middle-tb1000011101-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000011101",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000011101#answer/view/103/60000456323/0/1/TB1000011101/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000004078",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000004078"
         },
         {
           "resource_id": "ebs-middle-tb1000011101-errata",
