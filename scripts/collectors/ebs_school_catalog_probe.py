@@ -123,14 +123,13 @@ def collect(site_key: str) -> dict:
             for textbook_id in ids:
                 if not title or len(title) > 160:
                     continue
-                href = item.get("href") or ""
-                official = (
-                    urljoin(cfg["base"], href)
-                    if href and not href.lower().startswith("javascript:")
-                    else f'{cfg["base"]}/book/main/view?textbookId={textbook_id}'
-                )
+                official = f'{cfg["base"]}/book/main/view?textbookId={textbook_id}'
                 context_title = extract_title_from_context(item.get("context") or "", title)
-                resolved_title = context_title or (title if title not in {"교재 미리보기", "정답지/자료", "정오표", "MP3"} else None)
+                noise_anchor_texts = {
+                    "교재 미리보기", "정답지/자료", "정답지/자료실", "정오표", "MP3",
+                    "종이책 구입", "eBook 구입", "eBook 보기", "미리보기"
+                }
+                resolved_title = context_title or (title if title not in noise_anchor_texts else None)
                 candidate = {
                     "textbook_id": textbook_id,
                     "title": resolved_title,
@@ -140,7 +139,11 @@ def collect(site_key: str) -> dict:
                     "source": "anchor_context" if context_title else "anchor",
                 }
                 current = books.get(textbook_id)
-                if current is None or (not current.get("title") and candidate.get("title")):
+                if (
+                    current is None
+                    or (not current.get("title") and candidate.get("title"))
+                    or (candidate.get("source") == "anchor_context" and current.get("source") != "anchor_context")
+                ):
                     books[textbook_id] = candidate
 
         # 링크 텍스트와 textbookId가 서로 다른 DOM 노드에 있는 경우를 보완.
