@@ -286,7 +286,15 @@ def main() -> int:
     )
     parser.add_argument("--catalog", type=Path, default=Path("data/catalog.json"))
     parser.add_argument("--output", type=Path, default=Path("ebs-school-material-probe.json"))
+    parser.add_argument(
+        "--limit-per-site",
+        type=int,
+        default=3,
+        help="한번에 분석할 초등/중학 교재 수. 0을 입력하면 전부 분석합니다.",
+    )
     args = parser.parse_args()
+    if args.limit_per_site < 0:
+        parser.error("--limit-per-site must be >= 0")
 
     catalog = json.loads(args.catalog.read_text(encoding="utf-8"))
     books = [
@@ -295,6 +303,22 @@ def main() -> int:
         and b.get("publisher_site") in {"ebs_primary", "ebs_middle"}
         and b.get("publisher_book_id")
     ]
+
+    # PR마다 수백 권을 열지 않는다. 정답 direct URL이 없는 교재를 먼저 샘플링한다.
+    books.sort(key=lambda b: (
+        bool(next((m.get("direct_url") for m in b.get("materials", [])
+                   if m.get("type") == "answer"), None)),
+        b.get("title") or "",
+    ))
+    if args.limit_per_site:
+        limited = []
+        for site in ("ebs_primary", "ebs_middle"):
+            limited.extend(
+                [book for book in books if book.get("publisher_site") == site][
+                    :args.limit_per_site
+                ]
+            )
+        books = limited
 
     results = []
     with sync_playwright() as p:
