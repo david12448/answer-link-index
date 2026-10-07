@@ -107,32 +107,16 @@ def collect_one(page, context, book: dict) -> dict:
                 "url": urljoin(page.url, href),
             })
 
-    # 다운로드로 보이는 후보를 클릭해 실제 browser download URL도 관찰한다.
-    download_events = []
-    clickable = page.locator("a, button").filter(
-        has_text=re.compile(r"다운|정답|해설|첨부|파일", re.IGNORECASE)
-    )
-    for i in range(min(clickable.count(), 12)):
-        node = clickable.nth(i)
-        try:
-            text = (node.inner_text(timeout=1000) or "").strip()
-        except Exception:
-            text = ""
-        if not text:
-            continue
-        try:
-            with page.expect_download(timeout=2500) as info:
-                node.click(timeout=3000)
-            download = info.value
-            download_events.append({
-                "text": text,
-                "url": download.url,
-                "filename": download.suggested_filename,
+    onclick_candidates = []
+    for item in candidates:
+        onclick = item.get("onclick") or ""
+        if onclick:
+            onclick_candidates.append({
+                "text": item.get("text"),
+                "onclick": onclick[:1000],
             })
-            if download.url:
-                break
-        except Exception:
-            continue
+
+    download_events = []
 
     body_text = page.locator("body").inner_text(timeout=10000)
     page.remove_listener("response", on_response)
