@@ -2,7 +2,7 @@
   "meta": {
     "generated_at": "2026-10-07",
     "schema_version": 3,
-    "note": "PR #3 EBS 확장 데이터. 고등 EBSi direct 정답/정오표와 함께 EBS 초등·중학 TB 교재 구조를 분리 수집하며, 확인된 교재별 정답지 hash를 fallback으로 사용합니다."
+    "note": "PR #3 EBS 확장 데이터. 고등 EBSi뿐 아니라 EBS 초등·중학 TB 교재도 내부 상세 페이지와 공식 정답 PDF direct 링크를 같은 catalog 구조로 연결합니다."
   },
   "books": [
     {
@@ -112,11 +112,12 @@
           "resource_id": "ebs-primary-manjumwang-math-3-1-2026-answer",
           "type": "answer",
           "title": "정답지/자료",
-          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013052#answer/list/115/1/TB1000013052",
-          "direct_url": null,
+          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013052#answer/view/115/60000464757/0/1/TB1000013052/0///",
+          "direct_url": "https://primary.ebs.co.kr/board/common/download?division=&id=30000005525",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000005525"
         },
         {
           "resource_id": "ebs-primary-manjumwang-math-3-1-2026-errata",
@@ -149,7 +150,7 @@
       "edition_year": 2026,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013112",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/12/30/TB1000013112/22814184223254181_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 단원평가 3학년 1학기 교재입니다. EBS 초등의 정답지/자료 구조를 확인해 직접 자료 링크를 연결할 예정입니다.",
       "publisher_help": {
@@ -201,7 +202,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012110",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2024/12/30/TB1000012110/118587065395930370_textbook.png",
       "post_url": null,
       "summary": "EBS 중학 뉴런 중학교 1학년 수학 하 교재입니다. 정답지/자료와 정오표를 EBS 중학 공식 자료 구조에 맞춰 연결합니다.",
       "publisher_help": {
@@ -215,11 +216,12 @@
           "resource_id": "ebs-middle-neuron-math-1-lower-2022-answer",
           "type": "answer",
           "title": "정답지/자료",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012110#answer/list/103/1/TB1000012110",
-          "direct_url": null,
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012110#answer/view/103/60000458763/0/1/TB1000012110/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000004533",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000004533"
         },
         {
           "resource_id": "ebs-middle-neuron-math-1-lower-2022-errata",
@@ -253,7 +255,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000011110",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2024/7/5/TB1000011110/103188951570550622_textbook.jpg",
       "post_url": null,
       "summary": "EBS 중학 뉴런 중학교 1학년 수학 상 교재입니다. EBS 중학 공식 페이지에서 정답지/자료실과 정오표를 제공하며, 직접 파일 주소를 확인해 내부 교재 상세 페이지에 연결합니다.",
       "publisher_help": {
@@ -267,11 +269,12 @@
           "resource_id": "ebs-middle-neuron-math-1-upper-2022-answer",
           "type": "answer",
           "title": "정답지/자료",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000011110#answer/list/103/1/TB1000011110",
-          "direct_url": null,
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000011110#answer/view/103/60000456320/0/1/TB1000011110/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000004068",
           "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000004068"
         },
         {
           "resource_id": "ebs-middle-neuron-math-1-upper-2022-errata",
