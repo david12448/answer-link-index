@@ -2,7 +2,7 @@
   "meta": {
     "generated_at": "2026-10-07",
     "schema_version": 3,
-    "note": "정오표 뱃지는 실제 정오표가 확인된 교재에만 표시합니다. 미등록 또는 미확인 정오표는 숨기고, 주기적 점검에서 자료가 생기면 availability=available로 전환합니다."
+    "note": "정답은 기본 표시, 정오표·MP3·부가자료는 실제 자료가 확인된 경우만 뱃지로 표시합니다. 미확인 자료는 collector 검증 전까지 숨깁니다."
   },
   "books": [
     {
@@ -539,7 +539,8 @@
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "last_checked": "2026-10-06",
+          "availability": "unknown"
         },
         {
           "resource_id": "ebs-suneung-wanseong-english-2027-additional",
@@ -549,7 +550,8 @@
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "last_checked": "2026-10-06",
+          "availability": "unknown"
         }
       ],
       "courses": [
@@ -617,7 +619,8 @@
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "last_checked": "2026-10-06",
+          "availability": "unknown"
         }
       ],
       "publisher_site": "ebsi"
@@ -674,7 +677,8 @@
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "last_checked": "2026-10-06",
+          "availability": "unknown"
         }
       ],
       "publisher_site": "ebsi"
@@ -731,7 +735,8 @@
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-06"
+          "last_checked": "2026-10-06",
+          "availability": "unknown"
         }
       ],
       "publisher_site": "ebsi"
