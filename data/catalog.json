@@ -2,7 +2,7 @@
   "meta": {
     "generated_at": "2026-10-07",
     "schema_version": 3,
-    "note": "PR #3 EBS 확장 데이터. 고등 EBSi의 정답·정오표 direct 링크에 더해 EBS 초등/중학 대표 교재 seed를 추가하고 TB 기반 collector를 개발 중입니다."
+    "note": "PR #3 EBS 확장 데이터. 고등 EBSi direct 정답/정오표와 함께 EBS 초등·중학 TB 교재 구조를 분리 수집하며, 확인된 교재별 정답지 hash를 fallback으로 사용합니다."
   },
   "books": [
     {
@@ -98,7 +98,7 @@
       "edition_year": 2026,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013052",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/10/21/TB1000013052/16757261972673288_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 3학년 1학기 수학 교재입니다. 정답지/자료는 EBS 초등 공식 교재 페이지의 자료 영역을 기준으로 연결하며, 직접 파일 주소가 확인되면 바로 다운로드를 우선합니다.",
       "publisher_help": {
@@ -112,7 +112,7 @@
           "resource_id": "ebs-primary-manjumwang-math-3-1-2026-answer",
           "type": "answer",
           "title": "정답지/자료",
-          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013052",
+          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013052#answer/list/115/1/TB1000013052",
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
@@ -215,7 +215,7 @@
           "resource_id": "ebs-middle-neuron-math-1-lower-2022-answer",
           "type": "answer",
           "title": "정답지/자료",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012110",
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012110#answer/list/103/1/TB1000012110",
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
