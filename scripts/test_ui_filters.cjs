@@ -39,7 +39,6 @@ const elements = {
   gradeFilter: new FakeSelect(),
   bookFilter: new FakeSelect(),
   searchInput: { value: "" },
-  embedSearchInput: { value: "" },
   schoolShortcuts: {
     hidden: true,
     querySelectorAll() { return buttons; },
@@ -85,16 +84,15 @@ elements.searchInput.value = "만점왕";
 assert.equal(evaluate("getFilteredBooks().length"), 0);
 
 evaluate(`state.schoolLevel = ""; state.scope.embed = true;`);
-elements.embedSearchInput.value = "만점왕";
-assert.equal(evaluate("getFilteredBooks().length"), 1, "Embedded pages use their own search");
-elements.embedSearchInput.value = "";
+elements.searchInput.value = "만점왕";
+assert.equal(evaluate("getFilteredBooks().length"), 1, "Embedded list pages use the persistent top search");
+elements.searchInput.value = "";
 
 elements.searchInput.value = "";
 evaluate(`state.scope = {publisher:"EBS", level:"elementary", subject:"", grade:"", book:"", embed:true}; state.schoolLevel=""; state.books = [
   {book_id:"scope-a", title:"초등 수학", school_level:"elementary", grade:3, publisher:"EBS", subject:"수학", materials:[]},
   {book_id:"scope-b", title:"중등 수학", school_level:"middle", grade:1, publisher:"EBS", subject:"수학", materials:[]}
 ];`);
-elements.embedSearchInput.value = "";
 assert.equal(evaluate("getFilteredBooks().length"), 1, "URL level scope filters to one school level");
 assert.equal(evaluate("getFilteredBooks()[0].book_id"), "scope-a");
 
