@@ -1,5 +1,5 @@
 {
-  "source": "EBS 공식 초등·중학 교재 목록에서 발견한 textbookId 및 교재명. 자료는 개별 상세 검증 전까지 미확인 상태.",
+  "source": "EBS 공식 초등·중학 교재 목록에서 발견한 textbookId 및 교재명. 정답/정오표는 개별 검증 전까지 미확인 상태.",
   "targets": [
     {
       "publisher_book_id": "TB1000013050",
@@ -264,6 +264,227 @@
       "subject": "영어",
       "brand": "중학 뉴런",
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012203"
+    },
+    {
+      "publisher_book_id": "TB1000013055",
+      "title": "만점왕 과학 4-1",
+      "school_level": "elementary",
+      "publisher_site": "ebs_primary",
+      "grade": 4,
+      "semester": 1,
+      "subject": "과학",
+      "brand": "만점왕",
+      "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013055"
+    },
+    {
+      "publisher_book_id": "TB1000013152",
+      "title": "만점왕 과학 4-2",
+      "school_level": "elementary",
+      "publisher_site": "ebs_primary",
+      "grade": 4,
+      "semester": 2,
+      "subject": "과학",
+      "brand": "만점왕",
+      "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013152"
+    },
+    {
+      "publisher_book_id": "TB1000013096",
+      "title": "만점왕 과학 5-1",
+      "school_level": "elementary",
+      "publisher_site": "ebs_primary",
+      "grade": 5,
+      "semester": 1,
+      "subject": "과학",
+      "brand": "만점왕",
+      "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013096"
+    },
+    {
+      "publisher_book_id": "TB1000013180",
+      "title": "만점왕 과학 5-2",
+      "school_level": "elementary",
+      "publisher_site": "ebs_primary",
+      "grade": 5,
+      "semester": 2,
+      "subject": "과학",
+      "brand": "만점왕",
+      "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013180"
+    },
+    {
+      "publisher_book_id": "TB1000013099",
+      "title": "만점왕 과학 6-1",
+      "school_level": "elementary",
+      "publisher_site": "ebs_primary",
+      "grade": 6,
+      "semester": 1,
+      "subject": "과학",
+      "brand": "만점왕",
+      "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013099"
+    },
+    {
+      "publisher_book_id": "TB1000013183",
+      "title": "만점왕 과학 6-2",
+      "school_level": "elementary",
+      "publisher_site": "ebs_primary",
+      "grade": 6,
+      "semester": 2,
+      "subject": "과학",
+      "brand": "만점왕",
+      "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013183"
+    },
+    {
+      "publisher_book_id": "TB1000013109",
+      "title": "만점왕 국어 2-1",
+      "school_level": "elementary",
+      "publisher_site": "ebs_primary",
+      "grade": 2,
+      "semester": 1,
+      "subject": "국어",
+      "brand": "만점왕",
+      "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013109"
+    },
+    {
+      "publisher_book_id": "TB1000013168",
+      "title": "만점왕 국어 2-2",
+      "school_level": "elementary",
+      "publisher_site": "ebs_primary",
+      "grade": 2,
+      "semester": 2,
+      "subject": "국어",
+      "brand": "만점왕",
+      "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013168"
+    },
+    {
+      "publisher_book_id": "TB1000013110",
+      "title": "만점왕 국어 3-1",
+      "school_level": "elementary",
+      "publisher_site": "ebs_primary",
+      "grade": 3,
+      "semester": 1,
+      "subject": "국어",
+      "brand": "만점왕",
+      "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013110"
+    },
+    {
+      "publisher_book_id": "TB1000013169",
+      "title": "만점왕 국어 3-2",
+      "school_level": "elementary",
+      "publisher_site": "ebs_primary",
+      "grade": 3,
+      "semester": 2,
+      "subject": "국어",
+      "brand": "만점왕",
+      "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013169"
+    },
+    {
+      "publisher_book_id": "TB1000013111",
+      "title": "만점왕 국어 4-1",
+      "school_level": "elementary",
+      "publisher_site": "ebs_primary",
+      "grade": 4,
+      "semester": 1,
+      "subject": "국어",
+      "brand": "만점왕",
+      "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013111"
+    },
+    {
+      "publisher_book_id": "TB1000013170",
+      "title": "만점왕 국어 4-2",
+      "school_level": "elementary",
+      "publisher_site": "ebs_primary",
+      "grade": 4,
+      "semester": 2,
+      "subject": "국어",
+      "brand": "만점왕",
+      "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013170"
+    },
+    {
+      "publisher_book_id": "TB1000013220",
+      "title": "중학 뉴런 영어 3",
+      "school_level": "middle",
+      "publisher_site": "ebs_middle",
+      "grade": 3,
+      "semester": null,
+      "subject": "영어",
+      "brand": "중학 뉴런",
+      "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013220"
+    },
+    {
+      "publisher_book_id": "TB1000012051",
+      "title": "중학 뉴런 연산 수학 1(상)",
+      "school_level": "middle",
+      "publisher_site": "ebs_middle",
+      "grade": 1,
+      "semester": null,
+      "subject": "수학",
+      "brand": "중학 뉴런 연산",
+      "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012051"
+    },
+    {
+      "publisher_book_id": "TB1000012052",
+      "title": "중학 뉴런 연산 수학 1(하)",
+      "school_level": "middle",
+      "publisher_site": "ebs_middle",
+      "grade": 1,
+      "semester": null,
+      "subject": "수학",
+      "brand": "중학 뉴런 연산",
+      "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012052"
+    },
+    {
+      "publisher_book_id": "TB1000011050",
+      "title": "수학 마스터 개념 α(알파) 중학 수학 1-1(22개정)",
+      "school_level": "middle",
+      "publisher_site": "ebs_middle",
+      "grade": 1,
+      "semester": 1,
+      "subject": "수학",
+      "brand": "수학 마스터",
+      "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000011050"
+    },
+    {
+      "publisher_book_id": "TB1000011101",
+      "title": "수학 마스터 개념 α(알파) 중학 수학 1-2 (22개정)",
+      "school_level": "middle",
+      "publisher_site": "ebs_middle",
+      "grade": 1,
+      "semester": 2,
+      "subject": "수학",
+      "brand": "수학 마스터",
+      "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000011101"
+    },
+    {
+      "publisher_book_id": "TB1000012137",
+      "title": "수학 마스터 개념 α(알파) 중학 수학 2-1",
+      "school_level": "middle",
+      "publisher_site": "ebs_middle",
+      "grade": 2,
+      "semester": 1,
+      "subject": "수학",
+      "brand": "수학 마스터",
+      "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012137"
+    },
+    {
+      "publisher_book_id": "TB1000012168",
+      "title": "수학 마스터 개념 α(알파) 중학 수학 2-2",
+      "school_level": "middle",
+      "publisher_site": "ebs_middle",
+      "grade": 2,
+      "semester": 2,
+      "subject": "수학",
+      "brand": "수학 마스터",
+      "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012168"
+    },
+    {
+      "publisher_book_id": "TB1000011051",
+      "title": "수학 마스터 유형 β(베타) 중학 수학 1-1(22개정)",
+      "school_level": "middle",
+      "publisher_site": "ebs_middle",
+      "grade": 1,
+      "semester": 1,
+      "subject": "수학",
+      "brand": "수학 마스터",
+      "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000011051"
     }
-  ]
+  ],
+  "generated_at": "2026-10-07"
 }
