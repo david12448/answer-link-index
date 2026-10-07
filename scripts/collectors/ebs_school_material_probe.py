@@ -153,7 +153,7 @@ def collect_attachments(page) -> list[dict]:
     return out
 
 
-def collect_one(page, book: dict) -> dict:
+def collect_one(page, book: dict, context=None) -> dict:
     title = book["title"]
     official = book["official_page"]
     textbook_id = book["publisher_book_id"]
@@ -260,6 +260,46 @@ def collect_one(page, book: dict) -> dict:
                 "url": url,
             })
 
+    direct_verifications = []
+    if context:
+        for candidate in direct_candidates[:5]:
+            try:
+                response = context.request.fetch(
+                    candidate["url"],
+                    method="HEAD",
+                    headers={
+                        "Referer": page.url,
+                        "Accept": "application/pdf,application/octet-stream,*/*",
+                    },
+                    timeout=30000,
+                )
+                content_type = (response.headers.get("content-type") or "").lower()
+                disposition = (response.headers.get("content-disposition") or "").lower()
+                direct_verifications.append({
+                    "url": candidate["url"],
+                    "status": response.status,
+                    "content_type": content_type,
+                    "content_disposition": disposition,
+                    "looks_like_file": (
+                        response.ok
+                        and (
+                            "pdf" in content_type
+                            or "octet-stream" in content_type
+                            or "attachment" in disposition
+                        )
+                    ),
+                    "error": None,
+                })
+            except Exception as exc:
+                direct_verifications.append({
+                    "url": candidate["url"],
+                    "status": None,
+                    "content_type": None,
+                    "content_disposition": None,
+                    "looks_like_file": False,
+                    "error": f"{type(exc).__name__}: {exc}",
+                })
+
     page.remove_listener("response", on_response)
     return {
         "book_id": book["book_id"],
@@ -279,6 +319,7 @@ def collect_one(page, book: dict) -> dict:
         "final_url": page.url,
         "attachments": attachments[:80],
         "direct_candidates": direct_candidates[:30],
+        "direct_verifications": direct_verifications,
         "network_events": events[-100:],
         "body_excerpt": body_text[-4500:],
     }
@@ -339,7 +380,7 @@ def main() -> int:
         page = context.new_page()
         for book in books:
             try:
-                results.append(collect_one(page, book))
+                results.append(collect_one(page, book, context))
             except Exception as exc:
                 results.append({
                     "book_id": book.get("book_id"),
