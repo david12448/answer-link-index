@@ -129,6 +129,7 @@ def main() -> int:
             "direct_url": material.get("direct_url"),
             "resource_page": material.get("resource_page"),
             "status": material.get("status"),
+            "availability": material.get("availability") or "unknown",
         }
 
         if probe["looks_like_file"]:
@@ -136,16 +137,21 @@ def main() -> int:
                 "direct_url": probe["url"],
                 "resource_page": detail,
                 "status": "ok",
+                "availability": "available",
             }
         elif material.get("direct_url"):
             # 네트워크 오류나 EBS 일시 오류 때문에 기존 확인 링크를 자동 삭제하지 않는다.
             desired = before
-        else:
+        elif probe.get("definite_no_file"):
             desired = {
                 "direct_url": None,
                 "resource_page": search,
                 "status": "needs_review",
+                "availability": "unavailable",
             }
+        else:
+            # 일시적인 네트워크 오류에서는 있음/없음 상태를 뒤집지 않는다.
+            desired = before
 
         changed = any(before.get(key) != desired.get(key) for key in desired)
         if changed:
