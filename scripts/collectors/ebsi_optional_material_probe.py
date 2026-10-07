@@ -162,6 +162,20 @@ def inspect_one(page, book: dict, kind: str) -> dict:
     body = page.locator("body").inner_text(timeout=10000)
     html = page.content()
 
+    mp3_files = []
+    if kind == "mp3":
+        mp3_files = page.locator("input[mp3url]").evaluate_all(
+            r"""els => els.map(el => ({
+              url: el.getAttribute('mp3url'),
+              value: el.getAttribute('value'),
+              prtcd: el.getAttribute('prtcd'),
+              info: el.getAttribute('mp3info'),
+              name: el.getAttribute('name'),
+              parent_text: (el.closest('li,dd,div')?.innerText || '')
+                .replace(/\s+/g, ' ').trim().slice(0, 300)
+            })).filter(x => x.url)"""
+        )
+
     snippets = []
     for match in DIRECT_HINT_RE.finditer(html):
         start = max(0, match.start() - 300)
@@ -187,6 +201,12 @@ def inspect_one(page, book: dict, kind: str) -> dict:
         "body_excerpt": body[-4500:],
         "matching_rows": matching_rows[:80],
         "candidate_nodes": nodes[:150],
+        "mp3_file_count": len(mp3_files),
+        "mp3_files": mp3_files,
+        "whole_file_candidates": [
+            item for item in mp3_files
+            if "통파일" in ((item.get("info") or "") + " " + (item.get("parent_text") or ""))
+        ],
         "network_events": events[-120:],
         "html_snippets": snippets,
     }
