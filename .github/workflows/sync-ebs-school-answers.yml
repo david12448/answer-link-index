@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       limit_per_site:
-        description: "학교급별 점검 권수. 0은 전체, 기본 4권씩"
+        description: "학교급별 점검 권수. 0은 전체, 기본 6권씩"
         required: false
-        default: "4"
+        default: "6"
   schedule:
     - cron: "30 0 * * 2,5"
 
@@ -34,7 +34,7 @@ jobs:
         run: |
           LIMIT="${{ inputs.limit_per_site }}"
           if [ -z "$LIMIT" ]; then
-            LIMIT="4"
+            LIMIT="6"
           fi
           python scripts/collectors/ebs_school_answer_sync.py \
             --catalog data/catalog.json \
