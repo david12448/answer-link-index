@@ -128,7 +128,6 @@ state.schoolLevel = "";
 state.books = ${JSON.stringify(actualCatalog.books)};
 `);
 elements.searchInput.value = "";
-elements.embedSearchInput.value = "";
 for (const id of ["publisherFilter", "subjectFilter", "gradeFilter", "bookFilter"]) {
   elements[id].value = "";
 }
