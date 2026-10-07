@@ -107,6 +107,14 @@ evaluate(`state.scope = {publisher:"EBS", level:"elementary", brand:"", subject:
 assert.equal(evaluate("getFilteredBooks().length"), 1, "URL level scope filters to one school level");
 assert.equal(evaluate("getFilteredBooks()[0].book_id"), "scope-a");
 
+evaluate(`state.scope = {publisher:"EBS", level:"elementary", brand:"만점왕", subject:"", grade:"", book:"", embed:true};
+state.books = [
+  {book_id:"brand-a", title:"만점왕 수학 3-1", brand:"만점왕", school_level:"elementary", grade:3, publisher:"EBS", subject:"수학", materials:[]},
+  {book_id:"brand-b", title:"만점왕 수학 플러스 3-1", brand:"만점왕 수학 플러스", school_level:"elementary", grade:3, publisher:"EBS", subject:"수학", materials:[]}
+];`);
+assert.equal(evaluate("getFilteredBooks().length"), 1, "URL brand scope filters to one series");
+assert.equal(evaluate("getFilteredBooks()[0].book_id"), "brand-a");
+
 assert.equal(evaluate(`shouldShowMaterial({type:"errata", availability:"available", status:"ok"})`), true);
 assert.equal(evaluate(`shouldShowMaterial({type:"errata", availability:"unavailable", status:"needs_review"})`), false);
 assert.equal(evaluate(`shouldShowMaterial({type:"errata", availability:"unknown", status:"needs_review"})`), false);
