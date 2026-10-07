@@ -49,11 +49,18 @@ jobs:
               title = item.get("title") or item.get("book_id")
               matched = (item.get("matched_row") or {}).get("text")
               direct = len(item.get("direct_candidates", []))
+              verified = sum(
+                  1 for check in item.get("direct_verifications", [])
+                  if check.get("looks_like_file")
+              )
               error = item.get("error")
               if error:
                   print(f"- ❌ {title}: {error}")
               else:
-                  print(f"- {'✅' if direct else '⚠️'} {title}: 자료 게시물={matched or '미확인'}, direct 후보={direct}")
+                  print(
+                      f"- {'✅' if verified else ('⚠️' if direct else '○')} {title}: "
+                      f"자료 게시물={matched or '미확인'}, direct 후보={direct}, HEAD 검증={verified}"
+                  )
           PY
 
       - name: Upload result
