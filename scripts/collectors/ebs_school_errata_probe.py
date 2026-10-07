@@ -12,6 +12,7 @@ from ebs_school_material_probe import (
     collect_attachments,
     extract_go_detail_rows,
     normalize_title,
+    rotating_batch,
     try_search_board,
 )
 
@@ -166,9 +167,11 @@ def main() -> int:
     if args.limit_per_site:
         limited = []
         for site in ("ebs_primary", "ebs_middle"):
-            limited.extend(
-                [b for b in books if b.get("publisher_site") == site][:args.limit_per_site]
-            )
+            site_books = [
+                b for b in books
+                if b.get("publisher_site") == site
+            ]
+            limited.extend(rotating_batch(site_books, args.limit_per_site))
         books = limited
 
     results = []
