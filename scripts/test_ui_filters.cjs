@@ -150,8 +150,7 @@ assert.equal(
   "Actual catalog school-level shortcut matches elementary count"
 );
 
-stateSearch = "만점왕 수학 플러스";
-elements.searchInput.value = stateSearch;
+elements.searchInput.value = "만점왕 수학 플러스";
 assert.ok(
   evaluate("getFilteredBooks().length") >= 10,
   "Actual catalog search finds the 만점왕 수학 플러스 series"
