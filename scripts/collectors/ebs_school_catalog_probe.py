@@ -52,6 +52,27 @@ def infer_subject(title: str) -> str | None:
     return None
 
 
+def extract_title_from_context(context: str, anchor_text: str) -> str | None:
+    noise = (
+        "교재 미리보기", "종이책 구입", "eBook 구입", "eBook 보기",
+        "정답지/자료", "정오표", "MP3", "종이책 정가", "종이책 판매가",
+        "출판사 :", "원", "% 할인", "교재 Q&A"
+    )
+    lines = [re.sub(r"\\s+", " ", line).strip() for line in context.splitlines()]
+    candidates = []
+    for line in lines:
+        if not line or line == anchor_text:
+            continue
+        if any(token in line for token in noise):
+            continue
+        if len(line) < 3 or len(line) > 120:
+            continue
+        if re.fullmatch(r"[0-9,().%\\s-]+", line):
+            continue
+        candidates.append(line)
+    return candidates[0] if candidates else None
+
+
 def collect(site_key: str) -> dict:
     cfg = SITES[site_key]
 
@@ -74,11 +95,21 @@ def collect(site_key: str) -> dict:
         page.wait_for_timeout(1800)
 
         anchors = page.locator("a").evaluate_all(
-            """els => els.map(a => ({
-              text: (a.innerText || a.textContent || '').replace(/\s+/g, ' ').trim(),
-              href: a.getAttribute('href'),
-              onclick: a.getAttribute('onclick')
-            })).filter(x => x.text || x.href || x.onclick)"""
+            """els => els.map(a => {
+              let node = a;
+              let context = '';
+              for (let i = 0; i < 6 && node; i += 1, node = node.parentElement) {
+                const raw = (node.innerText || node.textContent || '').trim();
+                if (raw && raw.length <= 1200) context = raw;
+                if (node.tagName === 'LI' || node.tagName === 'TR') break;
+              }
+              return {
+                text: (a.innerText || a.textContent || '').replace(/\s+/g, ' ').trim(),
+                href: a.getAttribute('href'),
+                onclick: a.getAttribute('onclick'),
+                context: context.replace(/\r/g, '')
+              };
+            }).filter(x => x.text || x.href || x.onclick)"""
         )
 
         books = {}
@@ -98,14 +129,19 @@ def collect(site_key: str) -> dict:
                     if href and not href.lower().startswith("javascript:")
                     else f'{cfg["base"]}/book/main/view?textbookId={textbook_id}'
                 )
-                books.setdefault(textbook_id, {
+                context_title = extract_title_from_context(item.get("context") or "", title)
+                resolved_title = context_title or (title if title not in {"교재 미리보기", "정답지/자료", "정오표", "MP3"} else None)
+                candidate = {
                     "textbook_id": textbook_id,
-                    "title": title,
+                    "title": resolved_title,
                     "official_page": official,
-                    "grade_guess": infer_grade(title),
-                    "subject_guess": infer_subject(title),
-                    "source": "anchor",
-                })
+                    "grade_guess": infer_grade(resolved_title or ""),
+                    "subject_guess": infer_subject(resolved_title or ""),
+                    "source": "anchor_context" if context_title else "anchor",
+                }
+                current = books.get(textbook_id)
+                if current is None or (not current.get("title") and candidate.get("title")):
+                    books[textbook_id] = candidate
 
         # 링크 텍스트와 textbookId가 서로 다른 DOM 노드에 있는 경우를 보완.
         html = page.content()
