@@ -1,10 +1,13 @@
 const PAGE_SIZE = 20;
+const BOOK_SELECT_LIMIT = 80;
+const SCHOOL_ORDER = { elementary: 0, middle: 1, high: 2 };
 
 const state = {
   books: [],
   meta: {},
   visibleCount: PAGE_SIZE,
   view: "list",
+  schoolLevel: "",
   scope: {
     publisher: "",
     subject: "",
@@ -106,6 +109,10 @@ function selectValue(id) {
   return node ? node.value : "";
 }
 
+function currentQuery() {
+  return selectValue(state.scope.embed ? "embedSearchInput" : "searchInput");
+}
+
 function effectiveFilters() {
   return {
     publisher: state.scope.publisher || selectValue("publisherFilter"),
@@ -117,6 +124,7 @@ function effectiveFilters() {
 
 function matchesFilters(book, filters, ignoreKey = "") {
   if (!scopeMatches(book)) return false;
+  if (state.schoolLevel && book.school_level !== state.schoolLevel) return false;
   if (ignoreKey !== "publisher" && filters.publisher && book.publisher !== filters.publisher) return false;
   if (ignoreKey !== "subject" && filters.subject && book.subject !== filters.subject) return false;
   if (ignoreKey !== "grade" && filters.grade && !matchesGrade(book, filters.grade)) return false;
@@ -155,6 +163,7 @@ function refillSelect(select, options, placeholder, selectedValue = "") {
 
 function updateDependentSelects() {
   const filters = effectiveFilters();
+  const levelMatches = book => !state.schoolLevel || book.school_level === state.schoolLevel;
 
   const publisherOptions = sortedUnique(
     state.books.filter(scopeMatches).map(book => book.publisher)
@@ -164,7 +173,7 @@ function updateDependentSelects() {
 
   const publisher = state.scope.publisher || selectValue("publisherFilter");
   const subjectBooks = state.books.filter(book =>
-    scopeMatches(book) && (!publisher || book.publisher === publisher)
+    scopeMatches(book) && levelMatches(book) && (!publisher || book.publisher === publisher)
   );
   const subjectOptions = sortedUnique(subjectBooks.map(book => book.subject));
   refillSelect(el("subjectFilter"), subjectOptions, "과목 전체",
@@ -173,6 +182,7 @@ function updateDependentSelects() {
   const subject = state.scope.subject || selectValue("subjectFilter");
   const gradeBooks = state.books.filter(book =>
     scopeMatches(book) &&
+    levelMatches(book) &&
     (!publisher || book.publisher === publisher) &&
     (!subject || book.subject === subject)
   );
@@ -184,7 +194,12 @@ function updateDependentSelects() {
   }
   const gradeOptions = [...gradeMap.entries()]
     .map(([value, label]) => ({ value, label }))
-    .sort((a, b) => a.label.localeCompare(b.label, "ko"));
+    .sort((a, b) => {
+      const [levelA, gradeA] = a.value.split(":");
+      const [levelB, gradeB] = b.value.split(":");
+      return (SCHOOL_ORDER[levelA] ?? 9) - (SCHOOL_ORDER[levelB] ?? 9)
+        || Number(gradeA) - Number(gradeB);
+    });
 
   let gradeSelection = filters.grade;
   if (state.scope.grade && !state.scope.grade.includes(":")) {
@@ -202,15 +217,57 @@ function updateDependentSelects() {
   const grade = state.scope.grade || selectValue("gradeFilter");
   const bookBooks = state.books.filter(book =>
     scopeMatches(book) &&
+    levelMatches(book) &&
     (!publisher || book.publisher === publisher) &&
     (!subject || book.subject === subject) &&
-    (!grade || matchesGrade(book, grade))
+    (!grade || matchesGrade(book, grade)) &&
+    matchesSearch(book, currentQuery())
   );
   const bookOptions = bookBooks
-    .map(book => ({ value: book.book_id, label: book.title }))
+    .map(book => ({
+      value: book.book_id,
+      label: book.title + (book.edition_year && !book.title.includes(String(book.edition_year))
+        ? ` (${book.edition_year}년판)` : "")
+    }))
     .sort((a, b) => a.label.localeCompare(b.label, "ko"));
-  refillSelect(el("bookFilter"), bookOptions, "교재 선택",
-    state.scope.book || filters.book);
+  const selected = state.scope.book || filters.book;
+  const visibleOptions = bookOptions.slice(0, BOOK_SELECT_LIMIT);
+  if (selected && !visibleOptions.some(item => item.value === selected)) {
+    const selectedOption = bookOptions.find(item => item.value === selected);
+    if (selectedOption) visibleOptions.push(selectedOption);
+  }
+  const placeholder = bookOptions.length > BOOK_SELECT_LIMIT
+    ? `교재 선택 (${bookOptions.length}권 중 일부 · 검색으로 좁히기)`
+    : "교재 선택";
+  refillSelect(el("bookFilter"), visibleOptions, placeholder, selected);
+}
+
+function updateSchoolShortcuts() {
+  const nav = el("schoolShortcuts");
+  if (state.scope.book || state.scope.grade) {
+    nav.hidden = true;
+    return;
+  }
+  const filters = effectiveFilters();
+  const candidates = state.books.filter(book =>
+    scopeMatches(book) &&
+    (!filters.publisher || book.publisher === filters.publisher) &&
+    (!filters.subject || book.subject === filters.subject)
+  );
+  const counts = { elementary: 0, middle: 0, high: 0 };
+  for (const book of candidates) {
+    if (Object.hasOwn(counts, book.school_level)) counts[book.school_level] += 1;
+  }
+  nav.hidden = Object.values(counts).filter(count => count > 0).length < 2;
+  for (const button of nav.querySelectorAll("button[data-level]")) {
+    const level = button.dataset.level;
+    button.hidden = level !== "" && !counts[level];
+    const active = state.schoolLevel === level;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+    const title = level ? labels[level] : "전체";
+    button.textContent = level ? `${title} ${counts[level]}` : "전체";
+  }
 }
 
 function materialStatus(book) {
@@ -412,7 +469,7 @@ function renderBook(book, detailMode = false) {
 
 function getFilteredBooks() {
   const filters = effectiveFilters();
-  const query = state.scope.book ? "" : el("searchInput").value;
+  const query = state.scope.book ? "" : currentQuery();
   return state.books.filter(book => {
     if (!matchesFilters(book, filters)) return false;
     return matchesSearch(book, query);
@@ -480,6 +537,7 @@ function hideFixedControls() {
 
   if (state.scope.book) {
     el("filters").hidden = true;
+    el("schoolShortcuts").hidden = true;
     el("toolbar").hidden = true;
     el("loadMoreButton").hidden = true;
   }
@@ -489,6 +547,7 @@ function hideFixedControls() {
     el("hero").hidden = true;
     el("scopeHeading").hidden = false;
     el("viewSwitch").hidden = true;
+    el("embedSearchBox").hidden = Boolean(state.scope.book);
   }
 
   const visibleFields = [...document.querySelectorAll(".filter-field")].filter(node => !node.hidden);
@@ -515,23 +574,45 @@ function resetFilters() {
   if (!state.scope.grade) el("gradeFilter").value = "";
   if (!state.scope.book) el("bookFilter").value = "";
   el("searchInput").value = "";
+  el("embedSearchInput").value = "";
+  state.schoolLevel = "";
   resetVisible();
   updateDependentSelects();
+  updateSchoolShortcuts();
   applyFilters();
 }
 
 function bindEvents() {
-  el("searchInput").addEventListener("input", () => {
-    resetVisible();
-    applyFilters();
-  });
+  for (const id of ["searchInput", "embedSearchInput"]) {
+    el(id).addEventListener("input", () => {
+      resetVisible();
+      updateDependentSelects();
+      applyFilters();
+    });
+  }
+
+  for (const button of el("schoolShortcuts").querySelectorAll("button[data-level]")) {
+    button.addEventListener("click", () => {
+      const level = button.dataset.level;
+      if (state.schoolLevel === level) return;
+      state.schoolLevel = level;
+      if (!state.scope.grade) el("gradeFilter").value = "";
+      if (!state.scope.book) el("bookFilter").value = "";
+      resetVisible();
+      updateDependentSelects();
+      updateSchoolShortcuts();
+      applyFilters();
+    });
+  }
 
   el("publisherFilter").addEventListener("change", () => {
+    state.schoolLevel = "";
     if (!state.scope.subject) el("subjectFilter").value = "";
     if (!state.scope.grade) el("gradeFilter").value = "";
     if (!state.scope.book) el("bookFilter").value = "";
     resetVisible();
     updateDependentSelects();
+    updateSchoolShortcuts();
     applyFilters();
   });
 
@@ -540,6 +621,7 @@ function bindEvents() {
     if (!state.scope.book) el("bookFilter").value = "";
     resetVisible();
     updateDependentSelects();
+    updateSchoolShortcuts();
     applyFilters();
   });
 
@@ -583,6 +665,7 @@ async function init() {
 
     updateDependentSelects();
     hideFixedControls();
+    updateSchoolShortcuts();
     updateScopeHeading();
 
     el("updatedAt").textContent = state.meta.generated_at ? `데이터 기준 ${state.meta.generated_at}` : "";
