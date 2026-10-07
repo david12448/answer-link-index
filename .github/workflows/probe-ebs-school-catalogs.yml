@@ -1,0 +1,42 @@
+name: Probe EBS elementary and middle catalogs
+
+on:
+  pull_request:
+    paths:
+      - "scripts/collectors/ebs_school_catalog_probe.py"
+      - ".github/workflows/probe-ebs-school-catalogs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Probe EBS 초등/중학 교재 목록
+        run: |
+          python scripts/collectors/ebs_school_catalog_probe.py \
+            --site all \
+            --output ebs-school-catalog-probe.json
+
+      - name: Print summary
+        run: cat ebs-school-catalog-probe.json >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: ebs-school-catalog-probe
+          path: ebs-school-catalog-probe.json
+          if-no-files-found: error
