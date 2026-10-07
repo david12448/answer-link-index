@@ -161,3 +161,39 @@ Playwright로 실제 페이지 렌더링 후 DOM을 읽으면 첨부파일의 `f
 `scripts/collectors/ebs_batch_collect.py`와 `Collect EBS seed answers` workflow로 현재 catalog의 EBS 교재를 반복 점검할 수 있다.
 자동 수집 결과는 후보 데이터로 사용하고, catalog 수정은 검증 후 PR에서 반영하는 기존 원칙을 유지한다.
 
+## 2026-10-07 EBS 초등·중학까지 같은 프로젝트로 확장
+
+EBS는 학교급에 따라 공식 서비스와 교재 고유 ID 체계가 다르다.
+
+### 고등
+- 서비스: `www.ebsi.co.kr`
+- 교재 고유 ID: `LB...`
+- 현재 사용 중인 정답/정오표 collector 유지
+
+### 초등
+- 서비스: `primary.ebs.co.kr`
+- 교재 목록: `/book/main/list`
+- 정답지/자료실: `/book/main/correctAnswerList`
+- 정오표: `/book/main/errataList`
+- 교재 상세는 `textbookId=TB...` 형태를 사용하는 사례가 확인됨
+- 대표 시리즈: 만점왕, 만점왕 통합본, 만점왕 단원평가, 만점왕 수학 플러스, 초등 수해력 등
+
+### 중학
+- 서비스: `mid.ebs.co.kr`
+- 교재 목록: `/book/main/list`
+- 정답지/자료실: `/book/main/correctAnswerList`
+- 정오표: `/book/main/errataList`
+- 교재 상세는 `textbookId=TB...` 형태
+- 대표 시리즈: 중학 뉴런, 중학 뉴런 연산, 중학 수능특강, 필독 중학 국어, 수학 마스터 등
+
+### 데이터 정규화
+사용자 UI에서는 세 사이트를 별도 출판사처럼 나누지 않고 모두 **EBS**로 표시한다.
+학교급 필터에서 초등/중등/고등이 구분되며, collector만 내부 사이트 차이를 처리한다.
+
+- `publisher = EBS`
+- `school_level = elementary | middle | high`
+- `publisher_site = ebs_primary | ebs_middle | ebsi`
+- `publisher_book_id = TB... | LB...`
+
+즉 EBS가 내부적으로 세 사이트로 나뉘어도 사용자는 같은 교재 검색 UI와 같은 교재 상세 페이지를 사용한다.
+
