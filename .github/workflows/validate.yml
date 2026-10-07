@@ -15,5 +15,6 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install --upgrade pip jsonschema
       - run: python scripts/validate_data.py
+      - run: python -m py_compile scripts/collectors/*.py
       - run: node --check assets/app.js
       - run: node scripts/test_ui_filters.cjs
