@@ -1,0 +1,80 @@
+name: Sync EBS school answers
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit_per_site:
+        description: "학교급별 점검 권수. 0은 전체, 기본 4권씩"
+        required: false
+        default: "4"
+  schedule:
+    - cron: "30 0 * * 2,5"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Check unverified EBS elementary/middle answer PDFs
+        shell: bash
+        run: |
+          LIMIT="${{ inputs.limit_per_site }}"
+          if [ -z "$LIMIT" ]; then
+            LIMIT="4"
+          fi
+          python scripts/collectors/ebs_school_answer_sync.py \
+            --catalog data/catalog.json \
+            --limit-per-site "$LIMIT" \
+            --report ebs-school-answer-sync-report.json
+
+      - name: Upload check report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ebs-school-answer-sync-report
+          path: ebs-school-answer-sync-report.json
+          if-no-files-found: error
+
+      - name: Detect catalog changes
+        id: diff
+        shell: bash
+        run: |
+          if git diff --quiet -- data/catalog.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create pull request for verified answer links
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/ebs-school-answers
+          delete-branch: true
+          commit-message: "data: add verified EBS school answer links"
+          title: "data: EBS 초등·중등 정답 PDF 링크 추가"
+          body: |
+            EBS 초등·중등의 아직 미확인 교재를 브라우저로 점검해,
+            안전 조건을 모두 통과한 정답 PDF만 catalog에 반영한 PR입니다.
+
+            자동 반영 조건:
+            1. 교재명과 EBS 자료 게시물명이 일치
+            2. 게시물 상세 화면까지 진입 성공
+            3. EBS 공식 /board/common/download 주소
+            4. PDF 첨부파일 후보가 정확히 1개
+            5. 다른 학년·학기 또는 여러 정답책 후보가 있으면 자동 반영하지 않음
+
+            확인 후 병합해 주세요.
