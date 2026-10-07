@@ -38,6 +38,8 @@ def main() -> int:
         book_id = (book.get("publisher_book_id") or "").strip()
         if not book_id:
             continue
+        if book.get("publisher_site") not in {None, "ebsi"} or not book_id.startswith("LB"):
+            continue
 
         detail, answer_no = existing_answer_detail(book)
         try:
