@@ -143,7 +143,8 @@ elements.searchInput.value = "";
 for (const id of ["publisherFilter", "subjectFilter", "gradeFilter", "bookFilter"]) {
   elements[id].value = "";
 }
-evaluate("updateDependentSelects(); updateSchoolShortcuts();");
+evaluate("updateDependentSelects(); updateSchoolShortcuts(); updateSeriesShortcuts();");
+assert.equal(elements.seriesShortcuts.hidden, true, "Initial catalog does not show series shortcuts");
 assert.equal(
   evaluate("getFilteredBooks().length"),
   actualCatalog.books.length,
@@ -155,7 +156,8 @@ assert.ok(
 );
 
 const elementaryCount = actualCatalog.books.filter(book => book.school_level === "elementary").length;
-evaluate(`state.schoolLevel = "elementary"; updateDependentSelects(); updateSchoolShortcuts();`);
+evaluate(`state.schoolLevel = "elementary"; updateDependentSelects(); updateSchoolShortcuts(); updateSeriesShortcuts();`);
+assert.equal(elements.seriesShortcuts.hidden, true, "School level alone does not clutter the page with series");
 assert.equal(
   evaluate("getFilteredBooks().length"),
   elementaryCount,
