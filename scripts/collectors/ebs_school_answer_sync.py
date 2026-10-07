@@ -54,12 +54,15 @@ def safe_candidate(book: dict, result: dict) -> dict | None:
     if not target or target not in matched_norm:
         return None
 
+    expected_host = {"ebs_primary": "primary.ebs.co.kr", "ebs_middle": "mid.ebs.co.kr"}.get(book.get("publisher_site"))
     candidates = []
     seen = set()
     for item in result.get("direct_candidates", []):
         url = item.get("url") or ""
         filename = (item.get("text") or "").strip()
-        if DOWNLOAD_PATH not in url or not PDF_RE.search(filename):
+        parsed = urlparse(url)
+        if (parsed.scheme != "https" or parsed.hostname != expected_host
+                or parsed.path != DOWNLOAD_PATH or not PDF_RE.search(filename)):
             continue
         key = (url, filename)
         if key not in seen:
@@ -109,12 +112,8 @@ def verify_download(context, candidate: dict) -> dict:
         ok = (
             response.ok
             and len(body) > 500
-            and (
-                body.startswith(b"%PDF")
-                or "application/pdf" in content_type
-                or "attachment" in disposition
-                or "octet-stream" in content_type
-            )
+            and body.startswith(b"%PDF-")
+            and urlparse(response.url).hostname == urlparse(candidate["url"]).hostname
         )
         return {
             "ok": ok,
@@ -143,6 +142,8 @@ def main() -> int:
     parser.add_argument("--report", type=Path, default=Path("ebs-school-answer-sync-report.json"))
     parser.add_argument("--limit-per-site", type=int, default=6)
     args = parser.parse_args()
+    if args.limit_per_site < 0:
+        parser.error("--limit-per-site must be >= 0")
 
     data = json.loads(args.catalog.read_text(encoding="utf-8"))
     pending = [

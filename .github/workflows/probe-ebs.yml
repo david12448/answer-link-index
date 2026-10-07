@@ -25,7 +25,13 @@ permissions:
   contents: read
 
 jobs:
+  changes:
+    uses: ./.github/workflows/collector-change-gate.yml
+    with:
+      paths: '["scripts/collectors/ebs_probe.py", ".github/workflows/probe-ebs.yml", "docs/publishers/EBS.md"]'
   probe:
+    needs: changes
+    if: needs.changes.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

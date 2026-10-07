@@ -1,0 +1,54 @@
+name: Collector change gate
+
+on:
+  workflow_call:
+    inputs:
+      paths:
+        type: string
+        required: true
+    outputs:
+      should_run:
+        value: ${{ jobs.changes.outputs.should_run }}
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.diff.outputs.should_run }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: diff
+        name: Check files changed in this update
+        env:
+          COLLECTOR_PATHS: ${{ inputs.paths }}
+        run: |
+          python - <<'PY'
+          import fnmatch, json, os, subprocess
+          from pathlib import Path
+          event = json.loads(Path(os.environ['GITHUB_EVENT_PATH']).read_text())
+          should_run = True
+          reason = 'Scheduled or manual run'
+          if os.environ['GITHUB_EVENT_NAME'] == 'pull_request':
+              pr = event['pull_request']
+              head = pr['head']['sha']
+              before = event.get('before') if event.get('action') == 'synchronize' else None
+              if before and subprocess.run(['git', 'cat-file', '-e', before + '^{commit}'], capture_output=True).returncode == 0:
+                  comparison = before + '..' + head
+              else:
+                  comparison = pr['base']['sha'] + '...' + head
+              files = subprocess.check_output(['git', 'diff', '--name-only', comparison], text=True).splitlines()
+              patterns = json.loads(os.environ['COLLECTOR_PATHS'])
+              patterns.append('.github/workflows/collector-change-gate.yml')
+              should_run = any(fnmatch.fnmatch(f, p) for f in files for p in patterns)
+              reason = 'Relevant files changed' if should_run else 'No collector changes in this update; browser probe skipped'
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('should_run=' + str(should_run).lower() + '\n')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write(reason + '\n')
+          PY

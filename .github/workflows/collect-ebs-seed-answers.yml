@@ -16,7 +16,13 @@ permissions:
   contents: read
 
 jobs:
+  changes:
+    uses: ./.github/workflows/collector-change-gate.yml
+    with:
+      paths: '["scripts/collectors/ebs_batch_collect.py", "scripts/collectors/ebs_browser_probe.py", ".github/workflows/collect-ebs-seed-answers.yml"]'
   collect:
+    needs: changes
+    if: needs.changes.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "scripts/collectors/ebs_school_material_probe.py"
+      - "scripts/collectors/ebs_school_answer_sync.py"
       - ".github/workflows/probe-ebs-school-materials.yml"
   workflow_dispatch:
     inputs:
@@ -20,7 +21,13 @@ permissions:
   contents: read
 
 jobs:
+  changes:
+    uses: ./.github/workflows/collector-change-gate.yml
+    with:
+      paths: '["scripts/collectors/ebs_school_material_probe.py", ".github/workflows/probe-ebs-school-materials.yml", "scripts/collectors/ebs_school_answer_sync.py"]'
   probe:
+    needs: changes
+    if: needs.changes.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -23,7 +23,13 @@ permissions:
   pull-requests: write
 
 jobs:
+  changes:
+    uses: ./.github/workflows/collector-change-gate.yml
+    with:
+      paths: '["scripts/collectors/ebs_school_cover_sync.py", ".github/workflows/sync-ebs-school-covers.yml"]'
   sync:
+    needs: changes
+    if: needs.changes.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

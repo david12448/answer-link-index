@@ -882,7 +882,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013169",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/6/11/TB1000013169/36903670312753805_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 국어 3-2 교재입니다. 정답 PDF 직접 주소는 확인 중이며, 현재는 출판사의 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -935,7 +935,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013092",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/12/16/TB1000013092/21584847939570731_textbook.png",
       "post_url": null,
       "summary": "EBS 초등 만점왕 사회 3-1 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -988,7 +988,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013153",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/5/12/TB1000013153/34297076758443777_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 사회 3-2 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -1095,7 +1095,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013149",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/5/12/TB1000013149/34287720809152779_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 3-2 교재입니다. 직접 정답 PDF 주소는 확인 중이며, 현재는 출판사의 교재 안내 페이지를 통해 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -1147,7 +1147,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000012104",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2024/12/10/TB1000012104/116856725759675100_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 플러스 3-1 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -1199,7 +1199,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000012177",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/6/27/TB1000012177/6737676191840254_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 플러스 3-2 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2157,11 +2157,12 @@
           "resource_id": "ebs-primary-tb1000013095-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013095",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013095#answer/view/115/60000466166/0/1/TB1000013095/0///",
+          "direct_url": "https://primary.ebs.co.kr/board/common/download?division=&id=30000005696",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000005696"
         },
         {
           "resource_id": "ebs-primary-tb1000013095-errata",
@@ -2209,11 +2210,12 @@
           "resource_id": "ebs-primary-tb1000013179-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013179",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013179#answer/view/115/60000474929/0/1/TB1000013179/0///",
+          "direct_url": "https://primary.ebs.co.kr/board/common/download?division=&id=30000007269",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000007269"
         },
         {
           "resource_id": "ebs-primary-tb1000013179-errata",
@@ -2769,7 +2771,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013097",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/12/16/TB1000013097/21584698561124409_textbook.png",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 6-1 교재입니다. 직접 정답 PDF 주소는 확인 중이며, 현재는 출판사의 교재 안내 페이지를 통해 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2821,7 +2823,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013181",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/6/15/TB1000013181/37236764973361164_textbook.png",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 6-2 교재입니다. 직접 정답 PDF 주소는 확인 중이며, 현재는 출판사의 교재 안내 페이지를 통해 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2873,7 +2875,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013084",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/12/4/TB1000013084/20572101311528310_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 플러스 6-1 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2925,7 +2927,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013185",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/6/23/TB1000013185/37927094974786457_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 플러스 6-2 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2977,7 +2979,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000010551",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2023/10/12/TB1000010551/80134655052391973_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 초등 영어듣기평가 완벽대비 6-1 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -3029,7 +3031,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000010552",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2023/10/12/TB1000010552/80134742951242669_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 초등 영어듣기평가 완벽대비 6-2 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {

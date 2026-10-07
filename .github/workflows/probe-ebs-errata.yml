@@ -15,7 +15,13 @@ permissions:
   contents: read
 
 jobs:
+  changes:
+    uses: ./.github/workflows/collector-change-gate.yml
+    with:
+      paths: '["scripts/collectors/ebs_errata_probe.py", ".github/workflows/probe-ebs-errata.yml"]'
   probe:
+    needs: changes
+    if: needs.changes.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

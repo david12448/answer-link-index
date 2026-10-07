@@ -148,3 +148,10 @@
 - 단일 교재 `?book=` 화면에서는 숨긴다.
 - `brand=` URL scope를 지원해 시리즈 단위 티스토리 목록도 만들 수 있다.
 
+
+## ADR-026 — 장기 PR의 브라우저 검사도 이번 변경만 검사한다
+- 모든 PR의 catalog/schema/UI/중복 검사는 항상 유지한다.
+- 브라우저 workflow는 경량 reusable gate에서 이번 synchronize의 before..head 변경 파일을 먼저 검사한다.
+- 열린 PR의 기존 collector 변경 이력 때문에 catalog-only 갱신마다 Playwright를 재실행하지 않는다.
+- 최초 PR/기준 커밋 누락은 base...head로 보수적으로 판단한다. scheduled/manual sync는 계속 실행한다.
+- 공식 정답 PDF는 실제 GET 본문의 PDF 서명이 검증된 경우에만 자동 반영한다.

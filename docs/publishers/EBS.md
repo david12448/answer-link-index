@@ -321,3 +321,10 @@ EBS 공식 교재 검색에서는 **2027학년도 수능완성 영어영역 영�
 표지는 재호스팅하지 않고 `cover_image_url`에 공식 주소만 저장한다.
 `Sync EBS school covers` workflow는 표지가 비어 있는 교재를 순환 점검하고 변경 시 PR을 만든다.
 
+
+## 2026-10-08 검증 보완
+
+- 등록된 초·중등 공식 표지: 90/90권. HTML의 og:image와 img에서 같은 textbookId의 cbox 이미지를 찾고 실제 GET 응답으로 검증했다.
+- 초등 정답지는 교재별 `tid`가 지정된 `/board/book/list` 및 `/board/book/view` 요청으로 교재와 게시물을 연결할 수 있다. JS hash는 브라우저의 화면 주소이고 실제 자료 HTML은 이 AJAX 응답에서 온다.
+- 중등은 `/book/main/correctAnswerList`가 출발점이며, 같은 제목의 2015/2022 자료가 함께 있을 수 있으므로 교육과정 근거가 없는 항목은 자동 승격하지 않는다.
+- PDF 검증은 파일명·HEAD만으로 끝내지 않고 공식 `/board/common/download`에 GET하여 PDF 서명을 검사한다.
