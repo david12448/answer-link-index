@@ -129,7 +129,9 @@ def main() -> int:
     catalog = json.loads(args.catalog.read_text(encoding="utf-8"))
     books = [
         book for book in catalog.get("books", [])
-        if book.get("publisher") == "EBS" and book.get("publisher_book_id")
+        if book.get("publisher") == "EBS"
+        and book.get("publisher_site") in {None, "ebsi"}
+        and str(book.get("publisher_book_id") or "").startswith("LB")
     ]
 
     results = []
