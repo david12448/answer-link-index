@@ -296,4 +296,15 @@ EBSi 영어 MP3는 정답 PDF와 달리 하나의 파일이 아니라 교재별�
 3. 특정 음원 하나를 임의로 대표 direct_url로 저장하지 않음
 4. 파일을 확인하지 못한 교재는 `unknown`으로 숨김
 5. `Sync EBSi optional materials` workflow가 주기적으로 상태를 재점검
+## 2026-10-07 수능완성 영어 MP3 판정 보정
+
+EBS 공식 교재 검색에서는 **2027학년도 수능완성 영어영역 영어**에 MP3가 제공되는 것으로 표시된다.
+기존 브라우저 probe도 `LB00000005984`의 `mp3Detail(...)` 상세 페이지까지는 정상 진입했지만,
+실제 목록이 `retrieveMp3Down.ajax`에서 후속 로딩되는 구조를 충분히 읽지 못해 0개로 오판했다.
+
+따라서:
+- 해당 교재 MP3는 `availability=available`로 복구
+- probe는 `retrieveMp3Down.ajax` 응답 자체의 MP3 URL도 검사
+- `#ajaxArea`가 채워질 때까지 기다린 뒤 DOM을 재검사
+- 일시적/구조적 수집 실패만으로 기존 `available` 자료를 자동 숨기지 않음
 
