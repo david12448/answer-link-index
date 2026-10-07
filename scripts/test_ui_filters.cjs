@@ -89,6 +89,7 @@ elements.embedSearchInput.value = "만점왕";
 assert.equal(evaluate("getFilteredBooks().length"), 1, "Embedded pages use their own search");
 elements.embedSearchInput.value = "";
 
+elements.searchInput.value = "";
 evaluate(`state.scope.embed = false; state.books = Array.from({length:220}, (_,i) => ({
   book_id:"bulk-"+i, title:"교재 "+String(i).padStart(3, "0"),
   school_level:"elementary", grade:3, publisher:"EBS", subject:"수학", materials:[]
