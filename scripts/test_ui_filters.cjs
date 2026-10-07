@@ -90,19 +90,19 @@ assert.equal(evaluate("getFilteredBooks().length"), 1, "Embedded pages use their
 elements.embedSearchInput.value = "";
 
 elements.searchInput.value = "";
-evaluate(`state.scope.embed = false; state.books = Array.from({length:220}, (_,i) => ({
+evaluate(`state.scope.embed = false; state.books = Array.from({length:2000}, (_,i) => ({
   book_id:"bulk-"+i, title:"교재 "+String(i).padStart(3, "0"),
   school_level:"elementary", grade:3, publisher:"EBS", subject:"수학", materials:[]
 })); updateDependentSelects();`);
-assert.equal(elements.bookFilter.options.length, 81, "Limit selector to first 80 items plus placeholder");
+assert.equal(elements.bookFilter.options.length, 81, "Limit selector to 80 items with 2000 books");
 assert.match(elements.bookFilter.options[0].textContent, /검색으로 좁히기/);
 
-elements.searchInput.value = "219";
+elements.searchInput.value = "1999";
 evaluate("updateDependentSelects();");
 assert.equal(elements.bookFilter.options.length, 2, "Typing filters the big book dropdown");
-assert.equal(elements.bookFilter.options[1].value, "bulk-219");
+assert.equal(elements.bookFilter.options[1].value, "bulk-1999");
 
-evaluate(`state.scope.book = "bulk-219"; state.scope.embed = true;`);
+evaluate(`state.scope.book = "bulk-1999"; state.scope.embed = true;`);
 assert.equal(evaluate("getFilteredBooks().length"), 1, "Fixed one-book Tistory view remains available");
 
 console.log("UI filter tests passed: school levels, grade order, search, select cap, single-book scope.");
