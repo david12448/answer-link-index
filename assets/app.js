@@ -252,16 +252,18 @@ function updateSchoolShortcuts() {
   const candidates = state.books.filter(book =>
     scopeMatches(book) &&
     (!filters.publisher || book.publisher === filters.publisher) &&
-    (!filters.subject || book.subject === filters.subject)
+    (!filters.subject || book.subject === filters.subject) &&
+    matchesSearch(book, currentQuery())
   );
   const counts = { elementary: 0, middle: 0, high: 0 };
   for (const book of candidates) {
     if (Object.hasOwn(counts, book.school_level)) counts[book.school_level] += 1;
   }
-  nav.hidden = Object.values(counts).filter(count => count > 0).length < 2;
+  nav.hidden = Object.values(counts).filter(count => count > 0).length < 2
+    && !state.schoolLevel;
   for (const button of nav.querySelectorAll("button[data-level]")) {
     const level = button.dataset.level;
-    button.hidden = level !== "" && !counts[level];
+    button.hidden = level !== "" && !counts[level] && state.schoolLevel !== level;
     const active = state.schoolLevel === level;
     button.classList.toggle("is-active", active);
     button.setAttribute("aria-pressed", String(active));
@@ -587,6 +589,7 @@ function bindEvents() {
     el(id).addEventListener("input", () => {
       resetVisible();
       updateDependentSelects();
+      updateSchoolShortcuts();
       applyFilters();
     });
   }
