@@ -20,6 +20,14 @@ def duplicate_values(values):
     return sorted(value for value, count in counts.items() if count > 1)
 
 
+def normalize_title_for_identity(value: str) -> str:
+    return "".join(
+        ch.lower()
+        for ch in str(value or "")
+        if ch.isalnum()
+    )
+
+
 def main():
     data = load_json(CATALOG)
     schema = load_json(SCHEMA)
@@ -44,6 +52,29 @@ def main():
     duplicated_books = duplicate_values(book_ids)
     if duplicated_books:
         print("[DUPLICATE book_id]", *duplicated_books, sep="\n- ")
+        raise SystemExit(1)
+
+    title_identity_keys = [
+        (
+            book.get("publisher"),
+            book.get("publisher_site"),
+            book.get("school_level"),
+            normalize_title_for_identity(book.get("title")),
+            book.get("edition_year"),
+            book.get("curriculum"),
+        )
+        for book in data["books"]
+    ]
+    duplicated_title_identity = duplicate_values(title_identity_keys)
+    if duplicated_title_identity:
+        print(
+            "[DUPLICATE normalized title identity]",
+            *[
+                " / ".join(str(part or "") for part in key)
+                for key in duplicated_title_identity
+            ],
+            sep="\n- ",
+        )
         raise SystemExit(1)
 
     publisher_keys = [
