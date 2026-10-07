@@ -95,7 +95,7 @@ def collect(site_key: str) -> dict:
         page.wait_for_timeout(1800)
 
         anchors = page.locator("a").evaluate_all(
-            """els => els.map(a => {
+            r"""els => els.map(a => {
               let node = a;
               let context = '';
               for (let i = 0; i < 6 && node; i += 1, node = node.parentElement) {
