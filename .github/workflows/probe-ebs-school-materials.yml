@@ -39,7 +39,22 @@ jobs:
             --output ebs-school-material-probe.json
 
       - name: Print summary
-        run: cat ebs-school-material-probe.json >> "$GITHUB_STEP_SUMMARY"
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          data = json.loads(Path("ebs-school-material-probe.json").read_text(encoding="utf-8"))
+          print("## EBS 초등·중학 자료 probe")
+          for item in data.get("results", []):
+              title = item.get("title") or item.get("book_id")
+              matched = (item.get("matched_row") or {}).get("text")
+              direct = len(item.get("direct_candidates", []))
+              error = item.get("error")
+              if error:
+                  print(f"- ❌ {title}: {error}")
+              else:
+                  print(f"- {'✅' if direct else '⚠️'} {title}: 자료 게시물={matched or '미확인'}, direct 후보={direct}")
+          PY
 
       - name: Upload result
         uses: actions/upload-artifact@v4
