@@ -61,6 +61,63 @@ h1 {
   font-size: clamp(23px, 4vw, 34px);
 }
 
+.embed-search-box {
+  display: block;
+  margin: 0 0 16px;
+}
+
+.embed-search-box input {
+  width: 100%;
+  padding: 12px 14px;
+  min-height: 44px;
+  border: 1px solid #dbe1ec;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.school-shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 16px;
+}
+
+.school-shortcuts-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #667085;
+}
+
+.school-shortcuts-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.school-shortcuts button {
+  min-height: 36px;
+  padding: 6px 14px;
+  border: 1px solid #dbe1ec;
+  background: #fff;
+  border-radius: 999px;
+  color: #344054;
+  font-size: 13px;
+}
+
+.school-shortcuts button.is-active {
+  border-color: #172033;
+  color: #fff;
+  background: #172033;
+}
+
+.school-shortcuts button:focus-visible,
+.book-title a:focus-visible,
+.embed-search-box input:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
 .filters {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
@@ -454,6 +511,8 @@ h1 {
 }
 
 .embed-mode .scope-heading,
+.embed-mode .embed-search-box,
+.embed-mode .school-shortcuts,
 .embed-mode .filters,
 .embed-mode .toolbar,
 .embed-mode .results,
@@ -505,6 +564,15 @@ h1 {
 
   .hero {
     padding: 34px 0 30px;
+  }
+
+  .school-shortcuts {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .school-shortcuts-buttons {
+    width: 100%;
   }
 
   .filters,
