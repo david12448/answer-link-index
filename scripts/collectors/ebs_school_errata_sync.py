@@ -120,21 +120,24 @@ def main() -> int:
                 result = inspect_one(page, book)
                 candidates = result.get("direct_candidates", [])
                 candidate = candidates[0] if len(candidates) == 1 else None
-                verification = None
-                accepted = False
-
-                if (
-                    candidate
-                    and result.get("matched_row")
+                exact_post = bool(
+                    result.get("matched_row")
                     and result.get("post_id")
-                    and "#corr/view/" in (result.get("final_url") or "")
-                ):
+                    and result.get("detail_clicked")
+                )
+                verification = None
+                direct_url = None
+
+                # 정오표 게시물 자체가 정확히 확인되면 뱃지는 표시한다.
+                # 첨부가 정확히 하나이고 실제 파일 응답까지 확인되면 direct_url도 사용한다.
+                if exact_post and candidate:
                     verification = verify_download(
                         context,
                         candidate["url"],
-                        result["final_url"],
+                        result.get("final_url") or result.get("errata_page"),
                     )
-                    accepted = verification["ok"]
+                    if verification["ok"]:
+                        direct_url = candidate["url"]
 
                 checks.append({
                     "book_id": book.get("book_id"),
@@ -145,11 +148,12 @@ def main() -> int:
                     "candidate_count": len(candidates),
                     "candidate": candidate,
                     "verification": verification,
-                    "accepted": accepted,
+                    "exact_post": exact_post,
+                    "accepted": exact_post,
                     "error": None,
                 })
 
-                if not accepted:
+                if not exact_post:
                     continue
 
                 before = {
@@ -160,8 +164,8 @@ def main() -> int:
                     "availability": material.get("availability"),
                 }
                 after = {
-                    "direct_url": candidate["url"],
-                    "resource_page": result["final_url"],
+                    "direct_url": direct_url,
+                    "resource_page": result.get("final_url") or result.get("errata_page"),
                     "status": "ok",
                     "access": "public",
                     "availability": "available",
@@ -200,7 +204,11 @@ def main() -> int:
     report = {
         "checked_at": today,
         "checked_count": len(checks),
-        "accepted_count": sum(1 for item in checks if item.get("accepted")),
+        "available_post_count": sum(1 for item in checks if item.get("accepted")),
+        "direct_file_count": sum(
+            1 for item in checks
+            if item.get("verification") and item["verification"].get("ok")
+        ),
         "changed_count": len(changes),
         "changes": changes,
         "checks": checks,
