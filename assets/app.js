@@ -10,6 +10,7 @@ const state = {
   schoolLevel: "",
   scope: {
     publisher: "",
+    level: "",
     subject: "",
     grade: "",
     book: "",
@@ -51,6 +52,8 @@ const normalize = value => String(value ?? "")
 function readScope() {
   const params = new URLSearchParams(window.location.search);
   state.scope.publisher = params.get("publisher") || "";
+  const level = params.get("level") || "";
+  state.scope.level = ["elementary", "middle", "high"].includes(level) ? level : "";
   state.scope.subject = params.get("subject") || "";
   state.scope.grade = params.get("grade") || "";
   state.scope.book = params.get("book") || "";
@@ -98,6 +101,7 @@ function matchesGrade(book, value) {
 
 function scopeMatches(book) {
   if (state.scope.publisher && book.publisher !== state.scope.publisher) return false;
+  if (state.scope.level && book.school_level !== state.scope.level) return false;
   if (state.scope.subject && book.subject !== state.scope.subject) return false;
   if (state.scope.grade && !matchesGrade(book, state.scope.grade)) return false;
   if (state.scope.book && book.book_id !== state.scope.book) return false;
@@ -124,7 +128,8 @@ function effectiveFilters() {
 
 function matchesFilters(book, filters, ignoreKey = "") {
   if (!scopeMatches(book)) return false;
-  if (state.schoolLevel && book.school_level !== state.schoolLevel) return false;
+  const selectedLevel = state.scope.level || state.schoolLevel;
+  if (selectedLevel && book.school_level !== selectedLevel) return false;
   if (ignoreKey !== "publisher" && filters.publisher && book.publisher !== filters.publisher) return false;
   if (ignoreKey !== "subject" && filters.subject && book.subject !== filters.subject) return false;
   if (ignoreKey !== "grade" && filters.grade && !matchesGrade(book, filters.grade)) return false;
@@ -163,7 +168,8 @@ function refillSelect(select, options, placeholder, selectedValue = "") {
 
 function updateDependentSelects() {
   const filters = effectiveFilters();
-  const levelMatches = book => !state.schoolLevel || book.school_level === state.schoolLevel;
+  const selectedLevel = state.scope.level || state.schoolLevel;
+  const levelMatches = book => !selectedLevel || book.school_level === selectedLevel;
 
   const publisherOptions = sortedUnique(
     state.books.filter(scopeMatches).map(book => book.publisher)
@@ -244,7 +250,7 @@ function updateDependentSelects() {
 
 function updateSchoolShortcuts() {
   const nav = el("schoolShortcuts");
-  if (state.scope.book || state.scope.grade) {
+  if (state.scope.book || state.scope.grade || state.scope.level) {
     nav.hidden = true;
     return;
   }
@@ -562,6 +568,7 @@ function updateScopeHeading() {
   if (!state.scope.embed || state.scope.book) return;
   const parts = [];
   if (state.scope.publisher) parts.push(state.scope.publisher);
+  if (state.scope.level) parts.push(labels[state.scope.level] || state.scope.level);
   if (state.scope.grade) {
     const book = state.books.find(item => scopeMatches(item));
     if (book) parts.push(gradeLabel(book));
