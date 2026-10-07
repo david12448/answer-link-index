@@ -16,6 +16,10 @@ def material(book: dict, kind: str) -> dict | None:
     )
 
 
+def percent(value: int, total: int) -> float:
+    return round((value / total * 100), 1) if total else 0.0
+
+
 def build_report(data: dict) -> dict:
     books = data.get("books", [])
     school_counts = Counter(book.get("school_level") or "unknown" for book in books)
@@ -66,8 +70,10 @@ def build_report(data: dict) -> dict:
             "total": len(ebs_school),
             "answer_direct": len(answer_direct),
             "answer_pending": len(answer_pending),
+            "answer_direct_pct": percent(len(answer_direct), len(ebs_school)),
             "cover_ok": len(cover_ok),
             "cover_pending": len(cover_pending),
+            "cover_ok_pct": percent(len(cover_ok), len(ebs_school)),
             "errata_available": len(errata_available),
             "errata_hidden": len(errata_hidden),
         },
@@ -111,9 +117,9 @@ def markdown(report: dict) -> str:
         "",
         "### EBS 초등·중등",
         f"- 등록: **{ebs['total']}권**",
-        f"- 정답 direct 확인: **{ebs['answer_direct']}권**",
+        f"- 정답 direct 확인: **{ebs['answer_direct']}권 ({ebs['answer_direct_pct']}%)**",
         f"- 정답 direct 미확인: **{ebs['answer_pending']}권**",
-        f"- 공식 표지 확인: **{ebs['cover_ok']}권**",
+        f"- 공식 표지 확인: **{ebs['cover_ok']}권 ({ebs['cover_ok_pct']}%)**",
         f"- 공식 표지 미확인: **{ebs['cover_pending']}권**",
         f"- 정오표 표시: **{ebs['errata_available']}권**",
         f"- 정오표 숨김(없음/미확인): **{ebs['errata_hidden']}권**",
