@@ -30,6 +30,11 @@ def rotating_batch(items: list[dict], limit: int) -> list[dict]:
     ]
 
 
+def curriculum_year(value: str) -> str | None:
+    matches = set(re.findall(r"(?<!\d)(?:20)?(15|22)\s*(?:개정|교육과정)", value or ""))
+    return "20" + next(iter(matches)) if len(matches) == 1 else None
+
+
 def normalize_title(value: str) -> str:
     value = value.lower()
     value = re.sub(r"\(\s*20\d{2}\s*\)", "", value)
@@ -50,15 +55,20 @@ def extract_go_detail_rows(page) -> list[dict]:
     )
 
 
-def choose_matching_row(rows: list[dict], title: str) -> dict | None:
+def choose_matching_row(rows: list[dict], title: str, curriculum: str | None = None) -> dict | None:
     target = normalize_title(title)
     target_level = re.findall(r"\d+[-학년]\d*|\d+-\d+", title)
     target_numbers = set(re.findall(r"\d+", title))
+    target_curriculum = curriculum_year(curriculum or title)
     best = None
     best_score = -1
+    tied = False
 
     for row in rows:
         text = row.get("text") or ""
+        row_curriculum = curriculum_year(text)
+        if target_curriculum and row_curriculum and target_curriculum != row_curriculum:
+            continue
         norm = normalize_title(text)
         if not norm:
             continue
@@ -88,9 +98,12 @@ def choose_matching_row(rows: list[dict], title: str) -> dict | None:
         if score > best_score:
             best = row
             best_score = score
+            tied = False
+        elif score == best_score:
+            tied = True
 
     # 느슨한 단어 겹침만으로는 자동 후보로 잡지 않는다.
-    return best if best_score >= 25 else None
+    return best if best_score >= 25 and not tied else None
 
 
 def try_search_board(page, title: str) -> dict:
@@ -241,13 +254,13 @@ def collect_one(page, book: dict, context=None) -> dict:
         page.wait_for_timeout(900)
 
     rows = extract_go_detail_rows(page)
-    matched = choose_matching_row(rows, title)
+    matched = choose_matching_row(rows, title, book.get("curriculum"))
     search_info = {"attempted": False, "input": None, "submitted": False}
 
     if matched is None:
         search_info = try_search_board(page, title)
         rows = extract_go_detail_rows(page)
-        matched = choose_matching_row(rows, title)
+        matched = choose_matching_row(rows, title, book.get("curriculum"))
 
     detail_clicked = False
     post_id = None

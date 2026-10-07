@@ -9,7 +9,7 @@ from urllib.parse import parse_qs, urlparse
 
 from playwright.sync_api import sync_playwright
 
-from ebs_school_material_probe import collect_one, normalize_title
+from ebs_school_material_probe import collect_one, normalize_title, curriculum_year
 
 DOWNLOAD_PATH = "/board/common/download"
 PDF_RE = re.compile(r"\.pdf$", re.IGNORECASE)
@@ -42,6 +42,11 @@ def rotating_batch(items: list[dict], limit: int) -> list[dict]:
 def safe_candidate(book: dict, result: dict) -> dict | None:
     matched = result.get("matched_row") or {}
     matched_text = matched.get("text") or ""
+    # 판본이 제목에서 빠진 게시물은 자동으로 개정판을 추측하지 않는다.
+    expected_curriculum = curriculum_year(book.get("curriculum") or book.get("title") or "")
+    if book.get("publisher_site") == "ebs_middle":
+        if not expected_curriculum or curriculum_year(matched_text) != expected_curriculum:
+            return None
     target = normalize_title(book.get("title") or "")
     matched_norm = normalize_title(matched_text)
 
@@ -149,6 +154,7 @@ def main() -> int:
         and not answer_material(book).get("direct_url")
     ]
     pending.sort(key=lambda book: (
+        0 if curriculum_year(book.get("curriculum") or book.get("title") or "") == "2022" else 1,
         book.get("publisher_site") or "",
         book.get("grade") or 99,
         book.get("subject") or "",
