@@ -1,8 +1,8 @@
 {
   "meta": {
-    "generated_at": "2026-10-07",
+    "generated_at": "2026-10-08",
     "schema_version": 3,
-    "note": "100권 catalog에서 EBS 공식 자료 게시물/첨부파일/HTTP 응답과 공식 cbox 표지를 검증한 항목만 단계적으로 반영합니다."
+    "note": "EBS 초등·중등은 공식 자료 게시물/첨부파일/HTTP 응답과 공식 cbox 표지를 검증한 경우만 direct_url·cover_image_url을 반영합니다."
   },
   "books": [
     {
@@ -308,7 +308,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000010618",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2023/12/21/TB1000010618/86192345822826085_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 플러스 1-1 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -360,7 +360,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000011108",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2024/7/3/TB1000011108/103018011037073643_textbook.png",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 플러스 1-2 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -568,7 +568,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013148",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/5/12/TB1000013148/34287626996130485_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 2-2 교재입니다. 직접 정답 PDF 주소는 확인 중이며, 현재는 출판사의 교재 안내 페이지를 통해 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -620,7 +620,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000010619",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2023/12/21/TB1000010619/86192356606313079_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 플러스 2-1 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -672,7 +672,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000011109",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2024/7/3/TB1000011109/103019075123770497_textbook.png",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 플러스 2-2 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -830,7 +830,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013110",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/12/30/TB1000013110/22813939346463553_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 국어 3-1 교재입니다. 정답 PDF 직접 주소는 확인 중이며, 현재는 출판사의 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -1633,11 +1633,12 @@
           "resource_id": "ebs-primary-tb1000013093-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013093",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013093#answer/view/115/60000472472/0/1/TB1000013093/0///",
+          "direct_url": "https://primary.ebs.co.kr/board/common/download?division=&id=30000006336",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000006336"
         },
         {
           "resource_id": "ebs-primary-tb1000013093-errata",
@@ -1685,11 +1686,12 @@
           "resource_id": "ebs-primary-tb1000013154-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013154",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013154#answer/view/115/60000474927/0/1/TB1000013154/0///",
+          "direct_url": "https://primary.ebs.co.kr/board/common/download?division=&id=30000007267",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000007267"
         },
         {
           "resource_id": "ebs-primary-tb1000013154-errata",
@@ -3304,11 +3306,12 @@
           "resource_id": "ebs-middle-tb1000011052-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000011052",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000011052#answer/view/103/60000455360/0/1/TB1000011052/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000004077",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000004077"
         },
         {
           "resource_id": "ebs-middle-tb1000011052-errata",
@@ -4439,7 +4442,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013191",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/7/8/TB1000013191/39208521791505355_textbook.png",
       "post_url": null,
       "summary": "EBS 중학 중학 뉴런 수학 3(상) 교재입니다. 직접 정답 PDF 주소는 확인 중이며, 현재는 출판사의 교재 안내 페이지를 통해 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -4544,7 +4547,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000010199",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2022/4/14/TB1000010199/32950873618894110_textbook.jpg",
       "post_url": null,
       "summary": "EBS 중학 EBS 중학 수학 마스터 고난도 Σ(시그마) 3-2 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -4597,7 +4600,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000009060",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2021/10/13/TB1000009060/17153211248084808_textbook.jpg",
       "post_url": null,
       "summary": "EBS 중학 EBS 중학 수학 마스터 유형(베타) 3-1 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -4650,7 +4653,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000009061",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2021/10/13/TB1000009061/17153267110817721_textbook.jpg",
       "post_url": null,
       "summary": "EBS 중학 EBS 중학 수학 마스터 유형(베타) 3-2 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -4703,7 +4706,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013220",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/9/17/TB1000013220/45353640621682301_textbook.jpg",
       "post_url": null,
       "summary": "EBS 중학 중학 뉴런 영어 3 교재입니다. 정답 PDF 직접 주소는 확인 중이며, 현재는 출판사의 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -4755,7 +4758,7 @@
       "edition_year": 2025,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000010436",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2022/11/29/TB1000010436/52733770875291989_textbook.jpg",
       "post_url": null,
       "summary": "EBS 중학 중학 영어듣기능력평가 완벽대비 중3 (2025) 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
