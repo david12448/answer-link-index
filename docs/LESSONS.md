@@ -292,4 +292,11 @@
 - 현재 초등·중등 등록 교재 중 다수는 아직 표지 URL이 비어 있음.
 - 해결: official_page에서 동일 textbookId의 EBS cbox 표지를 찾고 실제 이미지 응답까지 확인하는 cover sync 추가.
 - 표지는 EBS 공식 URL만 저장하고 이미지 파일 자체는 저장소에 복사하지 않음.
+## 2026-10-07 — catalog 변경마다 모든 Playwright probe를 돌리면 확장에 불리함
+
+### 작은 데이터 수정도 여러 무거운 workflow를 동시에 재실행함
+- 증상: 표지나 direct_url 한두 개를 수정할 때 정답·정오표·MP3·목록 probe가 줄줄이 대기.
+- 원인: 여러 workflow의 pull_request paths에 `data/catalog.json`이 포함되어 있었음.
+- 해결: catalog-only 변경은 schema/중복/학교급/UI 테스트와 품질 리포트로 검증하고, 무거운 probe는 collector 코드 변경 시 smoke test + scheduled sync로 분리.
+- 교훈: 데이터 검증과 외부 사이트 수집 검증의 실행 주기를 분리해야 대규모 catalog에서도 빠른 PR 피드백을 유지할 수 있다.
 
