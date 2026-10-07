@@ -8,9 +8,11 @@ const state = {
   visibleCount: PAGE_SIZE,
   view: "list",
   schoolLevel: "",
+  brand: "",
   scope: {
     publisher: "",
     level: "",
+    brand: "",
     subject: "",
     grade: "",
     book: "",
@@ -52,6 +54,7 @@ const normalize = value => String(value ?? "")
 function readScope() {
   const params = new URLSearchParams(window.location.search);
   state.scope.publisher = params.get("publisher") || "";
+  state.scope.brand = params.get("brand") || "";
   const level = params.get("level") || "";
   state.scope.level = ["elementary", "middle", "high"].includes(level) ? level : "";
   state.scope.subject = params.get("subject") || "";
@@ -112,6 +115,7 @@ function matchesGrade(book, value) {
 function scopeMatches(book) {
   if (state.scope.publisher && book.publisher !== state.scope.publisher) return false;
   if (state.scope.level && book.school_level !== state.scope.level) return false;
+  if (state.scope.brand && book.brand !== state.scope.brand) return false;
   if (state.scope.subject && book.subject !== state.scope.subject) return false;
   if (state.scope.grade && !matchesGrade(book, state.scope.grade)) return false;
   if (state.scope.book && book.book_id !== state.scope.book) return false;
@@ -130,6 +134,7 @@ function currentQuery() {
 function effectiveFilters() {
   return {
     publisher: state.scope.publisher || selectValue("publisherFilter"),
+    brand: state.scope.brand || state.brand,
     subject: state.scope.subject || selectValue("subjectFilter"),
     grade: state.scope.grade || selectValue("gradeFilter"),
     book: state.scope.book || selectValue("bookFilter")
@@ -141,6 +146,7 @@ function matchesFilters(book, filters, ignoreKey = "") {
   const selectedLevel = state.scope.level || state.schoolLevel;
   if (selectedLevel && book.school_level !== selectedLevel) return false;
   if (ignoreKey !== "publisher" && filters.publisher && book.publisher !== filters.publisher) return false;
+  if (ignoreKey !== "brand" && filters.brand && book.brand !== filters.brand) return false;
   if (ignoreKey !== "subject" && filters.subject && book.subject !== filters.subject) return false;
   if (ignoreKey !== "grade" && filters.grade && !matchesGrade(book, filters.grade)) return false;
   if (ignoreKey !== "book" && filters.book && book.book_id !== filters.book) return false;
@@ -179,7 +185,9 @@ function refillSelect(select, options, placeholder, selectedValue = "") {
 function updateDependentSelects() {
   const filters = effectiveFilters();
   const selectedLevel = state.scope.level || state.schoolLevel;
+  const selectedBrand = state.scope.brand || state.brand;
   const levelMatches = book => !selectedLevel || book.school_level === selectedLevel;
+  const brandMatches = book => !selectedBrand || book.brand === selectedBrand;
 
   const publisherOptions = sortedUnique(
     state.books.filter(scopeMatches).map(book => book.publisher)
@@ -189,7 +197,8 @@ function updateDependentSelects() {
 
   const publisher = state.scope.publisher || selectValue("publisherFilter");
   const subjectBooks = state.books.filter(book =>
-    scopeMatches(book) && levelMatches(book) && (!publisher || book.publisher === publisher)
+    scopeMatches(book) && levelMatches(book) && brandMatches(book)
+    && (!publisher || book.publisher === publisher)
   );
   const subjectOptions = sortedUnique(subjectBooks.map(book => book.subject));
   refillSelect(el("subjectFilter"), subjectOptions, "과목 전체",
@@ -199,6 +208,7 @@ function updateDependentSelects() {
   const gradeBooks = state.books.filter(book =>
     scopeMatches(book) &&
     levelMatches(book) &&
+    brandMatches(book) &&
     (!publisher || book.publisher === publisher) &&
     (!subject || book.subject === subject)
   );
@@ -234,6 +244,7 @@ function updateDependentSelects() {
   const bookBooks = state.books.filter(book =>
     scopeMatches(book) &&
     levelMatches(book) &&
+    brandMatches(book) &&
     (!publisher || book.publisher === publisher) &&
     (!subject || book.subject === subject) &&
     (!grade || matchesGrade(book, grade)) &&
@@ -285,6 +296,55 @@ function updateSchoolShortcuts() {
     button.setAttribute("aria-pressed", String(active));
     const title = level ? labels[level] : "전체";
     button.textContent = level ? `${title} ${counts[level]}` : "전체";
+  }
+}
+
+function updateSeriesShortcuts() {
+  const nav = el("seriesShortcuts");
+  const container = el("seriesShortcutButtons");
+
+  if (state.scope.book || state.scope.brand) {
+    nav.hidden = true;
+    return;
+  }
+
+  const filters = effectiveFilters();
+  const selectedLevel = state.scope.level || state.schoolLevel;
+  const candidates = state.books.filter(book =>
+    scopeMatches(book) &&
+    (!selectedLevel || book.school_level === selectedLevel) &&
+    (!filters.publisher || book.publisher === filters.publisher) &&
+    (!filters.subject || book.subject === filters.subject) &&
+    (!filters.grade || matchesGrade(book, filters.grade)) &&
+    matchesSearch(book, currentQuery())
+  );
+
+  const counts = new Map();
+  for (const book of candidates) {
+    if (!book.brand) continue;
+    counts.set(book.brand, (counts.get(book.brand) || 0) + 1);
+  }
+
+  const brands = [...counts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ko"));
+
+  const useful = brands.length >= 2 && candidates.length >= 8;
+  nav.hidden = !useful && !state.brand;
+  container.innerHTML = "";
+
+  if (nav.hidden) return;
+
+  const options = [["", candidates.length], ...brands];
+  for (const [brand, count] of options) {
+    if (brand && !counts.has(brand) && state.brand !== brand) continue;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.brand = brand;
+    button.textContent = brand ? `${brand} ${count}` : `전체 ${candidates.length}`;
+    const active = state.brand === brand;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+    container.append(button);
   }
 }
 
@@ -562,6 +622,7 @@ function hideFixedControls() {
   if (state.scope.book) {
     el("filters").hidden = true;
     el("schoolShortcuts").hidden = true;
+    el("seriesShortcuts").hidden = true;
     el("toolbar").hidden = true;
     el("loadMoreButton").hidden = true;
   }
@@ -584,6 +645,7 @@ function updateScopeHeading() {
   const parts = [];
   if (state.scope.publisher) parts.push(state.scope.publisher);
   if (state.scope.level) parts.push(labels[state.scope.level] || state.scope.level);
+  if (state.scope.brand) parts.push(state.scope.brand);
   if (state.scope.grade) {
     const book = state.books.find(item => scopeMatches(item));
     if (book) parts.push(gradeLabel(book));
@@ -599,9 +661,11 @@ function resetFilters() {
   if (!state.scope.book) el("bookFilter").value = "";
   el("searchInput").value = "";
   state.schoolLevel = "";
+  state.brand = "";
   resetVisible();
   updateDependentSelects();
   updateSchoolShortcuts();
+  updateSeriesShortcuts();
   applyFilters();
 }
 
@@ -610,6 +674,7 @@ function bindEvents() {
     resetVisible();
     updateDependentSelects();
     updateSchoolShortcuts();
+    updateSeriesShortcuts();
     applyFilters();
   });
 
@@ -618,32 +683,51 @@ function bindEvents() {
       const level = button.dataset.level;
       if (state.schoolLevel === level) return;
       state.schoolLevel = level;
+      state.brand = "";
       if (!state.scope.grade) el("gradeFilter").value = "";
       if (!state.scope.book) el("bookFilter").value = "";
       resetVisible();
       updateDependentSelects();
       updateSchoolShortcuts();
+      updateSeriesShortcuts();
       applyFilters();
     });
   }
 
+  el("seriesShortcutButtons").addEventListener("click", event => {
+    const button = event.target.closest("button[data-brand]");
+    if (!button) return;
+    const brand = button.dataset.brand || "";
+    if (state.brand === brand) return;
+    state.brand = brand;
+    if (!state.scope.book) el("bookFilter").value = "";
+    resetVisible();
+    updateDependentSelects();
+    updateSeriesShortcuts();
+    applyFilters();
+  });
+
   el("publisherFilter").addEventListener("change", () => {
     state.schoolLevel = "";
+    state.brand = "";
     if (!state.scope.subject) el("subjectFilter").value = "";
     if (!state.scope.grade) el("gradeFilter").value = "";
     if (!state.scope.book) el("bookFilter").value = "";
     resetVisible();
     updateDependentSelects();
     updateSchoolShortcuts();
+    updateSeriesShortcuts();
     applyFilters();
   });
 
   el("subjectFilter").addEventListener("change", () => {
+    if (!state.scope.brand) state.brand = "";
     if (!state.scope.grade) el("gradeFilter").value = "";
     if (!state.scope.book) el("bookFilter").value = "";
     resetVisible();
     updateDependentSelects();
     updateSchoolShortcuts();
+    updateSeriesShortcuts();
     applyFilters();
   });
 
@@ -651,6 +735,7 @@ function bindEvents() {
     if (!state.scope.book) el("bookFilter").value = "";
     resetVisible();
     updateDependentSelects();
+    updateSeriesShortcuts();
     applyFilters();
   });
 
@@ -688,6 +773,7 @@ async function init() {
     updateDependentSelects();
     hideFixedControls();
     updateSchoolShortcuts();
+    updateSeriesShortcuts();
     updateScopeHeading();
 
     el("updatedAt").textContent = state.meta.generated_at ? `데이터 기준 ${state.meta.generated_at}` : "";
