@@ -124,7 +124,7 @@ function selectValue(id) {
 }
 
 function currentQuery() {
-  return selectValue(state.scope.embed ? "embedSearchInput" : "searchInput");
+  return selectValue("searchInput");
 }
 
 function effectiveFilters() {
@@ -571,7 +571,6 @@ function hideFixedControls() {
     el("hero").hidden = true;
     el("scopeHeading").hidden = false;
     el("viewSwitch").hidden = true;
-    el("embedSearchBox").hidden = Boolean(state.scope.book);
   }
 
   const visibleFields = [...document.querySelectorAll(".filter-field")].filter(node => !node.hidden);
@@ -599,7 +598,6 @@ function resetFilters() {
   if (!state.scope.grade) el("gradeFilter").value = "";
   if (!state.scope.book) el("bookFilter").value = "";
   el("searchInput").value = "";
-  el("embedSearchInput").value = "";
   state.schoolLevel = "";
   resetVisible();
   updateDependentSelects();
@@ -608,14 +606,12 @@ function resetFilters() {
 }
 
 function bindEvents() {
-  for (const id of ["searchInput", "embedSearchInput"]) {
-    el(id).addEventListener("input", () => {
-      resetVisible();
-      updateDependentSelects();
-      updateSchoolShortcuts();
-      applyFilters();
-    });
-  }
+  el("searchInput").addEventListener("input", () => {
+    resetVisible();
+    updateDependentSelects();
+    updateSchoolShortcuts();
+    applyFilters();
+  });
 
   for (const button of el("schoolShortcuts").querySelectorAll("button[data-level]")) {
     button.addEventListener("click", () => {
