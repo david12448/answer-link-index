@@ -18,3 +18,5 @@ jobs:
       - run: python -m py_compile scripts/collectors/*.py
       - run: node --check assets/app.js
       - run: node scripts/test_ui_filters.cjs
+      - name: Summarize catalog quality
+        run: python scripts/catalog_quality_report.py --markdown >> "$GITHUB_STEP_SUMMARY"
