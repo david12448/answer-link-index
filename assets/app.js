@@ -65,10 +65,7 @@ function shouldShowMaterial(material) {
   if (!optional) return true;
   if (material.availability === "available") return true;
   if (["unavailable", "unknown"].includes(material.availability)) return false;
-  if (material.type === "errata") {
-    return Boolean(material.direct_url || material.status === "ok");
-  }
-  return true;
+  return Boolean(material.direct_url || material.status === "ok");
 }
 
 function searchableText(book) {
