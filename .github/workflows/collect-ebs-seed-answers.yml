@@ -6,7 +6,6 @@ on:
       - "scripts/collectors/ebs_batch_collect.py"
       - "scripts/collectors/ebs_browser_probe.py"
       - ".github/workflows/collect-ebs-seed-answers.yml"
-      - "data/catalog.json"
   workflow_dispatch:
 
 permissions:
