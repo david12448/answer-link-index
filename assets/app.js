@@ -328,7 +328,10 @@ function updateSeriesShortcuts() {
   const brands = [...counts.entries()]
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ko"));
 
-  const useful = brands.length >= 2 && candidates.length >= 8;
+  const narrowedContext = Boolean(
+    filters.publisher && (selectedLevel || filters.subject || filters.grade)
+  );
+  const useful = narrowedContext && brands.length >= 2 && candidates.length >= 8;
   nav.hidden = !useful && !state.brand;
   container.innerHTML = "";
 
