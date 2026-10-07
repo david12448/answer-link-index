@@ -98,6 +98,11 @@ elements.embedSearchInput.value = "";
 assert.equal(evaluate("getFilteredBooks().length"), 1, "URL level scope filters to one school level");
 assert.equal(evaluate("getFilteredBooks()[0].book_id"), "scope-a");
 
+assert.equal(evaluate(`shouldShowMaterial({type:"errata", availability:"available", status:"ok"})`), true);
+assert.equal(evaluate(`shouldShowMaterial({type:"errata", availability:"unavailable", status:"needs_review"})`), false);
+assert.equal(evaluate(`shouldShowMaterial({type:"errata", availability:"unknown", status:"needs_review"})`), false);
+assert.equal(evaluate(`shouldShowMaterial({type:"answer", availability:"unknown", status:"needs_review"})`), true);
+
 evaluate(`state.scope.embed = false; state.books = Array.from({length:2000}, (_,i) => ({
   book_id:"bulk-"+i, title:"교재 "+String(i).padStart(3, "0"),
   school_level:"elementary", grade:3, publisher:"EBS", subject:"수학", materials:[]
@@ -113,4 +118,4 @@ assert.equal(elements.bookFilter.options[1].value, "bulk-1999");
 evaluate(`state.scope.book = "bulk-1999"; state.scope.embed = true;`);
 assert.equal(evaluate("getFilteredBooks().length"), 1, "Fixed one-book Tistory view remains available");
 
-console.log("UI filter tests passed: school levels, grade order, search, select cap, single-book scope.");
+console.log("UI filter tests passed: school levels, grade order, search, select cap, errata visibility, single-book scope.");
