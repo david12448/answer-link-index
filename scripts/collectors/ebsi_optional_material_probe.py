@@ -83,6 +83,7 @@ def inspect_one(page, book: dict, kind: str) -> dict:
     title = book["title"]
     book_id = book["publisher_book_id"]
     events = []
+    ajax_payloads = []
 
     def on_response(response):
         url = response.url
@@ -101,6 +102,30 @@ def inspect_one(page, book: dict, kind: str) -> dict:
                 "content_type": content_type,
                 "content_disposition": response.headers.get("content-disposition"),
             })
+
+        if "retrieveMp3Down.ajax" in url:
+            try:
+                payload = response.text()
+                mp3_urls = re.findall(
+                    r'https?://[^"\'<>\s]+\.mp3(?:\?[^"\'<>\s]*)?',
+                    payload,
+                    flags=re.IGNORECASE,
+                )
+                ajax_payloads.append({
+                    "url": url,
+                    "method": response.request.method,
+                    "post_data": response.request.post_data,
+                    "html_length": len(payload),
+                    "mp3_occurrences": len(re.findall(r"\.mp3", payload, re.IGNORECASE)),
+                    "mp3_urls": list(dict.fromkeys(mp3_urls))[:40],
+                    "has_mp3url_attr": "mp3url" in payload.lower(),
+                    "excerpt": re.sub(r"\s+", " ", payload[:5000]),
+                })
+            except Exception as exc:
+                ajax_payloads.append({
+                    "url": url,
+                    "error": f"{type(exc).__name__}: {exc}",
+                })
 
     page.on("response", on_response)
     search = search_page(page, kind, title)
@@ -154,7 +179,15 @@ def inspect_one(page, book: dict, kind: str) -> dict:
                     page.wait_for_load_state("networkidle", timeout=10000)
                 except Exception:
                     pass
-                page.wait_for_timeout(900)
+                try:
+                    page.wait_for_function(
+                        "() => document.querySelector('#ajaxArea') && "
+                        "document.querySelector('#ajaxArea').innerHTML.trim().length > 0",
+                        timeout=10000,
+                    )
+                except Exception:
+                    pass
+                page.wait_for_timeout(1800)
                 nodes = collect_nodes(page)
             except Exception:
                 detail_clicked = False
@@ -203,6 +236,12 @@ def inspect_one(page, book: dict, kind: str) -> dict:
         "candidate_nodes": nodes[:150],
         "mp3_file_count": len(mp3_files),
         "mp3_files": mp3_files,
+        "ajax_mp3_file_count": len({
+            url
+            for payload in ajax_payloads
+            for url in payload.get("mp3_urls", [])
+        }),
+        "ajax_payloads": ajax_payloads[-10:],
         "whole_file_candidates": [
             item for item in mp3_files
             if "통파일" in ((item.get("info") or "") + " " + (item.get("parent_text") or ""))
