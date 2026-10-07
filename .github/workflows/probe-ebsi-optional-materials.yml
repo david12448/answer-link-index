@@ -44,11 +44,17 @@ jobs:
               kind = item.get("kind")
               visible = item.get("title_visible")
               rows = len(item.get("matching_rows", []))
+              mp3_count = item.get("mp3_file_count", 0)
+              whole_count = len(item.get("whole_file_candidates", []))
               error = item.get("error")
               if error:
                   print(f"- ❌ {title} / {kind}: {error}")
               else:
-                  print(f"- {'✅' if visible or rows else '⚠️'} {title} / {kind}: title_visible={visible}, matching_rows={rows}")
+                  print(
+                      f"- {'✅' if visible or rows or mp3_count else '⚠️'} {title} / {kind}: "
+                      f"title_visible={visible}, matching_rows={rows}, "
+                      f"mp3_files={mp3_count}, combined={whole_count}"
+                  )
           PY
 
       - name: Upload probe report
