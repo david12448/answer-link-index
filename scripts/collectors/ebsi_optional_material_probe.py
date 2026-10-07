@@ -59,6 +59,26 @@ def search_page(page, kind: str, title: str) -> dict:
     return search_info
 
 
+def collect_nodes(page) -> list[dict]:
+    return page.locator("a, button, input").evaluate_all(
+        r"""els => els.map(el => ({
+          tag: el.tagName,
+          text: (el.innerText || el.value || el.textContent || '').replace(/\s+/g, ' ').trim(),
+          href: el.getAttribute('href'),
+          onclick: el.getAttribute('onclick'),
+          name: el.getAttribute('name'),
+          value: el.getAttribute('value'),
+          parent_text: (el.closest('tr,li,div')?.innerText || '')
+            .replace(/\s+/g, ' ').trim().slice(0, 900)
+        })).filter(x => {
+          const s = JSON.stringify(x).toLowerCase();
+          return s.includes('mp3') || s.includes('다운') || s.includes('첨부') ||
+                 s.includes('file') || s.includes('.zip') || s.includes('.pdf') ||
+                 s.includes('fldown') || s.includes('download');
+        })"""
+    )
+
+
 def inspect_one(page, book: dict, kind: str) -> dict:
     title = book["title"]
     book_id = book["publisher_book_id"]
@@ -84,25 +104,7 @@ def inspect_one(page, book: dict, kind: str) -> dict:
 
     page.on("response", on_response)
     search = search_page(page, kind, title)
-    body = page.locator("body").inner_text(timeout=10000)
-    html = page.content()
-
-    nodes = page.locator("a, button, input").evaluate_all(
-        r"""els => els.map(el => ({
-          tag: el.tagName,
-          text: (el.innerText || el.value || el.textContent || '').replace(/\s+/g, ' ').trim(),
-          href: el.getAttribute('href'),
-          onclick: el.getAttribute('onclick'),
-          name: el.getAttribute('name'),
-          value: el.getAttribute('value'),
-          parent_text: (el.closest('tr,li,div')?.innerText || '')
-            .replace(/\s+/g, ' ').trim().slice(0, 900)
-        })).filter(x => {
-          const s = JSON.stringify(x).toLowerCase();
-          return s.includes('mp3') || s.includes('다운') || s.includes('첨부') ||
-                 s.includes('file') || s.includes('.zip') || s.includes('.pdf');
-        })"""
-    )
+    nodes = collect_nodes(page)
 
     title_norm = normalize(title)
     matching_rows = []
@@ -115,6 +117,50 @@ def inspect_one(page, book: dict, kind: str) -> dict:
         ])
         if title_norm and title_norm in normalize(context):
             matching_rows.append(node)
+
+    detail_clicked = False
+    detail_call = None
+    if kind == "mp3":
+        exact = next(
+            (
+                node for node in matching_rows
+                if book_id in (node.get("onclick") or "")
+                and "mp3Detail(" in (node.get("onclick") or "")
+            ),
+            None,
+        )
+        if exact:
+            detail_call = exact.get("onclick")
+            try:
+                selector = f'a[onclick*="{book_id}"]'
+                candidates = page.locator(selector)
+                target = candidates.filter(has_text=title).first if candidates.count() else None
+                if target and target.count():
+                    target.click(timeout=5000)
+                elif candidates.count():
+                    candidates.first.click(timeout=5000)
+                else:
+                    page.evaluate(
+                        "(args) => mp3Detail(args.bookId, args.iemDs, args.rowNum)",
+                        {
+                            "bookId": book_id,
+                            "iemDs": re.search(r"mp3Detail\('[^']+','([^']+)','([^']+)'", detail_call).group(1),
+                            "rowNum": re.search(r"mp3Detail\('[^']+','([^']+)','([^']+)'", detail_call).group(2),
+                        },
+                    )
+                detail_clicked = True
+                page.wait_for_load_state("domcontentloaded", timeout=15000)
+                try:
+                    page.wait_for_load_state("networkidle", timeout=10000)
+                except Exception:
+                    pass
+                page.wait_for_timeout(900)
+                nodes = collect_nodes(page)
+            except Exception:
+                detail_clicked = False
+
+    body = page.locator("body").inner_text(timeout=10000)
+    html = page.content()
 
     snippets = []
     for match in DIRECT_HINT_RE.finditer(html):
@@ -136,6 +182,8 @@ def inspect_one(page, book: dict, kind: str) -> dict:
         "final_url": page.url,
         "search": search,
         "title_visible": title in body,
+        "detail_clicked": detail_clicked,
+        "detail_call": detail_call,
         "body_excerpt": body[-4500:],
         "matching_rows": matching_rows[:80],
         "candidate_nodes": nodes[:150],
