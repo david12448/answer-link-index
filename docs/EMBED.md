@@ -8,6 +8,7 @@ GitHub Pages 기본 주소:
 ## URL 파라미터
 
 - `publisher`: 출판사 고정
+- `level`: 학교급 고정 (`elementary`, `middle`, `high`)
 - `subject`: 과목 고정
 - `grade`: 학년 고정
 - `book`: 교재 `book_id` 고정
@@ -20,6 +21,17 @@ URL에서 이미 고정된 조건의 선택창은 자동으로 숨깁니다.
 ### EBS 전체
 ```text
 /?embed=1&publisher=EBS
+```
+
+
+### EBS 초등 전체
+```text
+/?embed=1&publisher=EBS&level=elementary
+```
+
+### EBS 중등 전체
+```text
+/?embed=1&publisher=EBS&level=middle
 ```
 
 ### EBS 영어
