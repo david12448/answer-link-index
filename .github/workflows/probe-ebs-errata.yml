@@ -5,7 +5,6 @@ on:
     paths:
       - "scripts/collectors/ebs_errata_probe.py"
       - ".github/workflows/probe-ebs-errata.yml"
-      - "data/catalog.json"
   workflow_dispatch:
 
 permissions:
