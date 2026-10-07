@@ -36,6 +36,7 @@ def extract_go_detail_rows(page) -> list[dict]:
 def choose_matching_row(rows: list[dict], title: str) -> dict | None:
     target = normalize_title(title)
     target_level = re.findall(r"\d+[-학년]\d*|\d+-\d+", title)
+    target_numbers = set(re.findall(r"\d+", title))
     best = None
     best_score = -1
 
@@ -45,9 +46,12 @@ def choose_matching_row(rows: list[dict], title: str) -> dict | None:
         if not norm:
             continue
 
-        # 3-1을 찾는데 6-2를 고르는 식의 오매칭을 막는다.
+        # 2-1을 찾는데 3(상), 3-2 등을 고르는 식의 오매칭을 막는다.
         row_level = re.findall(r"\d+[-학년]\d*|\d+-\d+", text)
+        row_numbers = set(re.findall(r"\d+", text))
         if target_level and row_level and not any(token in row_level for token in target_level):
+            continue
+        if target_numbers and row_numbers and target_numbers.isdisjoint(row_numbers):
             continue
 
         if target == norm:
@@ -57,7 +61,10 @@ def choose_matching_row(rows: list[dict], title: str) -> dict | None:
         elif norm in target and len(norm) >= max(6, int(len(target) * 0.75)):
             score = 75
         else:
-            tokens = [token for token in re.split(r"\s+", title) if len(token) >= 2]
+            tokens = [
+                token for token in re.split(r"\s+", title)
+                if len(token) >= 2 and not token.isdigit()
+            ]
             matched = sum(1 for token in tokens if token in text)
             score = matched * 5
 
@@ -65,7 +72,8 @@ def choose_matching_row(rows: list[dict], title: str) -> dict | None:
             best = row
             best_score = score
 
-    return best if best_score >= 15 else None
+    # 느슨한 단어 겹침만으로는 자동 후보로 잡지 않는다.
+    return best if best_score >= 25 else None
 
 
 def try_search_board(page, title: str) -> dict:
