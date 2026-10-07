@@ -71,6 +71,48 @@ def safe_candidate(book: dict, result: dict) -> dict | None:
     }
 
 
+def verify_download(context, candidate: dict) -> dict:
+    try:
+        response = context.request.get(
+            candidate["url"],
+            headers={
+                "Referer": candidate["resource_page"],
+                "Accept": "application/pdf,application/octet-stream,*/*",
+            },
+            timeout=30000,
+        )
+        body = response.body()
+        content_type = (response.headers.get("content-type") or "").lower()
+        disposition = (response.headers.get("content-disposition") or "").lower()
+        ok = (
+            response.ok
+            and len(body) > 500
+            and (
+                body.startswith(b"%PDF")
+                or "application/pdf" in content_type
+                or "attachment" in disposition
+                or "octet-stream" in content_type
+            )
+        )
+        return {
+            "ok": ok,
+            "status": response.status,
+            "content_type": content_type,
+            "content_disposition": disposition,
+            "bytes": len(body),
+            "error": None,
+        }
+    except Exception as exc:
+        return {
+            "ok": False,
+            "status": None,
+            "content_type": None,
+            "content_disposition": None,
+            "bytes": 0,
+            "error": f"{type(exc).__name__}: {exc}",
+        }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="EBS 초등/중학 미확인 정답 PDF를 보수적으로 확인하고 catalog 후보를 갱신합니다."
@@ -128,19 +170,24 @@ def main() -> int:
             try:
                 result = collect_one(page, book)
                 candidate = safe_candidate(book, result)
+                verification = (
+                    verify_download(context, candidate) if candidate else None
+                )
+                accepted = bool(candidate and verification and verification["ok"])
                 check = {
                     "book_id": book.get("book_id"),
                     "publisher_book_id": book.get("publisher_book_id"),
                     "title": book.get("title"),
                     "matched_row": (result.get("matched_row") or {}).get("text"),
                     "candidate_count": len(result.get("direct_candidates", [])),
-                    "accepted": bool(candidate),
+                    "accepted": accepted,
                     "candidate": candidate,
+                    "verification": verification,
                     "error": None,
                 }
                 checks.append(check)
 
-                if not candidate:
+                if not accepted:
                     continue
 
                 before = {
