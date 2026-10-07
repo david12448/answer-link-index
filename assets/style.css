@@ -41,14 +41,6 @@ h1 {
   opacity: .82;
 }
 
-.search-box input {
-  width: 100%;
-  padding: 15px 17px;
-  border: 0;
-  border-radius: 14px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, .18);
-}
-
 .app-shell {
   padding-top: 22px;
 }
@@ -59,20 +51,6 @@ h1 {
 
 .scope-heading h1 {
   font-size: clamp(23px, 4vw, 34px);
-}
-
-.embed-search-box {
-  display: block;
-  margin: 0 0 16px;
-}
-
-.embed-search-box input {
-  width: 100%;
-  padding: 12px 14px;
-  min-height: 44px;
-  border: 1px solid #dbe1ec;
-  border-radius: 10px;
-  background: #fff;
 }
 
 .school-shortcuts {
@@ -113,7 +91,7 @@ h1 {
 
 .school-shortcuts button:focus-visible,
 .book-title a:focus-visible,
-.embed-search-box input:focus-visible {
+.search-filter-field input:focus-visible {
   outline: 2px solid #2563eb;
   outline-offset: 2px;
 }
@@ -124,6 +102,29 @@ h1 {
   gap: 9px;
   align-items: end;
   margin: 0 0 14px;
+  padding: 14px;
+  border: 1px solid #e2e7ef;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 3px 14px rgba(22, 32, 51, .035);
+}
+
+.search-filter-field {
+  grid-column: 1 / -1;
+}
+
+.search-filter-field input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #cfd7e6;
+  border-radius: 11px;
+  background: #fff;
+  padding: 0 14px;
+  color: #172033;
+}
+
+.search-filter-field input::placeholder {
+  color: #98a2b3;
 }
 
 .filter-field {
@@ -140,6 +141,7 @@ h1 {
 }
 
 .filters select,
+.filters input,
 .reset-button {
   min-height: 44px;
   border: 1px solid #dbe1ec;
@@ -511,7 +513,6 @@ h1 {
 }
 
 .embed-mode .scope-heading,
-.embed-mode .embed-search-box,
 .embed-mode .school-shortcuts,
 .embed-mode .filters,
 .embed-mode .toolbar,
