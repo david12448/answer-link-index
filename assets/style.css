@@ -37,7 +37,7 @@ h1 {
 }
 
 .hero-copy {
-  margin: 10px 0 22px;
+  margin: 10px 0 0;
   opacity: .82;
 }
 
@@ -113,7 +113,7 @@ h1 {
   grid-column: 1 / -1;
 }
 
-.search-filter-field input {
+.filters .search-filter-field input {
   width: 100%;
   min-height: 48px;
   border: 1px solid #cfd7e6;
