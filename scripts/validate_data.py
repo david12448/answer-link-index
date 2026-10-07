@@ -55,6 +55,29 @@ def main():
         print("[DUPLICATE resource_id]", *duplicated_resources, sep="\n- ")
         raise SystemExit(1)
 
+    for book in data["books"]:
+        for material in book.get("materials", []):
+            availability = material.get("availability")
+            if availability == "available":
+                if material.get("status") != "ok":
+                    print(
+                        f"[AVAILABILITY] {material['resource_id']}: "
+                        "available 자료는 status=ok 이어야 합니다."
+                    )
+                    raise SystemExit(1)
+                if not (material.get("direct_url") or material.get("resource_page")):
+                    print(
+                        f"[AVAILABILITY] {material['resource_id']}: "
+                        "available 자료에는 공식 링크가 필요합니다."
+                    )
+                    raise SystemExit(1)
+            elif availability in {"unavailable", "unknown"} and material.get("direct_url"):
+                print(
+                    f"[AVAILABILITY] {material['resource_id']}: "
+                    f"{availability} 자료에는 direct_url을 둘 수 없습니다."
+                )
+                raise SystemExit(1)
+
     course_ids = [
         course["course_id"]
         for book in data["books"]
