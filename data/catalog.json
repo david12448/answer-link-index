@@ -2,7 +2,7 @@
   "meta": {
     "generated_at": "2026-10-07",
     "schema_version": 3,
-    "note": "정답은 공식 direct/fallback을 유지하고, 정오표·MP3·부가자료는 실제 존재가 확인된 경우만 뱃지를 표시합니다. MP3는 수능특강 영어·영어독해연습·영어듣기에서 실제 파일 목록을 확인했습니다."
+    "note": "EBSi MP3는 실제 교재별 상세 화면과 파일 존재 여부를 확인해 표시합니다. 수능완성 영어는 전용 MP3 상세 페이지 및 실제 MP3 존재를 확인하여 available로 복구했으며 AJAX 파일 판별 로직을 보강 중입니다."
   },
   "books": [
     {
@@ -538,9 +538,9 @@
           "resource_page": "https://www.ebsi.co.kr/ebs/pot/potg/retrieveMp3Down.ebs?bookId=LB00000005984&iemDs=M&year=&connectionBookYn=&bookNm=EBS+2027%ED%95%99%EB%85%84%EB%8F%84+%EC%88%98%EB%8A%A5%EC%99%84%EC%84%B1+%EC%98%81%EC%96%B4%EC%98%81%EC%97%AD+%EC%98%81%EC%96%B4&currentPage=1",
           "direct_url": null,
           "access": "public",
-          "status": "needs_review",
+          "status": "ok",
           "last_checked": "2026-10-07",
-          "availability": "unknown"
+          "availability": "available"
         },
         {
           "resource_id": "ebs-suneung-wanseong-english-2027-additional",
