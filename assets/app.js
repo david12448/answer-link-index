@@ -25,9 +25,9 @@ const labels = {
   ok: "링크 확인",
   redirect: "주소 이동",
   login_required: "로그인 필요",
-  needs_review: "확인 필요",
+  needs_review: "공식 페이지 연결",
   broken: "링크 오류",
-  unknown: "미확인"
+  unknown: "자료 확인 중"
 };
 
 const schoolShort = {
