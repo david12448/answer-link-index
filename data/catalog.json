@@ -3083,23 +3083,24 @@
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012107",
       "cover_image_url": "https://cbox.ebs.co.kr/textbook/2024/12/30/TB1000012107/118587002000359393_textbook.png",
       "post_url": null,
-      "summary": "EBS 중학 중학 뉴런 과학 1 교재입니다. 직접 정답 PDF 주소는 확인 중이며, 현재는 출판사의 교재 안내 페이지를 통해 자료를 확인할 수 있습니다.",
+      "summary": "EBS 중학 뉴런 과학 1 교재입니다. 정답과 해설 PDF를 공식 EBS 다운로드 주소로 바로 제공합니다.",
       "publisher_help": {
         "mode": "book_page",
         "url": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012107",
         "label": "EBS 중학 공식 교재 페이지에서 확인",
-        "note": "정답 PDF 직접 연결을 아직 확인 중인 교재입니다. 출판사 공식 교재 페이지의 정답지/자료 메뉴에서 자료를 확인할 수 있습니다."
+        "note": "정답지 목록에서 교재명과 판본을 확인한 후 정답과 해설을 다운로드할 수 있습니다."
       },
       "materials": [
         {
           "resource_id": "ebs-middle-tb1000012107-answer",
           "type": "answer",
-          "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012107",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "title": "정답과 해설",
+          "resource_page": "https://mid.ebs.co.kr/book/main/correctAnswerList#answer/view/103/60000458741/-1/1//0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000004575",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000004575"
         },
         {
           "resource_id": "ebs-middle-tb1000012107-errata",
