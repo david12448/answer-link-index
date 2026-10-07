@@ -210,6 +210,13 @@
               ]
             }
           }
+        },
+        "publisher_site": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "출판사 내부 서비스 구분. 예: ebsi, ebs_primary, ebs_middle"
         }
       }
     },
