@@ -106,9 +106,6 @@ assert.equal(evaluate(`shouldShowMaterial({type:"mp3", availability:"available",
 assert.equal(evaluate(`shouldShowMaterial({type:"mp3", availability:"unknown", status:"needs_review"})`), false);
 assert.equal(evaluate(`shouldShowMaterial({type:"additional", availability:"unknown", status:"needs_review"})`), false);
 
-assert.equal(evaluate(`shouldShowMaterial({type:"mp3", availability:"available", status:"ok"})`), true);
-assert.equal(evaluate(`shouldShowMaterial({type:"mp3", availability:"unknown", status:"needs_review"})`), false);
-assert.equal(evaluate(`shouldShowMaterial({type:"additional", availability:"unknown", status:"needs_review"})`), false);
 
 evaluate(`state.scope.embed = false; state.books = Array.from({length:2000}, (_,i) => ({
   book_id:"bulk-"+i, title:"교재 "+String(i).padStart(3, "0"),
@@ -125,4 +122,40 @@ assert.equal(elements.bookFilter.options[1].value, "bulk-1999");
 evaluate(`state.scope.book = "bulk-1999"; state.scope.embed = true;`);
 assert.equal(evaluate("getFilteredBooks().length"), 1, "Fixed one-book Tistory view remains available");
 
-console.log("UI filter tests passed: school levels, grade order, search, select cap, errata visibility, single-book scope.");
+const actualCatalog = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "../data/catalog.json"), "utf8")
+);
+evaluate(`state.scope = {publisher:"", level:"", subject:"", grade:"", book:"", embed:false};
+state.schoolLevel = "";
+state.books = ${JSON.stringify(actualCatalog.books)};
+`);
+elements.searchInput.value = "";
+elements.embedSearchInput.value = "";
+evaluate("updateDependentSelects(); updateSchoolShortcuts();");
+assert.equal(
+  evaluate("getFilteredBooks().length"),
+  actualCatalog.books.length,
+  "Actual catalog should render every book with no filters"
+);
+assert.ok(
+  elements.bookFilter.options.length <= 81,
+  "Actual 100+ book catalog keeps the selector capped"
+);
+
+const elementaryCount = actualCatalog.books.filter(book => book.school_level === "elementary").length;
+evaluate(`state.schoolLevel = "elementary"; updateDependentSelects(); updateSchoolShortcuts();`);
+assert.equal(
+  evaluate("getFilteredBooks().length"),
+  elementaryCount,
+  "Actual catalog school-level shortcut matches elementary count"
+);
+
+stateSearch = "만점왕 수학 플러스";
+elements.searchInput.value = stateSearch;
+assert.ok(
+  evaluate("getFilteredBooks().length") >= 10,
+  "Actual catalog search finds the 만점왕 수학 플러스 series"
+);
+elements.searchInput.value = "";
+
+console.log("UI filter tests passed: school levels, grade order, search, select cap, optional badges, actual catalog, single-book scope.");
