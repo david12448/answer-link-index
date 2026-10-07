@@ -9,9 +9,9 @@ from playwright.sync_api import sync_playwright
 
 from ebs_school_material_probe import (
     GO_DETAIL_RE,
-    choose_matching_row,
     collect_attachments,
     extract_go_detail_rows,
+    normalize_title,
     try_search_board,
 )
 
@@ -19,6 +19,22 @@ BASES = {
     "ebs_primary": "https://primary.ebs.co.kr",
     "ebs_middle": "https://mid.ebs.co.kr",
 }
+
+
+def choose_strict_errata_row(rows: list[dict], title: str) -> dict | None:
+    target = normalize_title(title)
+    if not target:
+        return None
+    exact = []
+    for row in rows:
+        text = row.get("text") or ""
+        normalized = normalize_title(text)
+        if target in normalized:
+            exact.append(row)
+    if len(exact) == 1:
+        return exact[0]
+    # 동일 교재명의 정오표가 여러 개면 자동으로 하나를 고르지 않는다.
+    return None
 
 
 def inspect_one(page, book: dict) -> dict:
@@ -55,13 +71,13 @@ def inspect_one(page, book: dict) -> dict:
     page.wait_for_timeout(700)
 
     rows = extract_go_detail_rows(page)
-    matched = choose_matching_row(rows, title)
+    matched = choose_strict_errata_row(rows, title)
     search = {"attempted": False, "input": None, "submitted": False}
 
     if matched is None:
         search = try_search_board(page, title)
         rows = extract_go_detail_rows(page)
-        matched = choose_matching_row(rows, title)
+        matched = choose_strict_errata_row(rows, title)
 
     post_id = None
     detail_clicked = False
