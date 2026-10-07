@@ -2,7 +2,7 @@
   "meta": {
     "generated_at": "2026-10-07",
     "schema_version": 3,
-    "note": "EBS catalog 100권 milestone. 공식 목록에서 제목·학년·과목·textbookId가 명확한 교재만 단계적으로 추가하고, 미검증 정답/정오표는 fallback + hidden 상태를 유지합니다."
+    "note": "EBS 100권 catalog에서 공식 교재 게시물·첨부·HTTP 응답으로 검증된 정답 direct URL과 textbookId 일치 cbox 표지를 단계적으로 반영합니다."
   },
   "books": [
     {
@@ -896,11 +896,12 @@
           "resource_id": "ebs-primary-tb1000013169-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013169",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013169#answer/view/115/60000472977/0/1/TB1000013169/0///",
+          "direct_url": "https://primary.ebs.co.kr/board/common/download?division=&id=30000006562",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000006562"
         },
         {
           "resource_id": "ebs-primary-tb1000013169-errata",
@@ -1524,11 +1525,12 @@
           "resource_id": "ebs-primary-tb1000013111-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013111",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013111#answer/view/115/60000467822/0/1/TB1000013111/0///",
+          "direct_url": "https://primary.ebs.co.kr/board/common/download?division=&id=30000005831",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000005831"
         },
         {
           "resource_id": "ebs-primary-tb1000013111-errata",
@@ -1576,11 +1578,12 @@
           "resource_id": "ebs-primary-tb1000013170-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013170",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013170#answer/view/115/60000472978/0/1/TB1000013170/0///",
+          "direct_url": "https://primary.ebs.co.kr/board/common/download?division=&id=30000006563",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000006563"
         },
         {
           "resource_id": "ebs-primary-tb1000013170-errata",
@@ -2344,7 +2347,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013083",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/12/4/TB1000013083/20572087035807095_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 플러스 5-1 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2396,7 +2399,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013184",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/6/23/TB1000013184/37926890337131812_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 플러스 5-2 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2448,7 +2451,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000010549",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2023/10/12/TB1000010549/80134484482521615_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 초등 영어듣기평가 완벽대비 5-1 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2500,7 +2503,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000010550",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2023/10/12/TB1000010550/80134571686179581_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 초등 영어듣기평가 완벽대비 5-2 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2658,7 +2661,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013098",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/12/16/TB1000013098/21584979692283860_textbook.png",
       "post_url": null,
       "summary": "EBS 초등 만점왕 사회 6-1 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2710,7 +2713,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013182",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/6/15/TB1000013182/37236886896387831_textbook.png",
       "post_url": null,
       "summary": "EBS 초등 만점왕 사회 6-2 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -4018,7 +4021,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012139",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/4/1/TB1000012139/126546168094399947_textbook.png",
       "post_url": null,
       "summary": "EBS 중학 수학 마스터 고난도 Σ(시그마) 중학 수학 2-1 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -4070,7 +4073,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012170",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/6/24/TB1000012170/6470773732867896_textbook.jpg",
       "post_url": null,
       "summary": "EBS 중학 수학 마스터 고난도 Σ(시그마) 중학 수학 2-2 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -4122,7 +4125,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012138",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/4/1/TB1000012138/126545146968737954_textbook.png",
       "post_url": null,
       "summary": "EBS 중학 수학 마스터 유형 β(베타) 중학 수학 2-1 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -4174,7 +4177,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012169",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/6/24/TB1000012169/6470662626217583_textbook.jpg",
       "post_url": null,
       "summary": "EBS 중학 수학 마스터 유형 β(베타) 중학 수학 2-2 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -4382,7 +4385,7 @@
       "edition_year": 2025,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000010435",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2022/11/29/TB1000010435/52733706290209724_textbook.jpg",
       "post_url": null,
       "summary": "EBS 중학 중학 영어듣기능력평가 완벽대비 중2 (2025) 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -4486,7 +4489,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000009120",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2021/12/7/TB1000009120/21910940346112348_textbook.jpg",
       "post_url": null,
       "summary": "EBS 중학 EBS 중학 수학 마스터 고난도 Σ(시그마) 3-1 교재입니다. 정답 직접 링크는 확인 중이며, 현재는 EBS 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -4500,11 +4503,12 @@
           "resource_id": "ebs-middle-tb1000009120-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000009120",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000009120#answer/view/103/60000181054/0/1/TB1000009120/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000000431",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000000431"
         },
         {
           "resource_id": "ebs-middle-tb1000009120-errata",
@@ -4552,11 +4556,12 @@
           "resource_id": "ebs-middle-tb1000010199-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000010199",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000010199#answer/view/103/60000369015/0/1/TB1000010199/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000001028",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000001028"
         },
         {
           "resource_id": "ebs-middle-tb1000010199-errata",
@@ -4604,11 +4609,12 @@
           "resource_id": "ebs-middle-tb1000009060-answer",
           "type": "answer",
           "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000009060",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000009060#answer/view/103/60000099048/0/1/TB1000009060/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000000439",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-07",
+          "publisher_file_id": "30000000439"
         },
         {
           "resource_id": "ebs-middle-tb1000009060-errata",
