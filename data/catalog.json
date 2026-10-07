@@ -2,7 +2,7 @@
   "meta": {
     "generated_at": "2026-10-07",
     "schema_version": 3,
-    "note": "EBS 초등·중등 공식 페이지에서 검증된 표지와 정답 PDF를 단계적으로 반영합니다. 정답은 정확한 자료 게시물 + 공식 첨부 URL + 파일 응답 검증을 통과한 경우에만 direct_url로 승격합니다."
+    "note": "EBS 초등·중등은 공식 자료 게시물/첨부파일/HTTP 응답과 공식 cbox 표지를 검증한 경우만 direct_url·cover_image_url을 단계적으로 반영합니다."
   },
   "books": [
     {
@@ -990,7 +990,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013111",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/12/30/TB1000013111/22814018692578463_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 국어 4-1 교재입니다. 정답 PDF 직접 주소는 확인 중이며, 현재는 출판사의 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -1042,7 +1042,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013170",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/6/11/TB1000013170/36903690843280987_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 국어 4-2 교재입니다. 정답 PDF 직접 주소는 확인 중이며, 현재는 출판사의 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -1094,7 +1094,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013053",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/10/21/TB1000013053/16757328651075523_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 4-1 교재입니다. 직접 정답 PDF 주소는 확인 중이며, 현재는 출판사의 교재 안내 페이지를 통해 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -1146,7 +1146,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://primary.ebs.co.kr/book/main/view?textbookId=TB1000013150",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/5/12/TB1000013150/34287791618947952_textbook.jpg",
       "post_url": null,
       "summary": "EBS 초등 만점왕 수학 4-2 교재입니다. 직접 정답 PDF 주소는 확인 중이며, 현재는 출판사의 교재 안내 페이지를 통해 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2198,7 +2198,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013104",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/1/5/TB1000013104/23309545210641934_textbook.png",
       "post_url": null,
       "summary": "EBS 중학 중학 뉴런 국어 2 교재입니다. 직접 정답 PDF 주소는 확인 중이며, 현재는 출판사의 교재 안내 페이지를 통해 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2250,7 +2250,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012137",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/4/1/TB1000012137/126546011321857508_textbook.png",
       "post_url": null,
       "summary": "EBS 중학 수학 마스터 개념 α(알파) 중학 수학 2-1 교재입니다. 정답 PDF 직접 주소는 확인 중이며, 현재는 출판사의 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2302,7 +2302,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012168",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/6/24/TB1000012168/6470564965972015_textbook.jpg",
       "post_url": null,
       "summary": "EBS 중학 수학 마스터 개념 α(알파) 중학 수학 2-2 교재입니다. 정답 PDF 직접 주소는 확인 중이며, 현재는 출판사의 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2354,7 +2354,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012183",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/7/7/TB1000012183/7598411302653069_textbook.png",
       "post_url": null,
       "summary": "EBS 중학 중학 뉴런 수학 2(상) 교재입니다. 직접 정답 PDF 주소는 확인 중이며, 현재는 출판사의 교재 안내 페이지를 통해 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2406,7 +2406,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013105",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/1/5/TB1000013105/23309615712885612_textbook.png",
       "post_url": null,
       "summary": "EBS 중학 중학 뉴런 수학 2(하) 교재입니다. 직접 정답 PDF 주소는 확인 중이며, 현재는 출판사의 교재 안내 페이지를 통해 자료를 확인할 수 있습니다.",
       "publisher_help": {
@@ -2458,7 +2458,7 @@
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012203",
-      "cover_image_url": null,
+      "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/9/30/TB1000012203/14933195570147047_textbook.jpg",
       "post_url": null,
       "summary": "EBS 중학 중학 뉴런 영어 2 교재입니다. 직접 정답 PDF 주소는 확인 중이며, 현재는 출판사의 교재 안내 페이지를 통해 자료를 확인할 수 있습니다.",
       "publisher_help": {
