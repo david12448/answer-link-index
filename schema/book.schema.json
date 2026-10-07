@@ -286,6 +286,18 @@
             "string",
             "null"
           ]
+        },
+        "availability": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "available",
+            "unavailable",
+            "unknown",
+            null
+          ]
         }
       }
     },
