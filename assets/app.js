@@ -61,10 +61,14 @@ function readScope() {
 }
 
 function shouldShowMaterial(material) {
+  const optional = ["errata", "mp3", "additional"].includes(material.type);
+  if (!optional) return true;
   if (material.availability === "available") return true;
   if (["unavailable", "unknown"].includes(material.availability)) return false;
-  if (material.type !== "errata") return true;
-  return Boolean(material.direct_url || material.status === "ok");
+  if (material.type === "errata") {
+    return Boolean(material.direct_url || material.status === "ok");
+  }
+  return true;
 }
 
 function searchableText(book) {
