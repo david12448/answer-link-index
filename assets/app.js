@@ -60,8 +60,17 @@ function readScope() {
   state.scope.embed = params.get("embed") === "1";
 }
 
+function shouldShowMaterial(material) {
+  if (material.type !== "errata") return true;
+  if (material.availability === "available") return true;
+  if (["unavailable", "unknown"].includes(material.availability)) return false;
+  return Boolean(material.direct_url || material.status === "ok");
+}
+
 function searchableText(book) {
-  const materialText = (book.materials || []).flatMap(m => [m.title, m.type]).join(" ");
+  const materialText = (book.materials || [])
+    .filter(shouldShowMaterial)
+    .flatMap(m => [m.title, m.type]).join(" ");
   const courseText = (book.courses || []).flatMap(c => [c.title, c.teacher, c.source_course_id]).join(" ");
   return [
     book.title, book.publisher, book.brand, book.subject, book.grade, book.semester,
@@ -279,7 +288,9 @@ function updateSchoolShortcuts() {
 }
 
 function materialStatus(book) {
-  const statuses = (book.materials || []).map(m => m.status || "unknown");
+  const statuses = (book.materials || [])
+    .filter(shouldShowMaterial)
+    .map(m => m.status || "unknown");
   if (!statuses.length) return "unknown";
   if (statuses.includes("broken")) return "broken";
   if (statuses.includes("needs_review")) return "needs_review";
@@ -393,7 +404,10 @@ function renderBook(book, detailMode = false) {
       .filter(Boolean).join(" · ");
 
   const intro = fragment.querySelector(".book-intro");
-  const availableMaterials = (book.materials || []).map(material => material.title).filter(Boolean);
+  const availableMaterials = (book.materials || [])
+    .filter(shouldShowMaterial)
+    .map(material => material.title)
+    .filter(Boolean);
   intro.textContent = book.summary || [
     `${book.publisher} ${book.brand || ""} ${gradeLabel(book)} ${book.subject} 교재입니다.`.replace(/\s+/g, " ").trim(),
     availableMaterials.length ? `${availableMaterials.join(", ")} 등 공식 학습자료를 이 페이지에서 확인할 수 있습니다.` : ""
@@ -402,6 +416,7 @@ function renderBook(book, detailMode = false) {
 
   const materials = fragment.querySelector(".materials");
   for (const material of book.materials || []) {
+    if (!shouldShowMaterial(material)) continue;
     const loginRequired = material.access === "login_required";
     const isDirect = Boolean(material.direct_url);
     const best = loginRequired
