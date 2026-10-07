@@ -278,3 +278,22 @@ HEAD 응답의 `Content-Disposition`까지 확인하여 다음 정답 PDF를 dir
 정규화한 대상 교재명이 게시물 제목에 정확히 포함되는 경우만 후보로 인정한다.
 샘플 재검사에서는 확정 가능한 정오표가 없었으므로 뱃지는 계속 숨김 상태를 유지한다.
 새 정오표는 주기적 sync가 실제 첨부파일 응답까지 검증한 경우에만 노출한다.
+## 2026-10-07 EBSi MP3 확인 방식
+
+EBSi 영어 MP3는 정답 PDF와 달리 하나의 파일이 아니라 교재별로 많은 음원으로 구성될 수 있다.
+
+확인된 예:
+- 2027 수능특강 영어: 277개 MP3
+- 2027 수능특강 영어독해연습: 244개 MP3
+- 2027 수능특강 영어듣기: 305개 MP3
+
+교재별 상세 URL은 `retrieveMp3Down.ebs?bookId=LB...&iemDs=...` 형태로 확인되며,
+실제 개별 음원은 `wdown.ebsi.co.kr/bookmp3/{bookId}/...`에 있다.
+
+운영 원칙:
+1. 실제 MP3 목록이 확인되면 `availability=available`
+2. 사용자 버튼은 교재별 MP3 상세 화면으로 연결
+3. 특정 음원 하나를 임의로 대표 direct_url로 저장하지 않음
+4. 파일을 확인하지 못한 교재는 `unknown`으로 숨김
+5. `Sync EBSi optional materials` workflow가 주기적으로 상태를 재점검
+
