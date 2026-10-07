@@ -53,3 +53,9 @@ assert not ns['verify_download'](Context(), candidate)['ok']
 Response.payload = b'%PDF-1.7\n' + b'x' * 1000
 assert ns['verify_download'](Context(), candidate)['ok']
 print('Official host and PDF response regression checks passed')
+
+answer = {"text": "초등 영어듣기평가 완벽대비 3-1 정답과 해설"}
+extra = {"text": "초등 영어듣기평가 완벽대비 3-1 부가자료"}
+assert choose([extra, answer], "초등 영어듣기평가 완벽대비 3-1") == answer
+assert choose([answer, {"text": "초등 영어듣기평가 완벽대비 3-1 정답과 해설"}], "초등 영어듣기평가 완벽대비 3-1") is None
+print('Answer/extra role matching regression checks passed')

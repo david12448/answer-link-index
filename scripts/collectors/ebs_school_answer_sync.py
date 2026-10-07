@@ -230,7 +230,13 @@ def main() -> int:
                 }
                 if before != after:
                     material.update(after)
+                    material["title"] = "정답 및 해설"
                     material["last_checked"] = today
+                    book["summary"] = f"EBS {book['title']} 교재입니다. 공식 정답 및 해설 PDF를 제공합니다."
+                    book["publisher_help"] = {
+                        "mode": "book_page", "url": book["official_page"],
+                        "label": "EBS 공식 교재 페이지", "note": "공식 교재 소개와 관련 자료를 확인할 수 있습니다."
+                    }
                     changes.append({
                         "book_id": book.get("book_id"),
                         "title": book.get("title"),

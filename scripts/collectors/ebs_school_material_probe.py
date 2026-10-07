@@ -56,6 +56,11 @@ def extract_go_detail_rows(page) -> list[dict]:
 
 
 def choose_matching_row(rows: list[dict], title: str, curriculum: str | None = None) -> dict | None:
+    # 정답과 부가자료가 같은 교재명으로 올라오는 경우 자료 역할부터 구분한다.
+    answer_rows = [row for row in rows if re.search(r"정답|해설|해답|풀이", row.get("text") or "")
+                   and not re.search(r"부가자료|추가자료|정오표|오류정정", row.get("text") or "")]
+    if answer_rows:
+        rows = answer_rows
     target = normalize_title(title)
     target_level = re.findall(r"\d+[-학년]\d*|\d+-\d+", title)
     target_numbers = set(re.findall(r"\d+", title))
