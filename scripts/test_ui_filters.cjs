@@ -20,12 +20,13 @@ class FakeSelect {
 }
 
 class FakeButton {
-  constructor(level) {
+  constructor(level = "") {
     this.dataset = { level };
     this.hidden = false;
     this.attributes = {};
     this.classList = { toggle() {} };
     this.textContent = "";
+    this.type = "button";
   }
   setAttribute(name, value) {
     this.attributes[name] = value;
@@ -33,6 +34,13 @@ class FakeButton {
 }
 
 const buttons = ["", "elementary", "middle", "high"].map(level => new FakeButton(level));
+class FakeContainer {
+  constructor() { this.children = []; }
+  set innerHTML(value) { this.children = []; }
+  append(node) { this.children.push(node); }
+  addEventListener() {}
+}
+const seriesButtons = new FakeContainer();
 const elements = {
   publisherFilter: new FakeSelect(),
   subjectFilter: new FakeSelect(),
@@ -43,6 +51,8 @@ const elements = {
     hidden: true,
     querySelectorAll() { return buttons; },
   },
+  seriesShortcuts: { hidden: true },
+  seriesShortcutButtons: seriesButtons,
 };
 const document = {
   getElementById(id) {
@@ -50,8 +60,9 @@ const document = {
     return elements[id];
   },
   createElement(tag) {
-    if (tag !== "option") throw new Error("Unexpected test DOM node: " + tag);
-    return { value: "", textContent: "" };
+    if (tag === "option") return { value: "", textContent: "" };
+    if (tag === "button") return new FakeButton();
+    throw new Error("Unexpected test DOM node: " + tag);
   },
   addEventListener() {},
 };
@@ -89,7 +100,7 @@ assert.equal(evaluate("getFilteredBooks().length"), 1, "Embedded list pages use 
 elements.searchInput.value = "";
 
 elements.searchInput.value = "";
-evaluate(`state.scope = {publisher:"EBS", level:"elementary", subject:"", grade:"", book:"", embed:true}; state.schoolLevel=""; state.books = [
+evaluate(`state.scope = {publisher:"EBS", level:"elementary", brand:"", subject:"", grade:"", book:"", embed:true}; state.schoolLevel=""; state.books = [
   {book_id:"scope-a", title:"초등 수학", school_level:"elementary", grade:3, publisher:"EBS", subject:"수학", materials:[]},
   {book_id:"scope-b", title:"중등 수학", school_level:"middle", grade:1, publisher:"EBS", subject:"수학", materials:[]}
 ];`);
@@ -123,8 +134,9 @@ assert.equal(evaluate("getFilteredBooks().length"), 1, "Fixed one-book Tistory v
 const actualCatalog = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../data/catalog.json"), "utf8")
 );
-evaluate(`state.scope = {publisher:"", level:"", subject:"", grade:"", book:"", embed:false};
+evaluate(`state.scope = {publisher:"", level:"", brand:"", subject:"", grade:"", book:"", embed:false};
 state.schoolLevel = "";
+state.brand = "";
 state.books = ${JSON.stringify(actualCatalog.books)};
 `);
 elements.searchInput.value = "";
@@ -150,6 +162,31 @@ assert.equal(
   "Actual catalog school-level shortcut matches elementary count"
 );
 
+elements.publisherFilter.value = "EBS";
+evaluate("updateDependentSelects(); updateSeriesShortcuts();");
+assert.equal(elements.seriesShortcuts.hidden, false, "Large EBS elementary list shows series shortcuts");
+assert.ok(
+  seriesButtons.children.some(button => button.dataset.brand === "만점왕"),
+  "Series shortcuts include 만점왕"
+);
+assert.ok(
+  seriesButtons.children.some(button => button.dataset.brand === "만점왕 수학 플러스"),
+  "Series shortcuts include 만점왕 수학 플러스"
+);
+
+const expectedPlus = actualCatalog.books.filter(book =>
+  book.publisher === "EBS" &&
+  book.school_level === "elementary" &&
+  book.brand === "만점왕 수학 플러스"
+).length;
+evaluate(`state.brand = "만점왕 수학 플러스"; updateDependentSelects();`);
+assert.equal(
+  evaluate("getFilteredBooks().length"),
+  expectedPlus,
+  "Series shortcut filters the catalog without changing the four main selects"
+);
+evaluate(`state.brand = "";`);
+
 elements.searchInput.value = "만점왕 수학 플러스";
 assert.ok(
   evaluate("getFilteredBooks().length") >= 10,
@@ -157,4 +194,4 @@ assert.ok(
 );
 elements.searchInput.value = "";
 
-console.log("UI filter tests passed: school levels, grade order, search, select cap, optional badges, actual catalog, single-book scope.");
+console.log("UI filter tests passed: school levels, series shortcuts, grade order, search, select cap, optional badges, actual catalog, single-book scope.");
