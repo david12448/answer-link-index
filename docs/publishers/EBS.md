@@ -307,4 +307,17 @@ EBS 공식 교재 검색에서는 **2027학년도 수능완성 영어영역 영�
 - probe는 `retrieveMp3Down.ajax` 응답 자체의 MP3 URL도 검사
 - `#ajaxArea`가 채워질 때까지 기다린 뒤 DOM을 재검사
 - 일시적/구조적 수집 실패만으로 기존 `available` 자료를 자동 숨기지 않음
+## 2026-10-07 초등·중등 공식 표지 자동 수집
+
+초등·중등 교재 상세 페이지의 공식 표지는 `cbox.ebs.co.kr/textbook/`에서 제공되는 사례가 확인된다.
+
+자동 반영 조건:
+1. 해당 교재의 official_page에서 발견
+2. URL host/path가 EBS 공식 cbox textbook 영역
+3. 이미지 URL에 동일한 `TB...` textbookId 포함
+4. 실제 `image/*` 응답과 충분한 파일 크기 확인
+5. 유효 후보가 정확히 하나
+
+표지는 재호스팅하지 않고 `cover_image_url`에 공식 주소만 저장한다.
+`Sync EBS school covers` workflow는 표지가 비어 있는 교재를 순환 점검하고 변경 시 PR을 만든다.
 
