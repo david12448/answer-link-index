@@ -119,6 +119,8 @@ def try_search_board(page, title: str) -> dict:
         form_text = str(attrs.get("form_text") or "")
 
         score = 0
+        if name == "searchkeyword":
+            score += 120
         if "교재" in placeholder:
             score += 100
         if "교재" in form_text and "검색" in form_text:
@@ -204,7 +206,9 @@ def collect_one(page, book: dict, context=None) -> dict:
             })
 
     page.on("response", on_response)
-    page.goto(official, wait_until="domcontentloaded", timeout=60000)
+    start_url = ("https://mid.ebs.co.kr/book/main/correctAnswerList"
+                 if site == "ebs_middle" else official)
+    page.goto(start_url, wait_until="domcontentloaded", timeout=60000)
     try:
         page.wait_for_load_state("networkidle", timeout=12000)
     except Exception:
@@ -219,6 +223,9 @@ def collect_one(page, book: dict, context=None) -> dict:
         })).filter(x => x.href.startsWith('#') && /answer|정답|자료/i.test(x.href + ' ' + x.text))"""
     )
     per_book_hash = next((item for item in reversed(hash_links) if textbook_id in item["href"]), None)
+
+    if site == "ebs_middle":
+        per_book_hash = None
 
     if per_book_hash:
         page.evaluate("(h) => { location.hash = h; }", per_book_hash["href"])
