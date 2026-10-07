@@ -103,6 +103,10 @@ assert.equal(evaluate(`shouldShowMaterial({type:"errata", availability:"unavaila
 assert.equal(evaluate(`shouldShowMaterial({type:"errata", availability:"unknown", status:"needs_review"})`), false);
 assert.equal(evaluate(`shouldShowMaterial({type:"answer", availability:"unknown", status:"needs_review"})`), true);
 
+assert.equal(evaluate(`shouldShowMaterial({type:"mp3", availability:"available", status:"ok"})`), true);
+assert.equal(evaluate(`shouldShowMaterial({type:"mp3", availability:"unknown", status:"needs_review"})`), false);
+assert.equal(evaluate(`shouldShowMaterial({type:"additional", availability:"unknown", status:"needs_review"})`), false);
+
 evaluate(`state.scope.embed = false; state.books = Array.from({length:2000}, (_,i) => ({
   book_id:"bulk-"+i, title:"교재 "+String(i).padStart(3, "0"),
   school_level:"elementary", grade:3, publisher:"EBS", subject:"수학", materials:[]
