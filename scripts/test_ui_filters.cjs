@@ -124,7 +124,10 @@ assert.equal(evaluate(`shouldShowMaterial({type:"mp3", availability:"unknown", s
 assert.equal(evaluate(`shouldShowMaterial({type:"additional", availability:"unknown", status:"needs_review"})`), false);
 
 
-evaluate(`state.scope.embed = false; state.books = Array.from({length:2000}, (_,i) => ({
+evaluate(`state.scope = {publisher:"", level:"", brand:"", subject:"", grade:"", book:"", embed:false};
+state.schoolLevel = "";
+state.brand = "";
+state.books = Array.from({length:2000}, (_,i) => ({
   book_id:"bulk-"+i, title:"교재 "+String(i).padStart(3, "0"),
   school_level:"elementary", grade:3, publisher:"EBS", subject:"수학", materials:[]
 })); updateDependentSelects();`);
