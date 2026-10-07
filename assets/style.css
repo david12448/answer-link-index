@@ -53,6 +53,44 @@ h1 {
   font-size: clamp(23px, 4vw, 34px);
 }
 
+.series-shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+  margin: -4px 0 16px;
+}
+
+.series-shortcuts-label {
+  padding-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #667085;
+}
+
+.series-shortcuts-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.series-shortcuts button {
+  min-height: 34px;
+  padding: 5px 12px;
+  border: 1px solid #dbe1ec;
+  background: #fff;
+  border-radius: 999px;
+  color: #526079;
+  font-size: 12px;
+}
+
+.series-shortcuts button.is-active {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
 .school-shortcuts {
   display: flex;
   flex-wrap: wrap;
@@ -90,6 +128,7 @@ h1 {
 }
 
 .school-shortcuts button:focus-visible,
+.series-shortcuts button:focus-visible,
 .book-title a:focus-visible,
 .search-filter-field input:focus-visible {
   outline: 2px solid #2563eb;
@@ -514,6 +553,7 @@ h1 {
 
 .embed-mode .scope-heading,
 .embed-mode .school-shortcuts,
+.embed-mode .series-shortcuts,
 .embed-mode .filters,
 .embed-mode .toolbar,
 .embed-mode .results,
@@ -573,6 +613,19 @@ h1 {
   }
 
   .school-shortcuts-buttons {
+    width: 100%;
+  }
+
+  .series-shortcuts {
+    gap: 8px;
+  }
+
+  .series-shortcuts-label {
+    width: 100%;
+    padding-top: 0;
+  }
+
+  .series-shortcuts-buttons {
     width: 100%;
   }
 
