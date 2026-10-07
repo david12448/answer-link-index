@@ -136,7 +136,7 @@ def main() -> int:
     )
     parser.add_argument("--catalog", type=Path, default=Path("data/catalog.json"))
     parser.add_argument("--report", type=Path, default=Path("ebs-school-answer-sync-report.json"))
-    parser.add_argument("--limit-per-site", type=int, default=4)
+    parser.add_argument("--limit-per-site", type=int, default=6)
     args = parser.parse_args()
 
     data = json.loads(args.catalog.read_text(encoding="utf-8"))
