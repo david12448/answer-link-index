@@ -113,6 +113,44 @@ def main():
                     )
                     raise SystemExit(1)
 
+            if site in {"ebs_primary", "ebs_middle"}:
+                cover = book.get("cover_image_url") or ""
+                if cover:
+                    parsed_cover = urlparse(cover)
+                    if (
+                        parsed_cover.hostname != "cbox.ebs.co.kr"
+                        or "/textbook/" not in parsed_cover.path
+                        or publisher_book_id not in parsed_cover.path
+                    ):
+                        print(
+                            f"[EBS COVER] {book['book_id']}: "
+                            "초등·중학 표지는 cbox.ebs.co.kr/textbook 경로이고 "
+                            "동일한 TB 교재 ID를 포함해야 합니다."
+                        )
+                        raise SystemExit(1)
+
+                expected_download_host = (
+                    "primary.ebs.co.kr"
+                    if site == "ebs_primary"
+                    else "mid.ebs.co.kr"
+                )
+                for material in book.get("materials", []):
+                    direct_url = material.get("direct_url") or ""
+                    if material.get("type") not in {"answer", "errata"} or not direct_url:
+                        continue
+                    parsed_direct = urlparse(direct_url)
+                    if (
+                        parsed_direct.hostname != expected_download_host
+                        or parsed_direct.path != "/board/common/download"
+                    ):
+                        print(
+                            f"[EBS DOWNLOAD] {material['resource_id']}: "
+                            f"{site} 정답/정오표 direct_url은 "
+                            f"{expected_download_host}/board/common/download "
+                            "공식 첨부 경로여야 합니다."
+                        )
+                        raise SystemExit(1)
+
     resource_ids = [
         material["resource_id"]
         for book in data["books"]
