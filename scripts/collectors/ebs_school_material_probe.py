@@ -35,24 +35,37 @@ def extract_go_detail_rows(page) -> list[dict]:
 
 def choose_matching_row(rows: list[dict], title: str) -> dict | None:
     target = normalize_title(title)
+    target_level = re.findall(r"\d+[-학년]\d*|\d+-\d+", title)
     best = None
     best_score = -1
+
     for row in rows:
         text = row.get("text") or ""
         norm = normalize_title(text)
         if not norm:
             continue
+
+        # 3-1을 찾는데 6-2를 고르는 식의 오매칭을 막는다.
+        row_level = re.findall(r"\d+[-학년]\d*|\d+-\d+", text)
+        if target_level and row_level and not any(token in row_level for token in target_level):
+            continue
+
         if target == norm:
             score = 100
-        elif target in norm or norm in target:
-            score = 80
+        elif target in norm:
+            score = 90
+        elif norm in target and len(norm) >= max(6, int(len(target) * 0.75)):
+            score = 75
         else:
             tokens = [token for token in re.split(r"\s+", title) if len(token) >= 2]
-            score = sum(1 for token in tokens if token in text) * 5
+            matched = sum(1 for token in tokens if token in text)
+            score = matched * 5
+
         if score > best_score:
             best = row
             best_score = score
-    return best if best_score >= 10 else None
+
+    return best if best_score >= 15 else None
 
 
 def try_search_board(page, title: str) -> dict:
