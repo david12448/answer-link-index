@@ -2,7 +2,7 @@
   "meta": {
     "generated_at": "2026-10-07",
     "schema_version": 3,
-    "note": "EBS 초등·중등 신규 교재를 안전하게 확장하며, 브라우저 probe에서 교재명·게시물·PDF 첨부가 모두 확인된 자료만 direct_url로 승격합니다."
+    "note": "정오표 뱃지는 실제 정오표가 확인된 교재에만 표시합니다. 미등록 또는 미확인 정오표는 숨기고, 주기적 점검에서 자료가 생기면 availability=available로 전환합니다."
   },
   "books": [
     {
@@ -127,7 +127,8 @@
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -178,7 +179,8 @@
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -231,7 +233,8 @@
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -284,7 +287,8 @@
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -330,7 +334,8 @@
           "direct_url": "https://www.ebsi.co.kr/ebs/lms/lmsx/bkErrChrgMngFLdown.ebs?bookId=LB00000005909",
           "access": "public",
           "status": "ok",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "available"
         }
       ],
       "summary": "2027학년도 수능특강 국어영역 독서 교재입니다. 정답 및 해설은 EBS 교재 정답지 상세 페이지를 기본 연결로 사용하고, 직접 PDF 주소가 안정적으로 확인되면 바로 다운로드 링크로 우선 연결합니다.",
@@ -378,7 +383,8 @@
           "direct_url": "https://www.ebsi.co.kr/ebs/lms/lmsx/bkErrChrgMngFLdown.ebs?bookId=LB00000005908",
           "access": "public",
           "status": "ok",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "available"
         }
       ],
       "publisher_site": "ebsi"
@@ -425,7 +431,8 @@
           "direct_url": "https://www.ebsi.co.kr/ebs/lms/lmsx/bkErrChrgMngFLdown.ebs?bookId=LB00000005911",
           "access": "public",
           "status": "ok",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "available"
         }
       ],
       "summary": "2027학년도 수능특강 국어영역 언어와 매체 교재입니다. 정답 및 해설은 EBS 교재 정답지 상세 페이지로 연결하고, 정오표는 EBS 정오표 자료를 확인할 수 있도록 연결합니다.",
@@ -473,7 +480,8 @@
           "direct_url": "https://www.ebsi.co.kr/ebs/lms/lmsx/bkErrChrgMngFLdown.ebs?bookId=LB00000005914",
           "access": "public",
           "status": "ok",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "available"
         }
       ],
       "publisher_site": "ebsi"
@@ -520,7 +528,8 @@
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unavailable"
         },
         {
           "resource_id": "ebs-suneung-wanseong-english-2027-mp3",
@@ -597,7 +606,8 @@
           "direct_url": "https://www.ebsi.co.kr/ebs/lms/lmsx/bkErrChrgMngFLdown.ebs?bookId=LB00000005917",
           "access": "public",
           "status": "ok",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "available"
         },
         {
           "resource_id": "ebs-suneung-teukgang-english-2027-mp3",
@@ -653,7 +663,8 @@
           "direct_url": "https://www.ebsi.co.kr/ebs/lms/lmsx/bkErrChrgMngFLdown.ebs?bookId=LB00000005919",
           "access": "public",
           "status": "ok",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "available"
         },
         {
           "resource_id": "ebs-suneung-teukgang-english-reading-practice-2027-mp3",
@@ -709,7 +720,8 @@
           "direct_url": null,
           "access": "public",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unavailable"
         },
         {
           "resource_id": "ebs-suneung-teukgang-english-listening-2027-mp3",
@@ -771,7 +783,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -822,7 +835,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -873,7 +887,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -924,7 +939,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -975,7 +991,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1026,7 +1043,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1077,7 +1095,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1128,7 +1147,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1179,7 +1199,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1230,7 +1251,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1281,7 +1303,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1333,7 +1356,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1385,7 +1409,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1437,7 +1462,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1488,7 +1514,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1539,7 +1566,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1590,7 +1618,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1641,7 +1670,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1692,7 +1722,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1743,7 +1774,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1795,7 +1827,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1846,7 +1879,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1897,7 +1931,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     },
@@ -1948,7 +1983,8 @@
           "direct_url": null,
           "access": "unknown",
           "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "last_checked": "2026-10-07",
+          "availability": "unknown"
         }
       ]
     }
