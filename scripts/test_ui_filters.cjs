@@ -102,6 +102,9 @@ assert.equal(evaluate(`shouldShowMaterial({type:"errata", availability:"availabl
 assert.equal(evaluate(`shouldShowMaterial({type:"errata", availability:"unavailable", status:"needs_review"})`), false);
 assert.equal(evaluate(`shouldShowMaterial({type:"errata", availability:"unknown", status:"needs_review"})`), false);
 assert.equal(evaluate(`shouldShowMaterial({type:"answer", availability:"unknown", status:"needs_review"})`), true);
+assert.equal(evaluate(`shouldShowMaterial({type:"mp3", availability:"available", status:"ok"})`), true);
+assert.equal(evaluate(`shouldShowMaterial({type:"mp3", availability:"unknown", status:"needs_review"})`), false);
+assert.equal(evaluate(`shouldShowMaterial({type:"additional", availability:"unknown", status:"needs_review"})`), false);
 
 assert.equal(evaluate(`shouldShowMaterial({type:"mp3", availability:"available", status:"ok"})`), true);
 assert.equal(evaluate(`shouldShowMaterial({type:"mp3", availability:"unknown", status:"needs_review"})`), false);
