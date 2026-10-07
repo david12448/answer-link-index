@@ -55,3 +55,22 @@ EBS 정오표는 발생 빈도가 높지 않으므로 기존 링크 검사와 �
 - 해당 bookId의 교재별 MP3 상세 페이지에 실제 공식 `wdown.ebsi.co.kr/bookmp3/{bookId}/` 파일이 존재할 때만 MP3 자료를 `available`로 승격합니다.
 - 한 교재에 MP3가 여러 개이므로 catalog에는 교재별 MP3 상세 페이지를 연결하고 개별 음원 수백 개를 모두 저장하지 않습니다.
 - 변화가 있을 때만 검토용 PR을 생성합니다.
+## 대량 catalog CI 운영
+
+교재가 늘어나도 PR 피드백이 느려지지 않도록 검증을 두 층으로 나눕니다.
+
+### 모든 PR
+- JSON Schema
+- 중복 book/resource/publisher ID
+- 학교급/학년 및 EBS ID/host 일관성
+- collector Python 문법
+- JavaScript 문법
+- 2,000권 UI 필터 smoke test
+- catalog 품질 요약
+
+### 외부 EBS 브라우저 검사
+- collector/workflow 코드가 바뀔 때 probe smoke test
+- 정답/정오표/MP3/표지는 각 scheduled sync에서 주기 점검
+- 실제 자료가 새로 확인되면 자동 PR 생성
+- 단순 catalog 데이터 수정만으로 전체 Playwright probe를 반복하지 않음
+
