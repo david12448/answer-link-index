@@ -31,6 +31,8 @@ def rotating_batch(items: list[dict], limit: int) -> list[dict]:
 
 
 def curriculum_year(value: str) -> str | None:
+    if (value or "").strip() in {"2015", "2022"}:
+        return value.strip()
     matches = set(re.findall(r"(?<!\d)(?:20)?(15|22)\s*(?:개정|교육과정)", value or ""))
     return "20" + next(iter(matches)) if len(matches) == 1 else None
 
@@ -228,8 +230,7 @@ def collect_one(page, book: dict, context=None) -> dict:
             })
 
     page.on("response", on_response)
-    start_url = ("https://mid.ebs.co.kr/book/main/correctAnswerList"
-                 if site == "ebs_middle" else official)
+    start_url = official
     page.goto(start_url, wait_until="domcontentloaded", timeout=60000)
     try:
         page.wait_for_load_state("networkidle", timeout=12000)
@@ -246,9 +247,6 @@ def collect_one(page, book: dict, context=None) -> dict:
     )
     per_book_hash = next((item for item in reversed(hash_links) if textbook_id in item["href"]), None)
 
-    if site == "ebs_middle":
-        per_book_hash = None
-
     if per_book_hash:
         page.evaluate("(h) => { location.hash = h; }", per_book_hash["href"])
         page.wait_for_timeout(2200)
@@ -263,7 +261,8 @@ def collect_one(page, book: dict, context=None) -> dict:
         page.wait_for_timeout(900)
 
     rows = extract_go_detail_rows(page)
-    matched = choose_matching_row(rows, title, book.get("curriculum"))
+    matching_title = re.sub(r"^중학\s+", "", title) if per_book_hash else title
+    matched = choose_matching_row(rows, matching_title, book.get("curriculum"))
     search_info = {"attempted": False, "input": None, "submitted": False}
 
     if matched is None:
@@ -271,7 +270,7 @@ def collect_one(page, book: dict, context=None) -> dict:
         query_title = "한 장 수학" if normalize_title(title).startswith("한장수학") else title
         search_info = try_search_board(page, query_title)
         rows = extract_go_detail_rows(page)
-        matched = choose_matching_row(rows, title, book.get("curriculum"))
+        matched = choose_matching_row(rows, matching_title, book.get("curriculum"))
 
     detail_clicked = False
     post_id = None

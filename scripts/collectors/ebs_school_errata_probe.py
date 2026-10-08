@@ -12,6 +12,7 @@ from ebs_school_material_probe import (
     collect_attachments,
     extract_go_detail_rows,
     normalize_title,
+    curriculum_year,
     rotating_batch,
     try_search_board,
 )
@@ -22,13 +23,21 @@ BASES = {
 }
 
 
-def choose_strict_errata_row(rows: list[dict], title: str) -> dict | None:
+def choose_strict_errata_row(rows: list[dict], title: str, curriculum: str | None = None) -> dict | None:
     target = normalize_title(title)
     if not target:
         return None
     exact = []
     for row in rows:
         text = row.get("text") or ""
+        expected = curriculum_year(curriculum or title)
+        actual = curriculum_year(text)
+        if expected and actual != expected:
+            continue
+        years = set(re.findall(r"(?<!\d)20\d{2}(?!\d)", title)) - {"2015", "2022"}
+        row_years = set(re.findall(r"(?<!\d)20\d{2}(?!\d)", text)) - {"2015", "2022"}
+        if years and row_years and years != row_years:
+            continue
         normalized = normalize_title(text)
         if target in normalized:
             exact.append(row)
@@ -72,13 +81,13 @@ def inspect_one(page, book: dict) -> dict:
     page.wait_for_timeout(700)
 
     rows = extract_go_detail_rows(page)
-    matched = choose_strict_errata_row(rows, title)
+    matched = choose_strict_errata_row(rows, title, book.get("curriculum"))
     search = {"attempted": False, "input": None, "submitted": False}
 
     if matched is None:
         search = try_search_board(page, title)
         rows = extract_go_detail_rows(page)
-        matched = choose_strict_errata_row(rows, title)
+        matched = choose_strict_errata_row(rows, title, book.get("curriculum"))
 
     post_id = None
     detail_clicked = False

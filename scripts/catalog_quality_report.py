@@ -51,7 +51,13 @@ def build_report(data: dict) -> dict:
     ]
 
     optional = []
+    material_availability = {}
     for book in books:
+        for item in book.get("materials", []):
+            if item.get("type") in {"errata", "mp3", "additional"}:
+                counts = material_availability.setdefault(item["type"], {})
+                state = item.get("availability") or "unknown"
+                counts[state] = counts.get(state, 0) + 1
         for kind in ("mp3", "additional"):
             item = material(book, kind)
             if item:
@@ -66,6 +72,7 @@ def build_report(data: dict) -> dict:
         "total_books": len(books),
         "school_counts": dict(sorted(school_counts.items())),
         "publisher_counts": dict(sorted(publisher_counts.items())),
+        "material_availability": material_availability,
         "ebs_school": {
             "total": len(ebs_school),
             "answer_direct": len(answer_direct),
@@ -84,6 +91,8 @@ def build_report(data: dict) -> dict:
                     "title": book.get("title"),
                     "publisher_site": book.get("publisher_site"),
                     "publisher_book_id": book.get("publisher_book_id"),
+                    "curriculum": book.get("curriculum"),
+                    "official_page": book.get("official_page"),
                 }
                 for book in answer_pending
             ],
@@ -124,6 +133,10 @@ def markdown(report: dict) -> str:
         f"- 정오표 표시: **{ebs['errata_available']}권**",
         f"- 정오표 숨김(없음/미확인): **{ebs['errata_hidden']}권**",
     ]
+    lines += ["", "### 전체 catalog 선택 자료"]
+    for kind, label in (("errata", "정오표"), ("mp3", "MP3"), ("additional", "부가자료")):
+        counts = report["material_availability"].get(kind, {})
+        lines.append(f"- {label}: 실제 확인 {counts.get('available', 0)} / 현재 없음 확인 {counts.get('unavailable', 0)} / 자료 확인 중 {counts.get('unknown', 0)}")
 
     pending_answers = report["pending"]["answers"][:12]
     if pending_answers:

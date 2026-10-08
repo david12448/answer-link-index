@@ -4,6 +4,7 @@ import argparse
 import json
 from datetime import date
 from pathlib import Path
+from urllib.parse import urlparse, parse_qs
 
 from playwright.sync_api import sync_playwright
 
@@ -36,6 +37,12 @@ def rotating_batch(items: list[dict], limit: int) -> list[dict]:
 
 def verify_download(context, url: str, referer: str) -> dict:
     try:
+        parsed = urlparse(url)
+        origin = urlparse(referer)
+        if (parsed.scheme != "https" or parsed.hostname not in {"primary.ebs.co.kr", "mid.ebs.co.kr"}
+                or parsed.hostname != origin.hostname or parsed.path != "/board/common/download"
+                or not parse_qs(parsed.query).get("id")):
+            return {"ok": False, "error": "Not an official EBS attachment"}
         response = context.request.get(
             url,
             headers={
@@ -50,12 +57,12 @@ def verify_download(context, url: str, referer: str) -> dict:
         ok = (
             response.ok
             and len(body) > 500
+            and urlparse(response.url).scheme == "https"
+            and urlparse(response.url).hostname == parsed.hostname
             and (
-                body.startswith(b"%PDF")
+                body.startswith(b"%PDF-")
                 or body.startswith(b"PK\x03\x04")
-                or "application/pdf" in content_type
-                or "octet-stream" in content_type
-                or "attachment" in disposition
+                or body.startswith(b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1")
             )
         )
         return {
@@ -95,7 +102,6 @@ def main() -> int:
         and book.get("publisher_site") in {"ebs_primary", "ebs_middle"}
         and book.get("publisher_book_id")
         and errata_material(book)
-        and errata_material(book).get("availability") != "available"
     ]
     books.sort(key=lambda book: (
         book.get("publisher_site") or "",
@@ -135,12 +141,15 @@ def main() -> int:
             material = errata_material(book)
             try:
                 result = inspect_one(page, book)
-                candidates = result.get("direct_candidates", [])
+                candidates = list({item["url"]: item for item in result.get("direct_candidates", [])}.values())
                 candidate = candidates[0] if len(candidates) == 1 else None
                 exact_post = bool(
                     result.get("matched_row")
                     and result.get("post_id")
                     and result.get("detail_clicked")
+                    and urlparse(result.get("final_url") or "").hostname
+                    == {"ebs_primary": "primary.ebs.co.kr", "ebs_middle": "mid.ebs.co.kr"}[book["publisher_site"]]
+                    and "#corr/view/" in (result.get("final_url") or "")
                 )
                 verification = None
                 direct_url = None
@@ -196,7 +205,7 @@ def main() -> int:
                         "before": before,
                         "after": after,
                         "post_id": result.get("post_id"),
-                        "filename": candidate.get("text"),
+                        "filename": (candidate or {}).get("text"),
                     })
 
             except Exception as exc:

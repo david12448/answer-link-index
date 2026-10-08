@@ -3646,29 +3646,30 @@
       "semester": null,
       "subject": "수학",
       "book_type": "문제집",
-      "curriculum": null,
+      "curriculum": "2022",
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012051",
       "cover_image_url": "https://cbox.ebs.co.kr/textbook/2024/10/4/TB1000012051/111056277792080760_textbook.png",
       "post_url": null,
-      "summary": "EBS 중학 중학 뉴런 연산 수학 1(상) 교재입니다. 정답 PDF 직접 주소는 확인 중이며, 현재는 출판사의 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
+      "summary": "EBS 중학 뉴런 연산 수학 1(상) 교재입니다. 공식 정답 및 해설 PDF를 제공합니다.",
       "publisher_help": {
         "mode": "book_page",
         "url": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012051",
-        "label": "EBS 중학 공식 교재 페이지에서 확인",
-        "note": "정답 PDF 직접 연결을 아직 확인 중인 교재입니다. 출판사 공식 교재 페이지의 정답지/자료 메뉴에서 자료를 확인할 수 있습니다."
+        "label": "EBS 공식 교재 페이지",
+        "note": "공식 교재 소개와 관련 자료를 확인할 수 있습니다."
       },
       "materials": [
         {
           "resource_id": "ebs-middle-tb1000012051-answer",
           "type": "answer",
-          "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012051",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "title": "정답 및 해설",
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012051#answer/view/103/60000457520/0/1/TB1000012051/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000004291",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000004291"
         },
         {
           "resource_id": "ebs-middle-tb1000012051-errata",
@@ -3698,29 +3699,30 @@
       "semester": null,
       "subject": "수학",
       "book_type": "문제집",
-      "curriculum": null,
+      "curriculum": "2022",
       "edition_year": null,
       "isbn": null,
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012052",
       "cover_image_url": "https://cbox.ebs.co.kr/textbook/2024/10/4/TB1000012052/111057297221362483_textbook.png",
       "post_url": null,
-      "summary": "EBS 중학 중학 뉴런 연산 수학 1(하) 교재입니다. 정답 PDF 직접 주소는 확인 중이며, 현재는 출판사의 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
+      "summary": "EBS 중학 뉴런 연산 수학 1(하) 교재입니다. 공식 정답 및 해설 PDF를 제공합니다.",
       "publisher_help": {
         "mode": "book_page",
         "url": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012052",
-        "label": "EBS 중학 공식 교재 페이지에서 확인",
-        "note": "정답 PDF 직접 연결을 아직 확인 중인 교재입니다. 출판사 공식 교재 페이지의 정답지/자료 메뉴에서 자료를 확인할 수 있습니다."
+        "label": "EBS 공식 교재 페이지",
+        "note": "공식 교재 소개와 관련 자료를 확인할 수 있습니다."
       },
       "materials": [
         {
           "resource_id": "ebs-middle-tb1000012052-answer",
           "type": "answer",
-          "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012052",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "title": "정답 및 해설",
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012052#answer/view/103/60000457521/0/1/TB1000012052/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000004292",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000004292"
         },
         {
           "resource_id": "ebs-middle-tb1000012052-errata",
@@ -3861,23 +3863,24 @@
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013106",
       "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/1/5/TB1000013106/23309677320217472_textbook.png",
       "post_url": null,
-      "summary": "EBS 중학 중학 뉴런 과학 2 교재입니다. 직접 정답 PDF 주소는 확인 중이며, 현재는 출판사의 교재 안내 페이지를 통해 자료를 확인할 수 있습니다.",
+      "summary": "EBS 중학 뉴런 과학 2 교재입니다. 공식 정답 및 해설 PDF를 제공합니다.",
       "publisher_help": {
         "mode": "book_page",
         "url": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013106",
-        "label": "EBS 중학 공식 교재 페이지에서 확인",
-        "note": "정답 PDF 직접 연결을 아직 확인 중인 교재입니다. 출판사 공식 교재 페이지의 정답지/자료 메뉴에서 자료를 확인할 수 있습니다."
+        "label": "EBS 공식 교재 페이지",
+        "note": "공식 교재 소개와 관련 자료를 확인할 수 있습니다."
       },
       "materials": [
         {
           "resource_id": "ebs-middle-tb1000013106-answer",
           "type": "answer",
-          "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013106",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "title": "정답 및 해설",
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013106#answer/view/103/60000470182/0/1/TB1000013106/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000005886",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000005886"
         },
         {
           "resource_id": "ebs-middle-tb1000013106-errata",
@@ -4754,23 +4757,24 @@
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013220",
       "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/9/17/TB1000013220/45353640621682301_textbook.jpg",
       "post_url": null,
-      "summary": "EBS 중학 중학 뉴런 영어 3 교재입니다. 정답 PDF 직접 주소는 확인 중이며, 현재는 출판사의 공식 교재 페이지에서 자료를 확인할 수 있습니다.",
+      "summary": "EBS 중학 뉴런 영어 3 교재입니다. 공식 정답 및 해설 PDF를 제공합니다.",
       "publisher_help": {
         "mode": "book_page",
         "url": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013220",
-        "label": "EBS 중학 공식 교재 페이지에서 확인",
-        "note": "정답 PDF 직접 연결을 아직 확인 중인 교재입니다. 출판사 공식 교재 페이지의 정답지/자료 메뉴에서 자료를 확인할 수 있습니다."
+        "label": "EBS 공식 교재 페이지",
+        "note": "공식 교재 소개와 관련 자료를 확인할 수 있습니다."
       },
       "materials": [
         {
           "resource_id": "ebs-middle-tb1000013220-answer",
           "type": "answer",
-          "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013220",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-07"
+          "title": "정답 및 해설",
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013220#answer/view/103/60000479646/0/1/TB1000013220/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000008153",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000008153"
         },
         {
           "resource_id": "ebs-middle-tb1000013220-errata",
@@ -5307,7 +5311,7 @@
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013123",
       "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/1/22/TB1000013123/24792160525445006_textbook.jpg",
       "post_url": null,
-      "summary": "EBS 뉴런 기출로 영문법 중1 교재입니다. 공식 페이지에서 자료를 확인할 수 있습니다.",
+      "summary": "EBS 뉴런 기출로 영문법 중1 교재입니다. 공식 정답 및 해설 PDF를 제공합니다.",
       "publisher_help": {
         "mode": "book_page",
         "url": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013123",
@@ -5318,12 +5322,13 @@
         {
           "resource_id": "ebs-middle-tb1000013123-answer",
           "type": "answer",
-          "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013123",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-08"
+          "title": "정답 및 해설",
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013123#answer/view/103/60000470304/0/1/TB1000013123/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000005868",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000005868"
         },
         {
           "resource_id": "ebs-middle-tb1000013123-errata",
@@ -5359,7 +5364,7 @@
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013124",
       "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/1/22/TB1000013124/24792253256826458_textbook.jpg",
       "post_url": null,
-      "summary": "EBS 뉴런 기출로 영문법 중2 교재입니다. 공식 페이지에서 자료를 확인할 수 있습니다.",
+      "summary": "EBS 뉴런 기출로 영문법 중2 교재입니다. 공식 정답 및 해설 PDF를 제공합니다.",
       "publisher_help": {
         "mode": "book_page",
         "url": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013124",
@@ -5370,12 +5375,13 @@
         {
           "resource_id": "ebs-middle-tb1000013124-answer",
           "type": "answer",
-          "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013124",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-08"
+          "title": "정답 및 해설",
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013124#answer/view/103/60000470305/0/1/TB1000013124/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000005869",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000005869"
         },
         {
           "resource_id": "ebs-middle-tb1000013124-errata",
@@ -5411,7 +5417,7 @@
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013125",
       "cover_image_url": "https://cbox.ebs.co.kr/textbook/2026/2/5/TB1000013125/26008764303852900_textbook.jpg",
       "post_url": null,
-      "summary": "EBS 뉴런 기출로 영문법 중3 교재입니다. 공식 페이지에서 자료를 확인할 수 있습니다.",
+      "summary": "EBS 뉴런 기출로 영문법 중3 교재입니다. 공식 정답 및 해설 PDF를 제공합니다.",
       "publisher_help": {
         "mode": "book_page",
         "url": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013125",
@@ -5422,12 +5428,13 @@
         {
           "resource_id": "ebs-middle-tb1000013125-answer",
           "type": "answer",
-          "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013125",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-08"
+          "title": "정답 및 해설",
+          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000013125#answer/view/103/60000470306/0/1/TB1000013125/0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000005870",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000005870"
         },
         {
           "resource_id": "ebs-middle-tb1000013125-errata",

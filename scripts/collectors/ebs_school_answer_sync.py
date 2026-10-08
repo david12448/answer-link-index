@@ -42,19 +42,53 @@ def rotating_batch(items: list[dict], limit: int) -> list[dict]:
 def safe_candidate(book: dict, result: dict) -> dict | None:
     matched = result.get("matched_row") or {}
     matched_text = matched.get("text") or ""
-    # 판본이 제목에서 빠진 게시물은 자동으로 개정판을 추측하지 않는다.
+    expected_host = {"ebs_primary": "primary.ebs.co.kr", "ebs_middle": "mid.ebs.co.kr"}.get(book.get("publisher_site"))
+    textbook_id = book.get("publisher_book_id")
+    official = urlparse(result.get("official_page") or "")
+    scope_hash = (result.get("per_book_hash") or {}).get("href") or ""
+    board = "103" if book.get("publisher_site") == "ebs_middle" else "115"
+    final_url = result.get("final_url") or result.get("resource_page") or ""
+    detail = urlparse(final_url)
+    parts = detail.fragment.split("/")
+    # 공식 교재 상세에서 발견한 hash와 실제 상세 hash가 동일 textbookId/postId를 유지해야 한다.
+    scoped = bool(
+        textbook_id and official.scheme == "https" and official.hostname == expected_host
+        and official.path == "/book/main/view"
+        and parse_qs(official.query).get("textbookId") == [textbook_id]
+        and re.fullmatch(r"#answer/list/" + board + r"/\d+/" + re.escape(textbook_id) + r"(?:/.*)?", scope_hash)
+        and detail.scheme == "https" and detail.hostname == expected_host
+        and detail.path == "/book/main/view"
+        and parse_qs(detail.query).get("textbookId") == [textbook_id]
+        and len(parts) >= 7 and parts[:3] == ["answer", "view", board]
+        and parts[3] == result.get("post_id") and parts[6] == textbook_id
+    )
+    if scope_hash and not scoped:
+        return None
+    # 교재별 공식 연결은 제목에서 빠진 판본의 근거가 된다. 명시된 충돌은 여전히 거부한다.
     expected_curriculum = curriculum_year(book.get("curriculum") or book.get("title") or "")
+    row_curriculum = curriculum_year(matched_text)
+    if expected_curriculum and row_curriculum and expected_curriculum != row_curriculum:
+        return None
+    target_years = set(re.findall(r"(?<!\d)20\d{2}(?!\d)", book.get("title") or "")) - {"2015", "2022"}
+    row_years = set(re.findall(r"(?<!\d)20\d{2}(?!\d)", matched_text)) - {"2015", "2022"}
+    edition = book.get("edition_year")
+    if edition:
+        target_years.add(str(edition))
+    if target_years and row_years and target_years != row_years:
+        return None
     if book.get("publisher_site") == "ebs_middle":
-        if not expected_curriculum or curriculum_year(matched_text) != expected_curriculum:
+        if not scoped and (not expected_curriculum or row_curriculum != expected_curriculum):
             return None
     target = normalize_title(book.get("title") or "")
     matched_norm = normalize_title(matched_text)
+    if scoped:
+        target = target.removeprefix("중학")
+        matched_norm = matched_norm.removeprefix("중학")
 
     # 교재 제목이 자료 게시물 제목 안에 충분히 포함되는 경우만 자동 채택한다.
     if not target or target not in matched_norm:
         return None
 
-    expected_host = {"ebs_primary": "primary.ebs.co.kr", "ebs_middle": "mid.ebs.co.kr"}.get(book.get("publisher_site"))
     candidates = []
     seen = set()
     for item in result.get("direct_candidates", []):
@@ -83,8 +117,7 @@ def safe_candidate(book: dict, result: dict) -> dict | None:
     if not file_id:
         return None
 
-    final_url = result.get("final_url") or result.get("resource_page")
-    if not final_url or "#answer/view/" not in final_url:
+    if detail.scheme != "https" or detail.hostname != expected_host or "#answer/view/" not in final_url:
         return None
 
     return {

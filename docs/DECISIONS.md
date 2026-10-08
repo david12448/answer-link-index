@@ -155,3 +155,7 @@
 - 열린 PR의 기존 collector 변경 이력 때문에 catalog-only 갱신마다 Playwright를 재실행하지 않는다.
 - 최초 PR/기준 커밋 누락은 base...head로 보수적으로 판단한다. scheduled/manual sync는 계속 실행한다.
 - 공식 정답 PDF는 실제 GET 본문의 PDF 서명이 검증된 경우에만 자동 반영한다.
+
+
+## 2026-10-08: 중등 정답의 공식 교재별 연결을 판본 근거로 인정
+공식 교재 상세의 textbookId 포함 answer hash → 동일 tid 목록의 정확한 제목 게시물 → 같은 tid/postId 상세 → 단일 공식 PDF → 실제 GET/PDF 서명 검증을 모두 만족하면 게시물 제목에 교육과정 문자열이 없어도 direct 승격한다. 명시된 다른 교육과정/연도는 거부한다. 공식 hash가 없는 전역 검색은 기존 보수적 판본 검사를 유지한다. book_id와 사용자 UI 계약은 변경하지 않는다.
