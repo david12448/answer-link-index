@@ -76,13 +76,11 @@ EBS 정오표는 발생 빈도가 높지 않으므로 기존 링크 검사와 �
 
 
 
-## 현재 자동 PR 생성 설정의 차단과 검증 범위 (2026-10-08)
+## 자동 PR 권한 복구 확인 (2026-10-08)
 
-main=4ec7bbc에서 정기 Check official links 실행 37734857718은 링크 검사와 automation/link-status 브랜치 push까지 성공했지만 `GitHub Actions is not permitted to create or approve pull requests` 오류로 PR 생성이 실패했다. 동일 오류의 재실행만으로는 해결되지 않는다.
+사용자가 Allow GitHub Actions to create and approve pull requests 설정을 켠 뒤 main의 Check official links 실행 37734857718을 재실행했다. 실제 실행은 success로 완료됐으며 github-actions가 PR #4(automation/link-status)를 생성했다. 권한 차단은 해소됐다. 자동 승인이나 main 병합은 하지 않는다.
 
-저장소 Settings → Actions → General → Workflow permissions의 **Allow GitHub Actions to create and approve pull requests** 설정이 필요하다. workflow의 contents/pull-requests: write 선언만으로는 저장소의 별도 제한을 해제하지 못한다. 승인이나 main 병합은 자동화하지 않는다. 이 설정 변경은 사용자가 직접 결정한다.
-
-검사 결과 보존을 위해 PR 생성 전에 official-link-status artifact를 업로드하도록 feature에서 보완했다. 기존 main 실패 실행 자체가 복구된 것은 아니다. 초·중등 정답/정오표/표지 및 MP3 sync는 현재 feature의 구현이며 main 병합 전 scheduled 운영 중이라고 표현하지 않는다.
+검사 결과 보존을 위해 PR 생성 전에 official-link-status artifact를 업로드하도록 feature에서 보완했다. 초·중등 정답/정오표/표지 및 MP3 sync는 현재 feature의 구현이며 main 병합 전 scheduled 운영 중이라고 표현하지 않는다.
 
 정오표 sync는 available 교재도 순환 점검해 후속 게시물을 감시한다. 제목만 유사한 구판·학년·연도와 HTML 파일 오류는 거부하며 여러 첨부에서는 상세 화면을 사용한다. 품질 리포트는 초·중등 진행률과 별도로 전체 catalog의 정오표/MP3/부가자료 available/unavailable/unknown 수를 제공한다.
 

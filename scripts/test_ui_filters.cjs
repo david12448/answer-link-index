@@ -143,7 +143,7 @@ evaluate(`state.scope.book = "bulk-1999"; state.scope.embed = true;`);
 assert.equal(evaluate("getFilteredBooks().length"), 1, "Fixed one-book Tistory view remains available");
 
 const actualCatalog = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "../data/catalog.json"), "utf8")
+  fs.readFileSync(process.env.PUBLIC_CATALOG_PATH || path.join(__dirname, "../data/catalog.json"), "utf8")
 );
 evaluate(`state.scope = {publisher:"", level:"", brand:"", subject:"", grade:"", book:"", embed:false};
 state.schoolLevel = "";
