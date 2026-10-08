@@ -85,3 +85,5 @@ main=4ec7bbc에서 정기 Check official links 실행 37734857718은 링크 검�
 검사 결과 보존을 위해 PR 생성 전에 official-link-status artifact를 업로드하도록 feature에서 보완했다. 기존 main 실패 실행 자체가 복구된 것은 아니다. 초·중등 정답/정오표/표지 및 MP3 sync는 현재 feature의 구현이며 main 병합 전 scheduled 운영 중이라고 표현하지 않는다.
 
 정오표 sync는 available 교재도 순환 점검해 후속 게시물을 감시한다. 제목만 유사한 구판·학년·연도와 HTML 파일 오류는 거부하며 여러 첨부에서는 상세 화면을 사용한다. 품질 리포트는 초·중등 진행률과 별도로 전체 catalog의 정오표/MP3/부가자료 available/unavailable/unknown 수를 제공한다.
+
+이미 검증된 정오표 direct가 있는 교재의 단일 파일 재검증이 일시 실패하면 기존 링크를 유지한다. 검색 실패도 기존 자료의 삭제 근거로 쓰지 않는다. 실제 여러 첨부가 확인되는 경우에만 임의 파일 대신 정확한 상세 페이지로 연결한다.

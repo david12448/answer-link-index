@@ -181,6 +181,9 @@ def main() -> int:
 
                 if not exact_post:
                     continue
+                # 이미 검증된 파일을 일시적인 다운로드 오류 때문에 삭제하지 않는다.
+                if candidate and not direct_url and material.get("direct_url"):
+                    continue
 
                 before = {
                     "direct_url": material.get("direct_url"),
