@@ -1,0 +1,90 @@
+name: Probe EBS answer download
+
+on:
+  pull_request:
+    paths:
+      - "scripts/collectors/ebs_browser_probe.py"
+      - ".github/workflows/probe-ebs-answer-download.yml"
+  workflow_dispatch:
+    inputs:
+      book_id:
+        description: "EBS bookId (LB...)"
+        required: true
+        default: "LB00000005909"
+      answer_no:
+        description: "Answer detail no"
+        required: true
+        default: "5"
+      detail_url:
+        description: "Optional exact detailBkAnsInfo URL"
+        required: false
+        default: ""
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    uses: ./.github/workflows/collector-change-gate.yml
+    with:
+      paths: '["scripts/collectors/ebs_browser_probe.py", ".github/workflows/probe-ebs-answer-download.yml"]'
+  probe:
+    needs: changes
+    if: needs.changes.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Collect EBS answer direct URL candidates
+        shell: bash
+        run: |
+          BOOK_ID="${{ inputs.book_id }}"
+          ANSWER_NO="${{ inputs.answer_no }}"
+          DETAIL_URL="${{ inputs.detail_url }}"
+
+          if [ -z "$BOOK_ID" ]; then
+            BOOK_ID="LB00000005909"
+          fi
+          if [ -z "$ANSWER_NO" ]; then
+            ANSWER_NO="5"
+          fi
+
+          set +e
+          if [ -n "$DETAIL_URL" ]; then
+            python scripts/collectors/ebs_browser_probe.py \
+              --book-id "$BOOK_ID" \
+              --answer-no "$ANSWER_NO" \
+              --url "$DETAIL_URL" \
+              --output ebs-answer-browser-probe.json
+          else
+            python scripts/collectors/ebs_browser_probe.py \
+              --book-id "$BOOK_ID" \
+              --answer-no "$ANSWER_NO" \
+              --output ebs-answer-browser-probe.json
+          fi
+          EXIT_CODE=$?
+          set -e
+
+          # 발견 실패도 조사 artifact를 남기기 위해 workflow 자체는 성공 처리.
+          echo "collector_exit_code=$EXIT_CODE" >> "$GITHUB_STEP_SUMMARY"
+          cat ebs-answer-browser-probe.json >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload browser probe report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ebs-answer-browser-probe
+          path: ebs-answer-browser-probe.json
+          if-no-files-found: error

@@ -1,12 +1,18 @@
 const PAGE_SIZE = 20;
+const BOOK_SELECT_LIMIT = 80;
+const SCHOOL_ORDER = { elementary: 0, middle: 1, high: 2 };
 
 const state = {
   books: [],
   meta: {},
   visibleCount: PAGE_SIZE,
   view: "list",
+  schoolLevel: "",
+  brand: "",
   scope: {
     publisher: "",
+    level: "",
+    brand: "",
     subject: "",
     grade: "",
     book: "",
@@ -21,9 +27,9 @@ const labels = {
   ok: "링크 확인",
   redirect: "주소 이동",
   login_required: "로그인 필요",
-  needs_review: "확인 필요",
+  needs_review: "공식 페이지 연결",
   broken: "링크 오류",
-  unknown: "미확인"
+  unknown: "자료 확인 중"
 };
 
 const schoolShort = {
@@ -48,14 +54,27 @@ const normalize = value => String(value ?? "")
 function readScope() {
   const params = new URLSearchParams(window.location.search);
   state.scope.publisher = params.get("publisher") || "";
+  state.scope.brand = params.get("brand") || "";
+  const level = params.get("level") || "";
+  state.scope.level = ["elementary", "middle", "high"].includes(level) ? level : "";
   state.scope.subject = params.get("subject") || "";
   state.scope.grade = params.get("grade") || "";
   state.scope.book = params.get("book") || "";
   state.scope.embed = params.get("embed") === "1";
 }
 
+function shouldShowMaterial(material) {
+  const optional = ["errata", "mp3", "additional"].includes(material.type);
+  if (!optional) return true;
+  if (material.availability === "available") return true;
+  if (["unavailable", "unknown"].includes(material.availability)) return false;
+  return Boolean(material.direct_url || material.status === "ok");
+}
+
 function searchableText(book) {
-  const materialText = (book.materials || []).flatMap(m => [m.title, m.type]).join(" ");
+  const materialText = (book.materials || [])
+    .filter(shouldShowMaterial)
+    .flatMap(m => [m.title, m.type]).join(" ");
   const courseText = (book.courses || []).flatMap(c => [c.title, c.teacher, c.source_course_id]).join(" ");
   return [
     book.title, book.publisher, book.brand, book.subject, book.grade, book.semester,
@@ -95,6 +114,8 @@ function matchesGrade(book, value) {
 
 function scopeMatches(book) {
   if (state.scope.publisher && book.publisher !== state.scope.publisher) return false;
+  if (state.scope.level && book.school_level !== state.scope.level) return false;
+  if (state.scope.brand && book.brand !== state.scope.brand) return false;
   if (state.scope.subject && book.subject !== state.scope.subject) return false;
   if (state.scope.grade && !matchesGrade(book, state.scope.grade)) return false;
   if (state.scope.book && book.book_id !== state.scope.book) return false;
@@ -106,9 +127,14 @@ function selectValue(id) {
   return node ? node.value : "";
 }
 
+function currentQuery() {
+  return selectValue("searchInput");
+}
+
 function effectiveFilters() {
   return {
     publisher: state.scope.publisher || selectValue("publisherFilter"),
+    brand: state.scope.brand || state.brand,
     subject: state.scope.subject || selectValue("subjectFilter"),
     grade: state.scope.grade || selectValue("gradeFilter"),
     book: state.scope.book || selectValue("bookFilter")
@@ -117,7 +143,10 @@ function effectiveFilters() {
 
 function matchesFilters(book, filters, ignoreKey = "") {
   if (!scopeMatches(book)) return false;
+  const selectedLevel = state.scope.level || state.schoolLevel;
+  if (selectedLevel && book.school_level !== selectedLevel) return false;
   if (ignoreKey !== "publisher" && filters.publisher && book.publisher !== filters.publisher) return false;
+  if (ignoreKey !== "brand" && filters.brand && book.brand !== filters.brand) return false;
   if (ignoreKey !== "subject" && filters.subject && book.subject !== filters.subject) return false;
   if (ignoreKey !== "grade" && filters.grade && !matchesGrade(book, filters.grade)) return false;
   if (ignoreKey !== "book" && filters.book && book.book_id !== filters.book) return false;
@@ -155,6 +184,10 @@ function refillSelect(select, options, placeholder, selectedValue = "") {
 
 function updateDependentSelects() {
   const filters = effectiveFilters();
+  const selectedLevel = state.scope.level || state.schoolLevel;
+  const selectedBrand = state.scope.brand || state.brand;
+  const levelMatches = book => !selectedLevel || book.school_level === selectedLevel;
+  const brandMatches = book => !selectedBrand || book.brand === selectedBrand;
 
   const publisherOptions = sortedUnique(
     state.books.filter(scopeMatches).map(book => book.publisher)
@@ -164,7 +197,8 @@ function updateDependentSelects() {
 
   const publisher = state.scope.publisher || selectValue("publisherFilter");
   const subjectBooks = state.books.filter(book =>
-    scopeMatches(book) && (!publisher || book.publisher === publisher)
+    scopeMatches(book) && levelMatches(book) && brandMatches(book)
+    && (!publisher || book.publisher === publisher)
   );
   const subjectOptions = sortedUnique(subjectBooks.map(book => book.subject));
   refillSelect(el("subjectFilter"), subjectOptions, "과목 전체",
@@ -173,6 +207,8 @@ function updateDependentSelects() {
   const subject = state.scope.subject || selectValue("subjectFilter");
   const gradeBooks = state.books.filter(book =>
     scopeMatches(book) &&
+    levelMatches(book) &&
+    brandMatches(book) &&
     (!publisher || book.publisher === publisher) &&
     (!subject || book.subject === subject)
   );
@@ -184,7 +220,12 @@ function updateDependentSelects() {
   }
   const gradeOptions = [...gradeMap.entries()]
     .map(([value, label]) => ({ value, label }))
-    .sort((a, b) => a.label.localeCompare(b.label, "ko"));
+    .sort((a, b) => {
+      const [levelA, gradeA] = a.value.split(":");
+      const [levelB, gradeB] = b.value.split(":");
+      return (SCHOOL_ORDER[levelA] ?? 9) - (SCHOOL_ORDER[levelB] ?? 9)
+        || Number(gradeA) - Number(gradeB);
+    });
 
   let gradeSelection = filters.grade;
   if (state.scope.grade && !state.scope.grade.includes(":")) {
@@ -202,19 +243,118 @@ function updateDependentSelects() {
   const grade = state.scope.grade || selectValue("gradeFilter");
   const bookBooks = state.books.filter(book =>
     scopeMatches(book) &&
+    levelMatches(book) &&
+    brandMatches(book) &&
     (!publisher || book.publisher === publisher) &&
     (!subject || book.subject === subject) &&
-    (!grade || matchesGrade(book, grade))
+    (!grade || matchesGrade(book, grade)) &&
+    matchesSearch(book, currentQuery())
   );
   const bookOptions = bookBooks
-    .map(book => ({ value: book.book_id, label: book.title }))
+    .map(book => ({
+      value: book.book_id,
+      label: book.title + (book.edition_year && !book.title.includes(String(book.edition_year))
+        ? ` (${book.edition_year}년판)` : "")
+    }))
     .sort((a, b) => a.label.localeCompare(b.label, "ko"));
-  refillSelect(el("bookFilter"), bookOptions, "교재 선택",
-    state.scope.book || filters.book);
+  const selected = state.scope.book || filters.book;
+  const visibleOptions = bookOptions.slice(0, BOOK_SELECT_LIMIT);
+  if (selected && !visibleOptions.some(item => item.value === selected)) {
+    const selectedOption = bookOptions.find(item => item.value === selected);
+    if (selectedOption) visibleOptions.push(selectedOption);
+  }
+  const placeholder = bookOptions.length > BOOK_SELECT_LIMIT
+    ? `교재 선택 (${bookOptions.length}권 중 일부 · 검색으로 좁히기)`
+    : "교재 선택";
+  refillSelect(el("bookFilter"), visibleOptions, placeholder, selected);
+}
+
+function updateSchoolShortcuts() {
+  const nav = el("schoolShortcuts");
+  if (state.scope.book || state.scope.grade || state.scope.level) {
+    nav.hidden = true;
+    return;
+  }
+  const filters = effectiveFilters();
+  const candidates = state.books.filter(book =>
+    scopeMatches(book) &&
+    (!filters.publisher || book.publisher === filters.publisher) &&
+    (!filters.subject || book.subject === filters.subject) &&
+    matchesSearch(book, currentQuery())
+  );
+  const counts = { elementary: 0, middle: 0, high: 0 };
+  for (const book of candidates) {
+    if (Object.hasOwn(counts, book.school_level)) counts[book.school_level] += 1;
+  }
+  nav.hidden = Object.values(counts).filter(count => count > 0).length < 2
+    && !state.schoolLevel;
+  for (const button of nav.querySelectorAll("button[data-level]")) {
+    const level = button.dataset.level;
+    button.hidden = level !== "" && !counts[level] && state.schoolLevel !== level;
+    const active = state.schoolLevel === level;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+    const title = level ? labels[level] : "전체";
+    button.textContent = level ? `${title} ${counts[level]}` : "전체";
+  }
+}
+
+function updateSeriesShortcuts() {
+  const nav = el("seriesShortcuts");
+  const container = el("seriesShortcutButtons");
+
+  if (state.scope.book || state.scope.brand) {
+    nav.hidden = true;
+    return;
+  }
+
+  const filters = effectiveFilters();
+  const selectedLevel = state.scope.level || state.schoolLevel;
+  const candidates = state.books.filter(book =>
+    scopeMatches(book) &&
+    (!selectedLevel || book.school_level === selectedLevel) &&
+    (!filters.publisher || book.publisher === filters.publisher) &&
+    (!filters.subject || book.subject === filters.subject) &&
+    (!filters.grade || matchesGrade(book, filters.grade)) &&
+    matchesSearch(book, currentQuery())
+  );
+
+  const counts = new Map();
+  for (const book of candidates) {
+    if (!book.brand) continue;
+    counts.set(book.brand, (counts.get(book.brand) || 0) + 1);
+  }
+
+  const brands = [...counts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ko"));
+
+  const narrowedContext = Boolean(
+    filters.publisher && (selectedLevel || filters.subject || filters.grade)
+  );
+  const useful = narrowedContext && brands.length >= 2 && candidates.length >= 8;
+  nav.hidden = !useful && !state.brand;
+  container.innerHTML = "";
+
+  if (nav.hidden) return;
+
+  const options = [["", candidates.length], ...brands];
+  for (const [brand, count] of options) {
+    if (brand && !counts.has(brand) && state.brand !== brand) continue;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.brand = brand;
+    button.textContent = brand ? `${brand} ${count}` : `전체 ${candidates.length}`;
+    const active = state.brand === brand;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+    container.append(button);
+  }
 }
 
 function materialStatus(book) {
-  const statuses = (book.materials || []).map(m => m.status || "unknown");
+  const statuses = (book.materials || [])
+    .filter(shouldShowMaterial)
+    .map(m => m.status || "unknown");
   if (!statuses.length) return "unknown";
   if (statuses.includes("broken")) return "broken";
   if (statuses.includes("needs_review")) return "needs_review";
@@ -223,16 +363,52 @@ function materialStatus(book) {
   return statuses[0];
 }
 
-function createMaterialLink(label, href, type = "", primary = false) {
+function bookDetailUrl(book) {
+  const url = new URL(window.location.href);
+  url.search = "";
+  url.hash = "";
+  url.searchParams.set("book", book.book_id);
+  if (state.scope.embed) url.searchParams.set("embed", "1");
+  return url.toString();
+}
+
+function navigateToBook(book) {
+  window.location.assign(bookDetailUrl(book));
+}
+
+function applyMaterialClasses(node, type = "", primary = false) {
+  node.className = "material-link";
+  if (primary) node.classList.add("primary");
+  if (type && materialClass[type]) node.classList.add(materialClass[type]);
+}
+
+function createMaterialLink(label, href, type = "", primary = false, direct = false) {
   if (!href) return null;
   const a = document.createElement("a");
-  a.className = "material-link";
-  if (primary) a.classList.add("primary");
-  if (type && materialClass[type]) a.classList.add(materialClass[type]);
+  applyMaterialClasses(a, type, primary);
   a.href = href;
   a.target = "_blank";
   a.rel = "noopener noreferrer";
   a.textContent = label;
+  if (direct) {
+    a.classList.add("direct-download");
+    a.setAttribute("download", "");
+    a.title = "출판사 공식 직접 파일 주소";
+  }
+  return a;
+}
+
+function createPreviewMaterialBadge(label, type, primary, book) {
+  const a = document.createElement("a");
+  applyMaterialClasses(a, type, primary);
+  a.classList.add("preview-material");
+  a.href = "javascript:void(0)";
+  a.textContent = label;
+  a.setAttribute("aria-label", `${label} - 교재 상세 페이지에서 보기`);
+  a.addEventListener("click", event => {
+    event.preventDefault();
+    navigateToBook(book);
+  });
   return a;
 }
 
@@ -241,11 +417,7 @@ function setupCover(fragment, book) {
   const image = fragment.querySelector(".cover-image");
   const placeholder = fragment.querySelector(".cover-placeholder");
 
-  if (book.official_page) {
-    coverLink.href = book.official_page;
-  } else {
-    coverLink.removeAttribute("href");
-  }
+  coverLink.href = bookDetailUrl(book);
 
   if (!book.cover_image_url) {
     image.hidden = true;
@@ -279,15 +451,13 @@ function renderBook(book, detailMode = false) {
   statusEl.classList.add(status);
 
   const titleEl = fragment.querySelector(".book-title");
-  if (book.official_page) {
+  if (detailMode) {
+    titleEl.textContent = book.title;
+  } else {
     const titleLink = document.createElement("a");
-    titleLink.href = book.official_page;
-    titleLink.target = "_blank";
-    titleLink.rel = "noopener noreferrer";
+    titleLink.href = bookDetailUrl(book);
     titleLink.textContent = book.title;
     titleEl.append(titleLink);
-  } else {
-    titleEl.textContent = book.title;
   }
 
   fragment.querySelector(".book-meta").textContent =
@@ -297,39 +467,96 @@ function renderBook(book, detailMode = false) {
     [book.curriculum, book.edition_year ? book.edition_year + "년판" : null, book.isbn ? "ISBN " + book.isbn : null]
       .filter(Boolean).join(" · ");
 
+  const intro = fragment.querySelector(".book-intro");
+  const availableMaterials = (book.materials || [])
+    .filter(shouldShowMaterial)
+    .map(material => material.title)
+    .filter(Boolean);
+  intro.textContent = book.summary || [
+    `${book.publisher} ${book.brand || ""} ${gradeLabel(book)} ${book.subject} 교재입니다.`.replace(/\s+/g, " ").trim(),
+    availableMaterials.length ? `${availableMaterials.join(", ")} 등 공식 학습자료를 이 페이지에서 확인할 수 있습니다.` : ""
+  ].filter(Boolean).join(" ");
+  intro.hidden = !detailMode;
+
   const materials = fragment.querySelector(".materials");
   for (const material of book.materials || []) {
+    if (!shouldShowMaterial(material)) continue;
     const loginRequired = material.access === "login_required";
+    const isDirect = Boolean(material.direct_url);
     const best = loginRequired
       ? (material.resource_page || book.official_page)
       : (material.direct_url || material.resource_page || book.official_page);
 
-    const buttonLabel = loginRequired
-      ? "출판사에서 로그인 후 다운로드"
-      : (material.title || "공식 자료 보기");
+    const baseLabel = material.title || "공식 자료 보기";
+    const detailLabel = loginRequired
+      ? `${baseLabel} · 출판사에서 로그인 후 다운로드`
+      : (isDirect ? `${baseLabel} 바로 다운로드` : baseLabel);
+    const listLabel = loginRequired ? `${baseLabel} (로그인 필요)` : baseLabel;
 
     const primary = material.type === "answer";
-    const link = createMaterialLink(buttonLabel, best, material.type, primary);
+    const link = detailMode
+      ? createMaterialLink(detailLabel, best, material.type, primary, isDirect)
+      : createPreviewMaterialBadge(listLabel, material.type, primary, book);
     if (link) materials.append(link);
   }
 
   for (const course of book.courses || []) {
-    if (!course.course_url) continue;
     const teacher = course.teacher ? ` · ${course.teacher}` : "";
-    const courseLink = createMaterialLink(`인강${teacher}`, course.course_url, "course", false);
-    if (courseLink) {
+    if (detailMode) {
+      if (!course.course_url) continue;
+      const courseLink = createMaterialLink(`인강${teacher}`, course.course_url, "course", false);
+      if (courseLink) {
+        courseLink.classList.add("course-link");
+        courseLink.title = course.title || "관련 인강";
+        materials.append(courseLink);
+      }
+    } else if (course.course_url) {
+      const courseLink = createPreviewMaterialBadge(`인강${teacher}`, "course", false, book);
       courseLink.classList.add("course-link");
-      courseLink.title = course.title || "관련 인강";
       materials.append(courseLink);
     }
   }
+
+  const secondary = fragment.querySelector(".book-secondary-links");
+  const publisherBox = fragment.querySelector(".publisher-download-box");
+  const publisherLink = fragment.querySelector(".publisher-download-link");
+  if (detailMode) {
+    if (book.post_url) {
+      const post = document.createElement("a");
+      post.href = book.post_url;
+      post.target = "_blank";
+      post.rel = "noopener noreferrer";
+      post.className = "secondary-link";
+      post.textContent = "관련 티스토리 글";
+      secondary.append(post);
+    }
+    secondary.hidden = !secondary.children.length;
+
+    const publisherHelp = book.publisher_help || null;
+    const publisherHelpUrl = publisherHelp?.url || book.official_page;
+    if (publisherHelpUrl) {
+      const publisherNote = publisherBox.querySelector("p");
+      publisherNote.textContent = publisherHelp?.note
+        || "여기서 바로 받지 않고 출판사 사이트에서 확인하려면 공식 교재 페이지를 이용해 주세요.";
+      publisherLink.href = publisherHelpUrl;
+      publisherLink.textContent = publisherHelp?.label
+        || `${book.publisher} 공식 페이지에서 확인·다운로드`;
+      publisherBox.dataset.mode = publisherHelp?.mode || "book_page";
+      publisherBox.hidden = false;
+    }
+  }
+
+  const hint = fragment.querySelector(".official-hint");
+  hint.textContent = detailMode
+    ? "직접 파일 주소가 확인된 자료는 바로 다운로드로 연결하고, 아직 확인 중인 자료는 출판사의 해당 자료 페이지로 연결합니다."
+    : "교재명 또는 자료 뱃지를 누르면 이 사이트의 교재 상세 페이지가 열립니다.";
 
   return fragment;
 }
 
 function getFilteredBooks() {
   const filters = effectiveFilters();
-  const query = state.scope.book ? "" : el("searchInput").value;
+  const query = state.scope.book ? "" : currentQuery();
   return state.books.filter(book => {
     if (!matchesFilters(book, filters)) return false;
     return matchesSearch(book, query);
@@ -397,6 +624,8 @@ function hideFixedControls() {
 
   if (state.scope.book) {
     el("filters").hidden = true;
+    el("schoolShortcuts").hidden = true;
+    el("seriesShortcuts").hidden = true;
     el("toolbar").hidden = true;
     el("loadMoreButton").hidden = true;
   }
@@ -418,6 +647,8 @@ function updateScopeHeading() {
   if (!state.scope.embed || state.scope.book) return;
   const parts = [];
   if (state.scope.publisher) parts.push(state.scope.publisher);
+  if (state.scope.level) parts.push(labels[state.scope.level] || state.scope.level);
+  if (state.scope.brand) parts.push(state.scope.brand);
   if (state.scope.grade) {
     const book = state.books.find(item => scopeMatches(item));
     if (book) parts.push(gradeLabel(book));
@@ -432,31 +663,74 @@ function resetFilters() {
   if (!state.scope.grade) el("gradeFilter").value = "";
   if (!state.scope.book) el("bookFilter").value = "";
   el("searchInput").value = "";
+  state.schoolLevel = "";
+  state.brand = "";
   resetVisible();
   updateDependentSelects();
+  updateSchoolShortcuts();
+  updateSeriesShortcuts();
   applyFilters();
 }
 
 function bindEvents() {
   el("searchInput").addEventListener("input", () => {
     resetVisible();
+    updateDependentSelects();
+    updateSchoolShortcuts();
+    updateSeriesShortcuts();
+    applyFilters();
+  });
+
+  for (const button of el("schoolShortcuts").querySelectorAll("button[data-level]")) {
+    button.addEventListener("click", () => {
+      const level = button.dataset.level;
+      if (state.schoolLevel === level) return;
+      state.schoolLevel = level;
+      state.brand = "";
+      if (!state.scope.grade) el("gradeFilter").value = "";
+      if (!state.scope.book) el("bookFilter").value = "";
+      resetVisible();
+      updateDependentSelects();
+      updateSchoolShortcuts();
+      updateSeriesShortcuts();
+      applyFilters();
+    });
+  }
+
+  el("seriesShortcutButtons").addEventListener("click", event => {
+    const button = event.target.closest("button[data-brand]");
+    if (!button) return;
+    const brand = button.dataset.brand || "";
+    if (state.brand === brand) return;
+    state.brand = brand;
+    if (!state.scope.book) el("bookFilter").value = "";
+    resetVisible();
+    updateDependentSelects();
+    updateSeriesShortcuts();
     applyFilters();
   });
 
   el("publisherFilter").addEventListener("change", () => {
+    state.schoolLevel = "";
+    state.brand = "";
     if (!state.scope.subject) el("subjectFilter").value = "";
     if (!state.scope.grade) el("gradeFilter").value = "";
     if (!state.scope.book) el("bookFilter").value = "";
     resetVisible();
     updateDependentSelects();
+    updateSchoolShortcuts();
+    updateSeriesShortcuts();
     applyFilters();
   });
 
   el("subjectFilter").addEventListener("change", () => {
+    if (!state.scope.brand) state.brand = "";
     if (!state.scope.grade) el("gradeFilter").value = "";
     if (!state.scope.book) el("bookFilter").value = "";
     resetVisible();
     updateDependentSelects();
+    updateSchoolShortcuts();
+    updateSeriesShortcuts();
     applyFilters();
   });
 
@@ -464,10 +738,19 @@ function bindEvents() {
     if (!state.scope.book) el("bookFilter").value = "";
     resetVisible();
     updateDependentSelects();
+    updateSeriesShortcuts();
     applyFilters();
   });
 
   el("bookFilter").addEventListener("change", () => {
+    const selected = el("bookFilter").value;
+    if (selected && !state.scope.book) {
+      const book = state.books.find(item => item.book_id === selected);
+      if (book) {
+        navigateToBook(book);
+        return;
+      }
+    }
     resetVisible();
     applyFilters();
   });
@@ -481,17 +764,45 @@ function bindEvents() {
   });
 }
 
+async function loadCatalog(bookId = "") {
+  const options = { cache: "no-store" };
+  // Only a missing descriptor identifies the old static deployment. Network or
+  // server errors must not silently expand a single-book request to the catalog.
+  const descriptorResponse = await fetch("data/site.json", options);
+  if (!descriptorResponse.ok && descriptorResponse.status !== 404) {
+    throw new Error(`HTTP ${descriptorResponse.status}`);
+  }
+  const modern = descriptorResponse.ok;
+  let descriptor = null;
+  if (modern) {
+    descriptor = await descriptorResponse.json();
+    if (descriptor.delivery_version !== 1) throw new Error("지원하지 않는 자료 형식입니다");
+    if (bookId && !/^[a-z0-9][a-z0-9-]*$/.test(bookId)) {
+      return { meta: descriptor.meta || {}, books: [] };
+    }
+  }
+  const url = modern && bookId ? `data/books/${encodeURIComponent(bookId)}.json` : "data/catalog.json";
+  const response = await fetch(url, options);
+  if (modern && bookId && response.status === 404) return { meta: descriptor.meta || {}, books: [] };
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const data = await response.json();
+  if (modern && bookId && (data.books?.length !== 1 || data.books[0].book_id !== bookId)) {
+    throw new Error("교재 자료가 일치하지 않습니다");
+  }
+  return data;
+}
+
 async function init() {
   readScope();
   try {
-    const response = await fetch("data/catalog.json", { cache: "no-store" });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
+    const data = await loadCatalog(state.scope.book);
     state.books = data.books || [];
     state.meta = data.meta || {};
 
     updateDependentSelects();
     hideFixedControls();
+    updateSchoolShortcuts();
+    updateSeriesShortcuts();
     updateScopeHeading();
 
     el("updatedAt").textContent = state.meta.generated_at ? `데이터 기준 ${state.meta.generated_at}` : "";

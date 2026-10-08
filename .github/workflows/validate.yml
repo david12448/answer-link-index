@@ -5,6 +5,10 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -15,3 +19,17 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install --upgrade pip jsonschema
       - run: python scripts/validate_data.py
+      - run: python -m py_compile scripts/collectors/*.py
+      - run: python scripts/test_curriculum_matching.py
+      - run: node --check assets/app.js
+      - run: node scripts/test_ui_filters.cjs
+      - run: node scripts/test_catalog_delivery.cjs
+      - run: python scripts/test_public_export.py
+      - run: python scripts/build_public_site.py
+      - run: PUBLIC_CATALOG_PATH=dist/public-site/data/catalog.json node scripts/test_ui_filters.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public-site-preview
+          path: dist/public-site/
+      - name: Summarize catalog quality
+        run: python scripts/catalog_quality_report.py --markdown >> "$GITHUB_STEP_SUMMARY"

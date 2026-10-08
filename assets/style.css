@@ -37,16 +37,8 @@ h1 {
 }
 
 .hero-copy {
-  margin: 10px 0 22px;
+  margin: 10px 0 0;
   opacity: .82;
-}
-
-.search-box input {
-  width: 100%;
-  padding: 15px 17px;
-  border: 0;
-  border-radius: 14px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, .18);
 }
 
 .app-shell {
@@ -61,12 +53,117 @@ h1 {
   font-size: clamp(23px, 4vw, 34px);
 }
 
+.series-shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+  margin: -4px 0 16px;
+}
+
+.series-shortcuts-label {
+  padding-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #667085;
+}
+
+.series-shortcuts-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.series-shortcuts button {
+  min-height: 34px;
+  padding: 5px 12px;
+  border: 1px solid #dbe1ec;
+  background: #fff;
+  border-radius: 999px;
+  color: #526079;
+  font-size: 12px;
+}
+
+.series-shortcuts button.is-active {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.school-shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 16px;
+}
+
+.school-shortcuts-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #667085;
+}
+
+.school-shortcuts-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.school-shortcuts button {
+  min-height: 36px;
+  padding: 6px 14px;
+  border: 1px solid #dbe1ec;
+  background: #fff;
+  border-radius: 999px;
+  color: #344054;
+  font-size: 13px;
+}
+
+.school-shortcuts button.is-active {
+  border-color: #172033;
+  color: #fff;
+  background: #172033;
+}
+
+.school-shortcuts button:focus-visible,
+.series-shortcuts button:focus-visible,
+.book-title a:focus-visible,
+.search-filter-field input:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
 .filters {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
   gap: 9px;
   align-items: end;
   margin: 0 0 14px;
+  padding: 14px;
+  border: 1px solid #e2e7ef;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 3px 14px rgba(22, 32, 51, .035);
+}
+
+.search-filter-field {
+  grid-column: 1 / -1;
+}
+
+.filters .search-filter-field input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #cfd7e6;
+  border-radius: 11px;
+  background: #fff;
+  padding: 0 14px;
+  color: #172033;
+}
+
+.search-filter-field input::placeholder {
+  color: #98a2b3;
 }
 
 .filter-field {
@@ -83,6 +180,7 @@ h1 {
 }
 
 .filters select,
+.filters input,
 .reset-button {
   min-height: 44px;
   border: 1px solid #dbe1ec;
@@ -94,6 +192,11 @@ h1 {
 
 .reset-button {
   padding-inline: 16px;
+}
+
+.filters select {
+  width: 100%;
+  min-width: 0;
 }
 
 .toolbar {
@@ -249,6 +352,14 @@ h1 {
   color: #8a93a5;
 }
 
+.book-intro {
+  margin: 16px 0 0;
+  max-width: 760px;
+  color: #4b5565;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
 .materials {
   display: flex;
   flex-wrap: wrap;
@@ -292,8 +403,53 @@ h1 {
   background: #fff;
 }
 
+.book-secondary-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.secondary-link {
+  color: #526079;
+  font-size: 12px;
+  text-underline-offset: 3px;
+}
+
+.publisher-download-box {
+  margin-top: 22px;
+  padding: 14px 16px;
+  border: 1px solid #e1e6ef;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.publisher-download-box p {
+  margin: 0 0 8px;
+  color: #667085;
+  font-size: 13px;
+}
+
+.publisher-download-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  color: #172033;
+  font-size: 13px;
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+
+.direct-download::after {
+  content: " ↓";
+}
+
+.preview-material {
+  cursor: pointer;
+}
+
 .official-hint {
-  margin: 7px 0 0;
+  margin: 9px 0 0;
   color: #98a2b3;
   font-size: 11px;
 }
@@ -374,6 +530,10 @@ h1 {
   gap: 8px;
 }
 
+.detail-card .book-intro {
+  display: block;
+}
+
 .detail-card .material-link {
   min-height: 42px;
   padding: 9px 14px;
@@ -397,6 +557,8 @@ h1 {
 }
 
 .embed-mode .scope-heading,
+.embed-mode .school-shortcuts,
+.embed-mode .series-shortcuts,
 .embed-mode .filters,
 .embed-mode .toolbar,
 .embed-mode .results,
@@ -448,6 +610,28 @@ h1 {
 
   .hero {
     padding: 34px 0 30px;
+  }
+
+  .school-shortcuts {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .school-shortcuts-buttons {
+    width: 100%;
+  }
+
+  .series-shortcuts {
+    gap: 8px;
+  }
+
+  .series-shortcuts-label {
+    width: 100%;
+    padding-top: 0;
+  }
+
+  .series-shortcuts-buttons {
+    width: 100%;
   }
 
   .filters,

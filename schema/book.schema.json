@@ -167,6 +167,56 @@
             "null"
           ],
           "format": "uri"
+        },
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "publisher_help": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": [
+                "book_page",
+                "shared_resource_page",
+                "search_page",
+                "login_page",
+                "other"
+              ]
+            },
+            "url": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "uri"
+            },
+            "label": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "publisher_site": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "출판사 내부 서비스 구분. 예: ebsi, ebs_primary, ebs_middle"
         }
       }
     },
@@ -229,6 +279,24 @@
           "type": [
             "string",
             "null"
+          ]
+        },
+        "publisher_file_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "availability": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "available",
+            "unavailable",
+            "unknown",
+            null
           ]
         }
       }

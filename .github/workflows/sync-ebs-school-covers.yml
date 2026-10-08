@@ -1,0 +1,108 @@
+name: Sync EBS school covers
+
+on:
+  pull_request:
+    paths:
+      - "scripts/collectors/ebs_school_cover_sync.py"
+      - ".github/workflows/sync-ebs-school-covers.yml"
+  workflow_dispatch:
+    inputs:
+      limit_per_site:
+        description: "학교급별 표지 점검 권수. 0은 전체, 기본 6권씩"
+        required: false
+        default: "6"
+  schedule:
+    - cron: "40 1 * * 0"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  changes:
+    uses: ./.github/workflows/collector-change-gate.yml
+    with:
+      paths: '["scripts/collectors/ebs_school_cover_sync.py", ".github/workflows/sync-ebs-school-covers.yml"]'
+  sync:
+    needs: changes
+    if: needs.changes.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Check missing EBS 초등·중학 cover thumbnails
+        shell: bash
+        run: |
+          LIMIT="${{ inputs.limit_per_site }}"
+          if [ -z "$LIMIT" ]; then
+            LIMIT="6"
+          fi
+          python scripts/collectors/ebs_school_cover_sync.py \
+            --catalog data/catalog.json \
+            --limit-per-site "$LIMIT" \
+            --report ebs-school-cover-sync-report.json
+
+      - name: Print compact summary
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          data = json.loads(Path("ebs-school-cover-sync-report.json").read_text(encoding="utf-8"))
+          print("## EBS 초등·중학 표지 점검")
+          print(f"- 점검: {data.get('checked_count', 0)}권")
+          print(f"- 공식 표지 확인: {data.get('accepted_count', 0)}권")
+          print(f"- catalog 변경: {data.get('changed_count', 0)}권")
+          for item in data.get("checks", []):
+              title = item.get("title") or item.get("book_id")
+              print(f"- {'✅' if item.get('accepted') else '⚪'} {title}")
+          PY
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ebs-school-cover-sync-report
+          path: ebs-school-cover-sync-report.json
+          if-no-files-found: error
+
+      - name: Detect catalog changes
+        id: diff
+        shell: bash
+        run: |
+          if git diff --quiet -- data/catalog.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create pull request for verified cover thumbnails
+        if: github.event_name != 'pull_request' && steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/ebs-school-covers
+          delete-branch: true
+          commit-message: "data: add verified EBS school cover thumbnails"
+          title: "data: EBS 초등·중등 공식 표지 추가"
+          body: |
+            EBS 초등·중등 공식 교재 페이지에서 확인한 표지 이미지를 catalog에 반영한 자동 PR입니다.
+
+            자동 반영 조건:
+            1. 해당 textbookId의 공식 교재 상세 페이지에서 발견
+            2. EBS 공식 cbox.ebs.co.kr/textbook 경로
+            3. URL 안에 동일한 textbookId 포함
+            4. 실제 image/* 응답과 최소 파일 크기 확인
+            5. 후보가 정확히 하나인 경우에만 자동 반영
+
+            이미지는 재호스팅하지 않고 EBS 공식 URL만 저장합니다.

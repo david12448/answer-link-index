@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from collections import Counter
 from pathlib import Path
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "data" / "catalog.json"
@@ -17,6 +18,14 @@ def load_json(path: Path):
 def duplicate_values(values):
     counts = Counter(values)
     return sorted(value for value, count in counts.items() if count > 1)
+
+
+def normalize_title_for_identity(value: str) -> str:
+    return "".join(
+        ch.lower()
+        for ch in str(value or "")
+        if ch.isalnum()
+    )
 
 
 def main():
@@ -45,6 +54,134 @@ def main():
         print("[DUPLICATE book_id]", *duplicated_books, sep="\n- ")
         raise SystemExit(1)
 
+    title_identity_keys = [
+        (
+            book.get("publisher"),
+            book.get("publisher_site"),
+            book.get("school_level"),
+            normalize_title_for_identity(book.get("title")),
+            book.get("edition_year"),
+            book.get("curriculum"),
+        )
+        for book in data["books"]
+    ]
+    duplicated_title_identity = duplicate_values(title_identity_keys)
+    if duplicated_title_identity:
+        print(
+            "[DUPLICATE normalized title identity]",
+            *[
+                " / ".join(str(part or "") for part in key)
+                for key in duplicated_title_identity
+            ],
+            sep="\n- ",
+        )
+        raise SystemExit(1)
+
+    publisher_keys = [
+        (book.get("publisher_site"), book.get("publisher_book_id"))
+        for book in data["books"]
+        if book.get("publisher_book_id")
+    ]
+    duplicated_publisher_keys = duplicate_values(publisher_keys)
+    if duplicated_publisher_keys:
+        print(
+            "[DUPLICATE publisher_site/publisher_book_id]",
+            *[f"{site}: {book_id}" for site, book_id in duplicated_publisher_keys],
+            sep="\n- ",
+        )
+        raise SystemExit(1)
+
+    valid_grades = {
+        "elementary": set(range(1, 7)),
+        "middle": set(range(1, 4)),
+        "high": set(range(1, 4)),
+    }
+    ebs_hosts = {
+        "ebsi": "www.ebsi.co.kr",
+        "ebs_primary": "primary.ebs.co.kr",
+        "ebs_middle": "mid.ebs.co.kr",
+    }
+
+    for book in data["books"]:
+        level = book.get("school_level")
+        grade = book.get("grade")
+        if grade is not None and level in valid_grades and grade not in valid_grades[level]:
+            print(
+                f"[GRADE] {book['book_id']}: "
+                f"{level} 학교급에 grade={grade}는 허용되지 않습니다."
+            )
+            raise SystemExit(1)
+
+        if book.get("publisher") == "EBS":
+            site = book.get("publisher_site")
+            publisher_book_id = str(book.get("publisher_book_id") or "")
+            if site == "ebsi" and publisher_book_id and not publisher_book_id.startswith("LB"):
+                print(
+                    f"[EBS ID] {book['book_id']}: "
+                    "ebsi 교재 ID는 LB... 형식이어야 합니다."
+                )
+                raise SystemExit(1)
+            if (
+                site in {"ebs_primary", "ebs_middle"}
+                and publisher_book_id
+                and not publisher_book_id.startswith("TB")
+            ):
+                print(
+                    f"[EBS ID] {book['book_id']}: "
+                    f"{site} 교재 ID는 TB... 형식이어야 합니다."
+                )
+                raise SystemExit(1)
+
+            expected_host = ebs_hosts.get(site)
+            official_page = book.get("official_page") or ""
+            if expected_host and official_page:
+                actual_host = urlparse(official_page).hostname
+                if actual_host != expected_host:
+                    print(
+                        f"[EBS HOST] {book['book_id']}: "
+                        f"{site} official_page은 {expected_host} 이어야 합니다 "
+                        f"(현재 {actual_host})."
+                    )
+                    raise SystemExit(1)
+
+            if site in {"ebs_primary", "ebs_middle"}:
+                cover = book.get("cover_image_url") or ""
+                if cover:
+                    parsed_cover = urlparse(cover)
+                    if (
+                        parsed_cover.hostname != "cbox.ebs.co.kr"
+                        or "/textbook/" not in parsed_cover.path
+                        or publisher_book_id not in parsed_cover.path
+                    ):
+                        print(
+                            f"[EBS COVER] {book['book_id']}: "
+                            "초등·중학 표지는 cbox.ebs.co.kr/textbook 경로이고 "
+                            "동일한 TB 교재 ID를 포함해야 합니다."
+                        )
+                        raise SystemExit(1)
+
+                expected_download_host = (
+                    "primary.ebs.co.kr"
+                    if site == "ebs_primary"
+                    else "mid.ebs.co.kr"
+                )
+                for material in book.get("materials", []):
+                    direct_url = material.get("direct_url") or ""
+                    if material.get("type") not in {"answer", "errata"} or not direct_url:
+                        continue
+                    parsed_direct = urlparse(direct_url)
+                    if (
+                        parsed_direct.hostname != expected_download_host
+                        or parsed_direct.path != "/board/common/download"
+                    ):
+                        print(
+                            f"[EBS DOWNLOAD] {material['resource_id']}: "
+                            f"{site} 정답/정오표 direct_url은 "
+                            f"{expected_download_host}/board/common/download "
+                            "공식 첨부 경로여야 합니다."
+                        )
+                        raise SystemExit(1)
+
     resource_ids = [
         material["resource_id"]
         for book in data["books"]
@@ -54,6 +191,29 @@ def main():
     if duplicated_resources:
         print("[DUPLICATE resource_id]", *duplicated_resources, sep="\n- ")
         raise SystemExit(1)
+
+    for book in data["books"]:
+        for material in book.get("materials", []):
+            availability = material.get("availability")
+            if availability == "available":
+                if material.get("status") != "ok":
+                    print(
+                        f"[AVAILABILITY] {material['resource_id']}: "
+                        "available 자료는 status=ok 이어야 합니다."
+                    )
+                    raise SystemExit(1)
+                if not (material.get("direct_url") or material.get("resource_page")):
+                    print(
+                        f"[AVAILABILITY] {material['resource_id']}: "
+                        "available 자료에는 공식 링크가 필요합니다."
+                    )
+                    raise SystemExit(1)
+            elif availability in {"unavailable", "unknown"} and material.get("direct_url"):
+                print(
+                    f"[AVAILABILITY] {material['resource_id']}: "
+                    f"{availability} 자료에는 direct_url을 둘 수 없습니다."
+                )
+                raise SystemExit(1)
 
     course_ids = [
         course["course_id"]

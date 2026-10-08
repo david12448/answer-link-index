@@ -1,0 +1,81 @@
+name: Probe EBS school materials
+
+on:
+  pull_request:
+    paths:
+      - "scripts/collectors/ebs_school_material_probe.py"
+      - "scripts/collectors/ebs_school_answer_sync.py"
+      - ".github/workflows/probe-ebs-school-materials.yml"
+  workflow_dispatch:
+    inputs:
+      limit_per_site:
+        description: "학교급별 조사 권수. 0은 전체, 기본 3권씩"
+        required: false
+        default: "3"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    uses: ./.github/workflows/collector-change-gate.yml
+    with:
+      paths: '["scripts/collectors/ebs_school_material_probe.py", ".github/workflows/probe-ebs-school-materials.yml", "scripts/collectors/ebs_school_answer_sync.py"]'
+  probe:
+    needs: changes
+    if: needs.changes.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Probe EBS 초등/중학 정답지 자료
+        run: |
+          python scripts/collectors/ebs_school_material_probe.py \
+            --catalog data/catalog.json \
+            --limit-per-site "${{ inputs.limit_per_site || '3' }}" \
+            --output ebs-school-material-probe.json
+
+      - name: Print summary
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          data = json.loads(Path("ebs-school-material-probe.json").read_text(encoding="utf-8"))
+          print("## EBS 초등·중학 자료 probe")
+          for item in data.get("results", []):
+              title = item.get("title") or item.get("book_id")
+              matched = (item.get("matched_row") or {}).get("text")
+              direct = len(item.get("direct_candidates", []))
+              verified = sum(
+                  1 for check in item.get("direct_verifications", [])
+                  if check.get("looks_like_file")
+              )
+              error = item.get("error")
+              if error:
+                  print(f"- ❌ {title}: {error}")
+              else:
+                  print(
+                      f"- {'✅' if verified else ('⚠️' if direct else '○')} {title}: "
+                      f"자료 게시물={matched or '미확인'}, direct 후보={direct}, HEAD 검증={verified}"
+                  )
+          PY
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: ebs-school-material-probe
+          path: ebs-school-material-probe.json
+          if-no-files-found: error

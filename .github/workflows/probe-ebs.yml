@@ -1,0 +1,61 @@
+name: Probe EBS public pages
+
+on:
+  pull_request:
+    paths:
+      - "scripts/collectors/ebs_probe.py"
+      - ".github/workflows/probe-ebs.yml"
+      - "docs/publishers/EBS.md"
+  workflow_dispatch:
+    inputs:
+      book_id:
+        description: "Optional EBS bookId (LB...)"
+        required: false
+        default: "LB00000005911"
+      answer_no:
+        description: "Optional answer detail no"
+        required: false
+        default: "5"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    uses: ./.github/workflows/collector-change-gate.yml
+    with:
+      paths: '["scripts/collectors/ebs_probe.py", ".github/workflows/probe-ebs.yml", "docs/publishers/EBS.md"]'
+  probe:
+    needs: changes
+    if: needs.changes.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Probe EBS public material pages
+        run: |
+          BOOK_ID="${{ inputs.book_id }}"
+          ANSWER_NO="${{ inputs.answer_no }}"
+          if [ -z "$BOOK_ID" ]; then
+            BOOK_ID="LB00000005911"
+          fi
+          if [ -z "$ANSWER_NO" ]; then
+            ANSWER_NO="5"
+          fi
+          python scripts/collectors/ebs_probe.py \
+            --kind all \
+            --book-id "$BOOK_ID" \
+            --answer-no "$ANSWER_NO" \
+            --output ebs-probe.json
+      - name: Upload probe report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ebs-probe
+          path: ebs-probe.json
+          if-no-files-found: error

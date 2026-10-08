@@ -13,10 +13,6 @@
       <p class="eyebrow">OFFICIAL STUDY MATERIAL INDEX</p>
       <h1>답지 통합 검색</h1>
       <p class="hero-copy">초·중·고 교과서, 문제집, 자습서의 공식 정답·해설 자료 위치를 한 곳에서 찾습니다.</p>
-      <label class="search-box" id="searchBox">
-        <span class="sr-only">교재 검색</span>
-        <input id="searchInput" type="search" placeholder="예: 2027 수능완성 영어, 하이탑 중2 과학">
-      </label>
     </div>
   </header>
 
@@ -26,7 +22,26 @@
       <h1 id="scopeTitle">교재 자료</h1>
     </section>
 
+    <nav class="school-shortcuts" id="schoolShortcuts" aria-label="학교급 빠른 선택" hidden>
+      <span class="school-shortcuts-label">학교급</span>
+      <div class="school-shortcuts-buttons">
+        <button type="button" data-level="" aria-pressed="true" class="is-active">전체</button>
+        <button type="button" data-level="elementary" aria-pressed="false">초등</button>
+        <button type="button" data-level="middle" aria-pressed="false">중등</button>
+        <button type="button" data-level="high" aria-pressed="false">고등</button>
+      </div>
+    </nav>
+
+    <nav class="series-shortcuts" id="seriesShortcuts" aria-label="시리즈 빠른 선택" hidden>
+      <span class="series-shortcuts-label">시리즈</span>
+      <div class="series-shortcuts-buttons" id="seriesShortcutButtons"></div>
+    </nav>
+
     <section class="filters" id="filters" aria-label="검색 필터">
+      <label class="filter-field search-filter-field" id="searchField">
+        <span>교재 검색</span>
+        <input id="searchInput" type="search" placeholder="교재명·시리즈명 검색 (예: 만점왕 수학, 수능완성 영어)">
+      </label>
       <label class="filter-field" id="publisherField">
         <span>출판사</span>
         <select id="publisherFilter"><option value="">출판사 전체</option></select>
@@ -62,7 +77,7 @@
 
     <template id="bookTemplate">
       <article class="book-card">
-        <a class="cover-link" target="_blank" rel="noopener noreferrer">
+        <a class="cover-link">
           <span class="cover-placeholder" aria-hidden="true">교재 표지</span>
           <img class="cover-image" alt="" loading="lazy">
         </a>
@@ -74,8 +89,14 @@
           <h2 class="book-title"></h2>
           <p class="book-meta"></p>
           <p class="book-submeta"></p>
+          <p class="book-intro" hidden></p>
           <div class="materials"></div>
-          <p class="official-hint">교재명을 누르면 출판사 공식 교재 안내 페이지로 이동합니다.</p>
+          <div class="book-secondary-links" hidden></div>
+          <div class="publisher-download-box" hidden>
+            <p>여기서 바로 받지 않고 출판사 사이트에서 확인하려면 공식 교재 페이지를 이용해 주세요.</p>
+            <a class="publisher-download-link" target="_blank" rel="noopener noreferrer">출판사 페이지에서 확인·다운로드</a>
+          </div>
+          <p class="official-hint">교재명 또는 자료 뱃지를 누르면 이 사이트의 교재 상세 페이지가 열립니다.</p>
         </div>
       </article>
     </template>
