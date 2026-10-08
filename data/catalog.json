@@ -3622,12 +3622,12 @@
           "resource_id": "ebs-middle-neuron-math-1-upper-2022-errata",
           "type": "errata",
           "title": "정오표",
-          "resource_page": "https://mid.ebs.co.kr/book/main/errataList",
+          "resource_page": "https://mid.ebs.co.kr/book/main/errataList#corr/view/105/60000456604/0/1//0/title/%EC%A4%91%ED%95%99%20%EB%89%B4%EB%9F%B0%20%EC%88%98%ED%95%991(%EC%83%81)%20(22%20%EA%B0%9C%EC%A0%95)/",
           "direct_url": null,
-          "access": "public",
-          "status": "needs_review",
-          "last_checked": "2026-10-07",
-          "availability": "unknown"
+          "access": "login_required",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "availability": "available"
         }
       ]
     },

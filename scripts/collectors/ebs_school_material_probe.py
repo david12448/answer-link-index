@@ -188,7 +188,7 @@ def collect_attachments(page) -> list[dict]:
           const s = JSON.stringify(x).toLowerCase();
           return s.includes('/file/download') || s.includes('download?') ||
                  s.includes('.pdf') || s.includes('.hwp') || s.includes('.hwpx') ||
-                 s.includes('.zip') || s.includes('첨부');
+                 s.includes('.zip') || s.includes('.xls') || s.includes('.mp3') || s.includes('첨부');
         })"""
     )
     out = []

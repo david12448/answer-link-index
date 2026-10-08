@@ -343,3 +343,5 @@
 
 ### 정오표 자동화의 파일 검증과 다중 첨부
 개정 표기를 제목 정규화에서 제거하더라도 별도 교육과정 대조를 반드시 수행한다. attachment/octet-stream 헤더만으로 HTML 오류 페이지를 파일로 받아들이지 않으며 공식 host/path, redirect host, PDF/ZIP/OLE 서명을 검사한다. 다중 첨부에서는 candidate가 None이므로 변경 기록도 None을 처리해야 한다. 이미 available인 교재도 순환 점검 대상으로 유지해 후속 정오표를 감시한다.
+
+정오표 XLSX 파일은 화면 본문에 존재하지만 href가 javascript:;이고 onclick이 LoginFocus이면 기존 PDF/HWP/ZIP 탐지에서 누락됐다. 파일명 탐지에 XLS/MP3를 포함하고 로그인 필요한 실제 자료는 뱃지와 상세만 연결한다. 사용자 뱃지는 ‘로그인 필요’만 쓰지 않고 ‘정오표 (로그인 필요)’처럼 자료 종류를 함께 표시한다. errata sync와 공유 첨부 parser 변경도 관련 browser gate의 대상에 포함한다.

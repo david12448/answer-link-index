@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "scripts/collectors/ebs_school_errata_probe.py"
+      - "scripts/collectors/ebs_school_errata_sync.py"
+      - "scripts/collectors/ebs_school_material_probe.py"
       - ".github/workflows/probe-ebs-school-errata.yml"
   workflow_dispatch:
     inputs:
@@ -23,7 +25,7 @@ jobs:
   changes:
     uses: ./.github/workflows/collector-change-gate.yml
     with:
-      paths: '["scripts/collectors/ebs_school_errata_probe.py", ".github/workflows/probe-ebs-school-errata.yml"]'
+      paths: '["scripts/collectors/ebs_school_errata_probe.py", "scripts/collectors/ebs_school_errata_sync.py", "scripts/collectors/ebs_school_material_probe.py", ".github/workflows/probe-ebs-school-errata.yml"]'
   probe:
     needs: changes
     if: needs.changes.outputs.should_run == 'true'

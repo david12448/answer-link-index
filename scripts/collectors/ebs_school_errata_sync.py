@@ -192,11 +192,16 @@ def main() -> int:
                     "access": material.get("access"),
                     "availability": material.get("availability"),
                 }
+                login_required = any(
+                    "login" in (item.get("onclick") or "").lower()
+                    or "로그인" in (item.get("parent_text") or "")
+                    for item in result.get("attachments", [])
+                )
                 after = {
                     "direct_url": direct_url,
                     "resource_page": result.get("final_url") or result.get("errata_page"),
                     "status": "ok",
-                    "access": "public",
+                    "access": "login_required" if login_required and not direct_url else "public",
                     "availability": "available",
                 }
                 if before != after:

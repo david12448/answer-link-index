@@ -489,9 +489,9 @@ function renderBook(book, detailMode = false) {
 
     const baseLabel = material.title || "공식 자료 보기";
     const detailLabel = loginRequired
-      ? "출판사에서 로그인 후 다운로드"
+      ? `${baseLabel} · 출판사에서 로그인 후 다운로드`
       : (isDirect ? `${baseLabel} 바로 다운로드` : baseLabel);
-    const listLabel = loginRequired ? "로그인 필요" : baseLabel;
+    const listLabel = loginRequired ? `${baseLabel} (로그인 필요)` : baseLabel;
 
     const primary = material.type === "answer";
     const link = detailMode
