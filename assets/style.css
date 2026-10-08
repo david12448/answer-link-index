@@ -194,6 +194,11 @@ h1 {
   padding-inline: 16px;
 }
 
+.filters select {
+  width: 100%;
+  min-width: 0;
+}
+
 .toolbar {
   display: flex;
   gap: 14px;

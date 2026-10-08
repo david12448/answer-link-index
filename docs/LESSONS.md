@@ -345,3 +345,6 @@
 개정 표기를 제목 정규화에서 제거하더라도 별도 교육과정 대조를 반드시 수행한다. attachment/octet-stream 헤더만으로 HTML 오류 페이지를 파일로 받아들이지 않으며 공식 host/path, redirect host, PDF/ZIP/OLE 서명을 검사한다. 다중 첨부에서는 candidate가 None이므로 변경 기록도 None을 처리해야 한다. 이미 available인 교재도 순환 점검 대상으로 유지해 후속 정오표를 감시한다.
 
 정오표 XLSX 파일은 화면 본문에 존재하지만 href가 javascript:;이고 onclick이 LoginFocus이면 기존 PDF/HWP/ZIP 탐지에서 누락됐다. 파일명 탐지에 XLS/MP3를 포함하고 로그인 필요한 실제 자료는 뱃지와 상세만 연결한다. 사용자 뱃지는 ‘로그인 필요’만 쓰지 않고 ‘정오표 (로그인 필요)’처럼 자료 종류를 함께 표시한다. errata sync와 공유 첨부 parser 변경도 관련 browser gate의 대상에 포함한다.
+
+## 2026-10-09 — 모바일 레이아웃도 실제 브라우저에서 검사
+공개 묶음 Chromium 검사에서 390px 개별 교재 embed는 정상이나 제목 검색 후 전체 검색 화면의 가로 넘침을 발견했다. Node의 검색/필터 테스트는 DOM 폭을 계산하지 않아 이 문제를 잡을 수 없다. 긴 option 제목을 가진 select가 grid 칸 안에서 줄어들 수 있도록 width:100%와 min-width:0을 적용하고, 실제 브라우저 검사에 실패 시 넘친 요소/폭 진단과 스크린샷을 남긴다. 수백~수천 권으로 늘 때 기능 검사와 모바일 실제 레이아웃 검사를 함께 유지한다.
