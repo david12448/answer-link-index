@@ -37,10 +37,14 @@ def curriculum_year(value: str) -> str | None:
 
 def normalize_title(value: str) -> str:
     value = value.lower()
+    # 교육과정은 curriculum_year로 따로 대조한다. 제목의 표기 차이만 제거한다.
+    value = re.sub(r"(?<!\d)(?:20)?(?:15|22)\s*(?:개정|교육과정)(?:\s*(?:교육과정|개정|적용|반영))*", "", value)
     value = re.sub(r"\(\s*20\d{2}\s*\)", "", value)
     value = re.sub(r"20\d{2}", "", value)
     value = value.replace("ebs", "")
     value = re.sub(r"[\s()\[\]{}._\-/·]+", "", value)
+    # 공식 한 장 수학 자료실은 시리즈 뒤에 '중학 수학' 또는 '수학'을 덧붙인다.
+    value = value.replace("한장수학중학수학", "한장수학").replace("한장수학수학", "한장수학")
     return value
 
 
@@ -263,7 +267,9 @@ def collect_one(page, book: dict, context=None) -> dict:
     search_info = {"attempted": False, "input": None, "submitted": False}
 
     if matched is None:
-        search_info = try_search_board(page, title)
+        # 해당 시리즈의 공식 게시물명에는 '중학 수학'이 추가되어 전체 제목 검색이 실패한다.
+        query_title = "한 장 수학" if normalize_title(title).startswith("한장수학") else title
+        search_info = try_search_board(page, query_title)
         rows = extract_go_detail_rows(page)
         matched = choose_matching_row(rows, title, book.get("curriculum"))
 

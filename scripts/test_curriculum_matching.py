@@ -59,3 +59,18 @@ extra = {"text": "초등 영어듣기평가 완벽대비 3-1 부가자료"}
 assert choose([extra, answer], "초등 영어듣기평가 완벽대비 3-1") == answer
 assert choose([answer, {"text": "초등 영어듣기평가 완벽대비 3-1 정답과 해설"}], "초등 영어듣기평가 완벽대비 3-1") is None
 print('Answer/extra role matching regression checks passed')
+
+# 같은 교육과정의 표기 차이를 허용하되 구판은 계속 거부한다.
+assert ns['normalize_title']('한 장 수학 1(상) (2022 개정 교육과정 반영)') == ns['normalize_title']('한 장 수학 1(상)(22개정)')
+row22 = {'text': '한 장 수학 1(상)(22개정) 정답과 해설'}
+row15 = {'text': '한 장 수학 1(상)(15개정) 정답과 해설'}
+assert choose([row15, row22], '한 장 수학 1(상) (2022 개정 교육과정 반영)', '2022 개정') == row22
+assert choose([row15], '한 장 수학 1(상) (2022 개정 교육과정 반영)', '2022 개정') is None
+assert choose([row15, row22], '한 장 수학 1(상)') is None
+print('Curriculum notation equivalence regression checks passed')
+
+long_name = {'text': '한 장 수학 중학 수학 1(상) (2022 개정 교육과정 반영)'}
+assert choose([long_name], '한 장 수학 1(상) (2022 개정 교육과정 반영)', '2022 개정') == long_name
+assert ns['normalize_title']('한 장 수학 중학 수학 1(상)') != ns['normalize_title']('한 장 수학 1(하)')
+assert ns['normalize_title']('한 장 수학 수학 2(상)') != ns['normalize_title']('한 장 수학 1(상)')
+print('Official Han-jang title variant regression checks passed')

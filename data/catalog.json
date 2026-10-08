@@ -5463,7 +5463,7 @@
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012073",
       "cover_image_url": "https://cbox.ebs.co.kr/textbook/2024/11/11/TB1000012073/114342123516176923_textbook.jpg",
       "post_url": null,
-      "summary": "EBS 한 장 수학 1(상) (2022 개정 교육과정 반영) 교재입니다. 공식 페이지에서 자료를 확인할 수 있습니다.",
+      "summary": "EBS 한 장 수학 1(상) (2022 개정 교육과정 반영) 교재입니다. 공식 정답 및 해설 PDF를 제공합니다.",
       "publisher_help": {
         "mode": "book_page",
         "url": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012073",
@@ -5474,12 +5474,13 @@
         {
           "resource_id": "ebs-middle-tb1000012073-answer",
           "type": "answer",
-          "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012073",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-08"
+          "title": "정답 및 해설",
+          "resource_page": "https://mid.ebs.co.kr/book/main/correctAnswerList#answer/view/103/60000458326/0/1//0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000004473",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000004473"
         },
         {
           "resource_id": "ebs-middle-tb1000012073-errata",
@@ -5515,7 +5516,7 @@
       "official_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012148",
       "cover_image_url": "https://cbox.ebs.co.kr/textbook/2025/6/11/TB1000012148/5343343069448814_textbook.jpg",
       "post_url": null,
-      "summary": "EBS 한 장 수학 1(하) (2022 개정 교육과정 반영) 교재입니다. 공식 페이지에서 자료를 확인할 수 있습니다.",
+      "summary": "EBS 한 장 수학 1(하) (2022 개정 교육과정 반영) 교재입니다. 공식 정답 및 해설 PDF를 제공합니다.",
       "publisher_help": {
         "mode": "book_page",
         "url": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012148",
@@ -5526,12 +5527,13 @@
         {
           "resource_id": "ebs-middle-tb1000012148-answer",
           "type": "answer",
-          "title": "정답지/자료 (출판사에서 확인)",
-          "resource_page": "https://mid.ebs.co.kr/book/main/view?textbookId=TB1000012148",
-          "direct_url": null,
-          "access": "unknown",
-          "status": "needs_review",
-          "last_checked": "2026-10-08"
+          "title": "정답 및 해설",
+          "resource_page": "https://mid.ebs.co.kr/book/main/correctAnswerList#answer/view/103/60000463814/0/1//0///",
+          "direct_url": "https://mid.ebs.co.kr/board/common/download?division=&id=30000005542",
+          "access": "public",
+          "status": "ok",
+          "last_checked": "2026-10-08",
+          "publisher_file_id": "30000005542"
         },
         {
           "resource_id": "ebs-middle-tb1000012148-errata",
