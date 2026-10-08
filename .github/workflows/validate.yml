@@ -23,6 +23,7 @@ jobs:
       - run: python scripts/test_curriculum_matching.py
       - run: node --check assets/app.js
       - run: node scripts/test_ui_filters.cjs
+      - run: node scripts/test_catalog_delivery.cjs
       - run: python scripts/test_public_export.py
       - run: python scripts/build_public_site.py
       - run: PUBLIC_CATALOG_PATH=dist/public-site/data/catalog.json node scripts/test_ui_filters.cjs

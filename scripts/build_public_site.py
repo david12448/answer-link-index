@@ -4,6 +4,7 @@ This boundary prepares private-source operation; it does not hide a public git h
 """
 import argparse
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -39,17 +40,27 @@ def public_catalog(source):
 
 
 def build(destination):
+    source = json.loads((ROOT / "data/catalog.json").read_text())
+    public = public_catalog(source)
+    ids = [book["book_id"] for book in public["books"]]
+    if len(ids) != len(set(ids)) or any(not re.fullmatch(r"[a-z0-9][a-z0-9-]*", book_id) for book_id in ids):
+        raise ValueError("Public book IDs must be unique safe filename slugs")
     destination = Path(destination).resolve()
     # Never clear or overwrite an existing directory (especially the source checkout).
     destination.mkdir(parents=True, exist_ok=False)
     (destination / "assets").mkdir()
     (destination / "data").mkdir()
+    (destination / "data/books").mkdir()
     for filename in ("index.html", "assets/app.js", "assets/style.css"):
         shutil.copyfile(ROOT / filename, destination / filename)
-    source = json.loads((ROOT / "data/catalog.json").read_text())
     (destination / "data/catalog.json").write_text(
-        json.dumps(public_catalog(source), ensure_ascii=False, separators=(",", ":")) + "\n"
+        json.dumps(public, ensure_ascii=False, separators=(",", ":")) + "\n"
     )
+    (destination / "data/site.json").write_text(json.dumps({"delivery_version": 1, "meta": public["meta"]}) + "\n")
+    for book in public["books"]:
+        (destination / "data/books" / f"{book['book_id']}.json").write_text(
+            json.dumps({"meta": public["meta"], "books": [book]}, ensure_ascii=False, separators=(",", ":")) + "\n"
+        )
     print(f"Public site: {destination} ({len(source['books'])} books)")
 
 

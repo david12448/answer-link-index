@@ -764,12 +764,38 @@ function bindEvents() {
   });
 }
 
+async function loadCatalog(bookId = "") {
+  const options = { cache: "no-store" };
+  // Only a missing descriptor identifies the old static deployment. Network or
+  // server errors must not silently expand a single-book request to the catalog.
+  const descriptorResponse = await fetch("data/site.json", options);
+  if (!descriptorResponse.ok && descriptorResponse.status !== 404) {
+    throw new Error(`HTTP ${descriptorResponse.status}`);
+  }
+  const modern = descriptorResponse.ok;
+  let descriptor = null;
+  if (modern) {
+    descriptor = await descriptorResponse.json();
+    if (descriptor.delivery_version !== 1) throw new Error("지원하지 않는 자료 형식입니다");
+    if (bookId && !/^[a-z0-9][a-z0-9-]*$/.test(bookId)) {
+      return { meta: descriptor.meta || {}, books: [] };
+    }
+  }
+  const url = modern && bookId ? `data/books/${encodeURIComponent(bookId)}.json` : "data/catalog.json";
+  const response = await fetch(url, options);
+  if (modern && bookId && response.status === 404) return { meta: descriptor.meta || {}, books: [] };
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const data = await response.json();
+  if (modern && bookId && (data.books?.length !== 1 || data.books[0].book_id !== bookId)) {
+    throw new Error("교재 자료가 일치하지 않습니다");
+  }
+  return data;
+}
+
 async function init() {
   readScope();
   try {
-    const response = await fetch("data/catalog.json", { cache: "no-store" });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
+    const data = await loadCatalog(state.scope.book);
     state.books = data.books || [];
     state.meta = data.meta || {};
 

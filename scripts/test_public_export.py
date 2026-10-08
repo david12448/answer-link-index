@@ -26,11 +26,15 @@ class PublicExportTests(unittest.TestCase):
             output = Path(directory) / "site"
             build(output)
             files = {str(p.relative_to(output)) for p in output.rglob("*") if p.is_file()}
-            self.assertEqual(files, {"index.html", "assets/app.js", "assets/style.css", "data/catalog.json"})
             source = json.loads((ROOT / "data/catalog.json").read_text())
             public = json.loads((output / "data/catalog.json").read_text())
+            expected = {"index.html", "assets/app.js", "assets/style.css", "data/catalog.json", "data/site.json"}
+            expected.update(f"data/books/{b['book_id']}.json" for b in public["books"])
+            self.assertEqual(files, expected)
             self.assertEqual([b["book_id"] for b in source["books"]], [b["book_id"] for b in public["books"]])
             for original, exported in zip(source["books"], public["books"]):
+                single = json.loads((output / "data/books" / f"{exported['book_id']}.json").read_text())
+                self.assertEqual(single["books"], [exported])
                 self.assertEqual(original.get("cover_image_url"), exported.get("cover_image_url"))
                 for material in exported["materials"]:
                     self.assertTrue(any(all(old.get(k) == v for k, v in material.items()) for old in original["materials"]))
